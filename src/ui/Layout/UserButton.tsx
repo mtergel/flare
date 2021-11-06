@@ -1,5 +1,13 @@
 import Button from "@/components/Button/Button";
-import { GoogleAuthProvider, signInWithPopup } from "@firebase/auth";
+import Dialog from "@/components/Dialog/Dialog";
+import {
+  GithubAuthProvider,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "@firebase/auth";
+import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
+import { FaGoogle } from "@react-icons/all-files/fa/FaGoogle";
+import { MdFlare } from "@react-icons/all-files/md/MdFlare";
 import { useAuth } from "context/auth";
 import { useGetUserQuery } from "graphql/generated/graphql";
 import useDisclosure from "hooks/useDisclosure";
@@ -13,93 +21,121 @@ const UserButton: React.FC<{}> = () => {
     return null;
   }
   if (user) {
-    return <UserDD id={user.uid} />;
+    return <UserDD />;
   } else {
     return <UserLogin />;
   }
 };
 
 const UserLogin: React.FC<{}> = () => {
-  const [loading, setLoading] = useState(false);
-  const { isOpen, setIsOpen, onOpen, onClose } = useDisclosure();
-  const handleLogin = async () => {
+  const [loadingState, setLoadingState] = useState({
+    google: false,
+    github: false,
+    facebook: false,
+  });
+  const { isOpen, setIsOpen, onOpen } = useDisclosure();
+  const handleGoogle = async () => {
     try {
-      setLoading(true);
+      setLoadingState({
+        ...loadingState,
+        google: true,
+      });
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      setLoading(false);
-      onClose();
     } catch (error) {
       console.log(error);
-      setLoading(false);
+
+      // todo
+      setLoadingState({
+        ...loadingState,
+        google: false,
+      });
+    }
+  };
+
+  const handleGithub = async () => {
+    try {
+      setLoadingState({
+        ...loadingState,
+        github: true,
+      });
+      const provider = new GithubAuthProvider();
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.log(error);
+      // todo
+      setLoadingState({
+        ...loadingState,
+        github: false,
+      });
     }
   };
 
   return (
-    <Button color="primary" onClick={onOpen}>
-      Log in
-    </Button>
-    // <Dialog
-    //   title="Yahu"
-    //   description="Where programmers share ideas and help each other grow."
-    //   open={isOpen}
-    //   onOpenChange={setIsOpen}
-    //   content={
-    //     <div>
-    //       <Button
-    //         isLoading={loading}
-    //         loadingText="Түр хүлээнэ үү"
-    //         onClick={handleLogin}
-    //         isFullWidth
-    //         leftIcon={
-    //           <svg viewBox="0 0 533.5 544.3" width="18" height="18">
-    //             <path
-    //               d="M533.5 278.4a320.07 320.07 0 00-4.7-55.3H272.1v104.8h147a126 126 0 01-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z"
-    //               fill="#4285f4"
-    //             ></path>
-    //             <path
-    //               d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1a272.19 272.19 0 00243.2 149.9z"
-    //               fill="#34a853"
-    //             ></path>
-    //             <path
-    //               d="M119.3 324.3a163 163 0 010-104.2V150H28.9a272.38 272.38 0 000 244.4z"
-    //               fill="#fbbc04"
-    //             ></path>
-    //             <path
-    //               d="M272.1 107.7a147.89 147.89 0 01104.4 40.8l77.7-77.7A261.56 261.56 0 00272.1 0 272.1 272.1 0 0028.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z"
-    //               fill="#ea4335"
-    //             ></path>
-    //           </svg>
-    //         }
-    //       >
-    //         Google -ээр нэвтрэх
-    //       </Button>
-    //     </div>
-    //   }
-    // >
-    //   <Button color="primary" onClick={onOpen}>
-    //     Log in
-    //   </Button>
-    // </Dialog>
+    <Dialog
+      title="Flare"
+      description="Where programmers share ideas and help each other grow."
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      content={
+        <>
+          <header>
+            <h1>
+              <div className="text-lg font-bold flex-grow flex space-x-1 items-center">
+                <span>
+                  <MdFlare className="text-primary-500" />
+                </span>
+                <span className="text-2xl tracking-wider">Flare</span>
+              </div>
+            </h1>
+            <p className="text-secondary text-sm pt-4">
+              Where programmers share ideas and help each other grow.
+            </p>
+          </header>
+          <div className="space-y-2 mt-8">
+            <Button
+              isLoading={loadingState.google}
+              loadingText="Please wait"
+              isFullWidth
+              onClick={handleGoogle}
+              leftIcon={<FaGoogle />}
+            >
+              Continue with Google
+            </Button>
+            <Button
+              isLoading={loadingState.github}
+              loadingText="Please wait"
+              isFullWidth
+              onClick={handleGithub}
+              leftIcon={<FaGithub />}
+            >
+              Continue with Github
+            </Button>
+          </div>
+        </>
+      }
+    >
+      <Button size="sm" color="primary" onClick={onOpen}>
+        Log in
+      </Button>
+    </Dialog>
   );
 };
 
-interface UserDDProps {
-  id: string;
-}
 /**
  * User DropDown component
  */
-const UserDD: React.FC<UserDDProps> = ({ id }: UserDDProps) => {
+const UserDD: React.FC<{}> = () => {
+  const { user, logout } = useAuth();
   const [{ data }] = useGetUserQuery({
     variables: {
-      user_id: id,
+      user_id: user!.uid,
     },
   });
 
   if (data && data.users_by_pk) {
     return (
-      <div>
+      <div onClick={logout}>
         <Image
           unoptimized
           alt=""

@@ -55,7 +55,7 @@ const IconButton = forwardRef<Ref, IconButtonProps>((props, ref) => {
       })
     : null;
 
-  const merged = clsx(className, getSize(size));
+  const merged = clsx(className, getSize(size), "text-gray-500");
 
   return (
     <Button

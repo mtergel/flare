@@ -40,6 +40,10 @@ module.exports = {
       ringWidth: {
         DEFAULT: "2px",
       },
+      borderColor: (theme) => ({
+        ...theme("colors"),
+        DEFAULT: theme("colors.border", "currentColor"),
+      }),
     },
   },
   variants: {

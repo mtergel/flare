@@ -3,6 +3,7 @@
   --color-paper: #fff;
   --color-text-primary: #3c4043;
   --color-border: #dadce0;
+  --color-text: #0f0f0f;
 }
 
 .dark {
@@ -10,12 +11,14 @@
   --color-paper: #202124;
   --color-text-primary: #e8eaed;
   --color-border: #5f6368;
+  --color-text: #e3e3e3;
 }
 
 @tailwind base;
 
 body {
-  @apply bg-base;
+  @apply bg-base ring-offset-paper;
+  color: var(--color-text);
 }
 
 @tailwind components;
@@ -23,6 +26,7 @@ body {
 // components
 @import "../components/Button/button.scss";
 @import "../components/Container/container.scss";
+@import "../components/Dialog/dialog.scss";
 
 .r-icon {
   @apply h-6 w-6;
