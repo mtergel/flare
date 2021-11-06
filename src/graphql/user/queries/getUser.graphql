@@ -1,0 +1,13 @@
+query GetUser($user_id: String!) {
+  users_by_pk(user_id: $user_id) {
+    user_id
+    verified
+    userHandle
+    updated_at
+    phoneNumber
+    name
+    imageUrl
+    email
+    created_at
+  }
+}

@@ -1,6 +1,7 @@
 import Container from "@/components/Container/Container";
 import { MdFlare } from "@react-icons/all-files/md/MdFlare";
 import Link from "next/link";
+import UserButton from "./UserButton";
 
 const Layout: React.FC<{}> = ({ children }) => {
   return (
@@ -17,7 +18,9 @@ const Layout: React.FC<{}> = ({ children }) => {
               </a>
             </Link>
           </h1>
-          <div className="flex-grow flex items-center justify-end"></div>
+          <div className="flex-grow flex items-center justify-end">
+            <UserButton />
+          </div>
         </Container>
       </header>
       <main>{children}</main>
