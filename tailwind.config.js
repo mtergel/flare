@@ -21,6 +21,12 @@ module.exports = {
           800: "#005295",
           900: "#00335D",
         },
+        paper: "var(--color-paper)",
+        base: "var(--color-bg)",
+        border: "var(--color-border)",
+      },
+      fontFamily: {
+        sans: ["Poppins", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       animation: {
         spinner: "spinner 1.5s linear infinite",
@@ -39,5 +45,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("nightwind")],
 };

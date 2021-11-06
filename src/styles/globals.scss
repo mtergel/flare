@@ -1,6 +1,31 @@
+.light {
+  --color-bg: #f0f2f5;
+  --color-paper: #fff;
+  --color-text-primary: #3c4043;
+  --color-border: #dadce0;
+}
+
+.dark {
+  --color-bg: #18191a;
+  --color-paper: #202124;
+  --color-text-primary: #e8eaed;
+  --color-border: #5f6368;
+}
+
 @tailwind base;
+
+body {
+  @apply bg-base;
+}
+
 @tailwind components;
 
+// components
 @import "../components/Button/button.scss";
+@import "../components/Container/container.scss";
+
+.r-icon {
+  @apply h-6 w-6;
+}
 
 @tailwind utilities;

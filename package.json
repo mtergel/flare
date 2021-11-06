@@ -9,8 +9,10 @@
     "test": "jest --watch"
   },
   "dependencies": {
+    "@react-icons/all-files": "^4.1.0",
     "clsx": "^1.1.1",
     "next": "12.0.3",
+    "next-themes": "^0.0.15",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "sass": "^1.43.4"
@@ -26,6 +28,7 @@
     "eslint-config-next": "12.0.3",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.3.1",
+    "nightwind": "^1.1.12",
     "postcss": "^8.3.11",
     "react-test-renderer": "^17.0.2",
     "stylelint": "^14.0.1",
