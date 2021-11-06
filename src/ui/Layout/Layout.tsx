@@ -1,17 +1,23 @@
 import Container from "@/components/Container/Container";
 import { MdFlare } from "@react-icons/all-files/md/MdFlare";
+import Link from "next/link";
+
 const Layout: React.FC<{}> = ({ children }) => {
   return (
     <>
       <header className="bg-paper">
         <Container isWide className="h-16 flex items-center">
-          <h2 className="text-lg font-bold flex-grow flex space-x-1 items-center">
-            <span>
-              {/* Placeholder Icon */}
-              <MdFlare className="text-primary-500" />
-            </span>
-            <span className="text-2xl">Flare</span>
-          </h2>
+          <h1>
+            <Link href="/" passHref>
+              <a className="text-lg font-bold flex-grow flex space-x-1 items-center">
+                <span>
+                  <MdFlare className="text-primary-500" />
+                </span>
+                <span className="text-2xl tracking-wider">Flare</span>
+              </a>
+            </Link>
+          </h1>
+          <div className="flex-grow flex items-center justify-end"></div>
         </Container>
       </header>
       <main>{children}</main>
