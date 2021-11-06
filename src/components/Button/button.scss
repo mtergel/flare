@@ -1,0 +1,128 @@
+.btn {
+  @apply inline-flex items-center justify-center relative;
+  @apply border-2 border-transparent;
+  @apply rounded-lg font-bold;
+  @apply outline-none transition-colors;
+
+  &:disabled {
+    @apply opacity-40 cursor-not-allowed pointer-events-none;
+  }
+
+  &.btn-loading {
+    &,
+    &:hover {
+      @apply pointer-events-none cursor-not-allowed;
+    }
+
+    &:before {
+      @apply h-3 w-3 rounded-full mr-4 border-2;
+      @apply animate-spinner;
+      border-bottom-color: currentColor;
+      border-left-color: transparent;
+      border-right-color: currentColor;
+      border-top-color: transparent;
+      content: "";
+    }
+  }
+
+  &.btn-loading-no-text {
+    &,
+    &:hover {
+      @apply pointer-events-none cursor-not-allowed;
+    }
+
+    &:before {
+      @apply absolute h-3 w-3 rounded-full border-2;
+      @apply animate-spinner;
+      border-bottom-color: currentColor;
+      border-left-color: transparent;
+      border-right-color: currentColor;
+      border-top-color: transparent;
+      content: "";
+    }
+  }
+
+  //   default colors
+  @apply bg-gray-400 bg-opacity-10;
+  &:hover {
+    @apply bg-opacity-20;
+  }
+  &:focus {
+    @apply ring ring-primary-300 ring-offset-2;
+  }
+
+  animation: button-pop 0.25s ease-out;
+  &:active:hover,
+  &:active:focus {
+    animation: none;
+    transform: scale(0.95);
+  }
+
+  //   sizes
+  &.btn-sm {
+    @apply py-1 px-3 text-sm;
+  }
+
+  &.btn-md {
+    @apply py-2 px-5;
+  }
+
+  &.btn-lg {
+    @apply py-3 px-7 text-lg;
+  }
+
+  &.btn-full {
+    @apply w-full py-3 px-4;
+  }
+
+  // colors
+  &.btn-primary {
+    @apply bg-primary-500 text-white;
+    &:hover {
+      @apply bg-primary-600;
+    }
+    &:focus {
+      @apply ring ring-primary-600 dark:ring-primary-500 ring-offset-2;
+    }
+
+    &.btn-outline,
+    &.btn-ghost {
+      @apply text-primary bg-opacity-0;
+      &:focus {
+        @apply bg-opacity-10;
+      }
+      &:hover {
+        @apply bg-opacity-10;
+      }
+    }
+
+    &.btn-outline {
+      @apply border-primary;
+    }
+  }
+
+  &.btn-danger {
+    @apply bg-red-400 text-white;
+    &:hover {
+      @apply bg-red-500;
+    }
+    &:focus {
+      @apply ring ring-red-500 ring-offset-2;
+    }
+
+    &.btn-outline,
+    &.btn-ghost {
+      @apply text-red-400 bg-opacity-0;
+      &:focus {
+        @apply bg-opacity-10;
+      }
+      &:hover {
+        @apply bg-opacity-10;
+      }
+    }
+
+    &.btn-outline {
+      @apply border-red-400;
+    }
+  }
+}
