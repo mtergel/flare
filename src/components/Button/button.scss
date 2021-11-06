@@ -1,7 +1,7 @@
 .btn {
   @apply inline-flex items-center justify-center relative;
   @apply border-2 border-transparent;
-  @apply rounded-lg font-bold;
+  @apply rounded-lg font-semibold;
   @apply outline-none transition-colors;
 
   &:disabled {
@@ -75,6 +75,30 @@
     @apply w-full py-3 px-4;
   }
 
+  &.ibtn-sm {
+    @apply p-1;
+
+    & svg {
+      @apply h-4 w-4;
+    }
+  }
+
+  &.ibtn-md {
+    @apply p-2 h-10 w-10;
+
+    & svg {
+      @apply h-5 w-5;
+    }
+  }
+
+  &.ibtn-lg {
+    @apply p-2;
+
+    & svg {
+      @apply h-6 w-6;
+    }
+  }
+
   // colors
   &.btn-primary {
     @apply bg-primary-500 text-white;
@@ -123,6 +147,24 @@
 
     &.btn-outline {
       @apply border-red-400;
+    }
+  }
+
+  // outline
+  &.btn-outline {
+    @apply border-border bg-opacity-0;
+    &:hover,
+    &:focus {
+      @apply bg-opacity-10;
+    }
+  }
+
+  // ghost
+  &.btn-ghost {
+    @apply bg-opacity-0;
+    &:hover,
+    &:focus {
+      @apply bg-opacity-10;
     }
   }
 }
