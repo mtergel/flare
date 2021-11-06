@@ -19,7 +19,7 @@ const Container = forwardRef<Ref, ContainerProps>((props, ref) => {
   const merged = clsx(className, "container-base", isWide && "wide");
 
   return (
-    <div ref={ref} {...rest} className={merged}>
+    <div ref={ref} {...rest} className={merged} data-testid="container">
       {children}
     </div>
   );

@@ -131,6 +131,7 @@ const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
       disabled={isDisabled || isLoading}
       {...rest}
       className={merged}
+      data-loading={isLoading}
       data-testid="button"
     >
       {leftIcon && !isLoading && (
@@ -153,6 +154,7 @@ const ButtonIcon: React.FC<{ className?: string }> = (props) => {
     ? React.cloneElement(children, {
         "aria-hidden": true,
         focusable: false,
+        "data-testid": "buttonIcon",
       })
     : children;
 

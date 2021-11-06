@@ -1,15 +1,17 @@
 import Button from "@/components/Button/Button";
-import Dialog from "@/components/Dialog/Dialog";
 import { GoogleAuthProvider, signInWithPopup } from "@firebase/auth";
 import { useAuth } from "context/auth";
-import { useState } from "react";
-import { auth } from "initApp";
-import useDisclosure from "hooks/useDisclosure";
 import { useGetUserQuery } from "graphql/generated/graphql";
+import useDisclosure from "hooks/useDisclosure";
+import { auth } from "initApp";
 import Image from "next/image";
+import { useState } from "react";
 
 const UserButton: React.FC<{}> = () => {
-  const { user } = useAuth();
+  const { user, loading, error } = useAuth();
+  if (loading || error) {
+    return null;
+  }
   if (user) {
     return <UserDD id={user.uid} />;
   } else {
@@ -34,56 +36,62 @@ const UserLogin: React.FC<{}> = () => {
   };
 
   return (
-    <Dialog
-      title="Yahu"
-      description="Where programmers share ideas and help each other grow."
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      content={
-        <div>
-          <Button
-            isLoading={loading}
-            loadingText="Түр хүлээнэ үү"
-            onClick={handleLogin}
-            isFullWidth
-            leftIcon={
-              <svg viewBox="0 0 533.5 544.3" width="18" height="18">
-                <path
-                  d="M533.5 278.4a320.07 320.07 0 00-4.7-55.3H272.1v104.8h147a126 126 0 01-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z"
-                  fill="#4285f4"
-                ></path>
-                <path
-                  d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1a272.19 272.19 0 00243.2 149.9z"
-                  fill="#34a853"
-                ></path>
-                <path
-                  d="M119.3 324.3a163 163 0 010-104.2V150H28.9a272.38 272.38 0 000 244.4z"
-                  fill="#fbbc04"
-                ></path>
-                <path
-                  d="M272.1 107.7a147.89 147.89 0 01104.4 40.8l77.7-77.7A261.56 261.56 0 00272.1 0 272.1 272.1 0 0028.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z"
-                  fill="#ea4335"
-                ></path>
-              </svg>
-            }
-          >
-            Google -ээр нэвтрэх
-          </Button>
-        </div>
-      }
-    >
-      <Button color="primary" onClick={onOpen}>
-        Log in
-      </Button>
-    </Dialog>
+    <Button color="primary" onClick={onOpen}>
+      Log in
+    </Button>
+    // <Dialog
+    //   title="Yahu"
+    //   description="Where programmers share ideas and help each other grow."
+    //   open={isOpen}
+    //   onOpenChange={setIsOpen}
+    //   content={
+    //     <div>
+    //       <Button
+    //         isLoading={loading}
+    //         loadingText="Түр хүлээнэ үү"
+    //         onClick={handleLogin}
+    //         isFullWidth
+    //         leftIcon={
+    //           <svg viewBox="0 0 533.5 544.3" width="18" height="18">
+    //             <path
+    //               d="M533.5 278.4a320.07 320.07 0 00-4.7-55.3H272.1v104.8h147a126 126 0 01-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z"
+    //               fill="#4285f4"
+    //             ></path>
+    //             <path
+    //               d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1a272.19 272.19 0 00243.2 149.9z"
+    //               fill="#34a853"
+    //             ></path>
+    //             <path
+    //               d="M119.3 324.3a163 163 0 010-104.2V150H28.9a272.38 272.38 0 000 244.4z"
+    //               fill="#fbbc04"
+    //             ></path>
+    //             <path
+    //               d="M272.1 107.7a147.89 147.89 0 01104.4 40.8l77.7-77.7A261.56 261.56 0 00272.1 0 272.1 272.1 0 0028.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z"
+    //               fill="#ea4335"
+    //             ></path>
+    //           </svg>
+    //         }
+    //       >
+    //         Google -ээр нэвтрэх
+    //       </Button>
+    //     </div>
+    //   }
+    // >
+    //   <Button color="primary" onClick={onOpen}>
+    //     Log in
+    //   </Button>
+    // </Dialog>
   );
 };
 
 interface UserDDProps {
   id: string;
 }
-const UserDD: React.FC<UserDDProps> = ({ id }) => {
-  const [{ data, fetching, error }] = useGetUserQuery({
+/**
+ * User DropDown component
+ */
+const UserDD: React.FC<UserDDProps> = ({ id }: UserDDProps) => {
+  const [{ data }] = useGetUserQuery({
     variables: {
       user_id: id,
     },
