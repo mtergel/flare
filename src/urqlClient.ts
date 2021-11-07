@@ -17,6 +17,21 @@ const getAuth = async ({ authState }: any) => {
     const token = cookie.get("token");
     if (token) {
       return { token };
+    } else {
+      const user = auth.currentUser;
+      if (user) {
+        // refetch token
+        const token = await user.getIdToken(true);
+        cookie.set("token", token, {
+          expires: 0.24,
+          path: "/",
+          sameSite: "strict",
+          secure: process.env.NODE_ENV === "production",
+        });
+        return {
+          token,
+        };
+      }
     }
     return null;
   }
@@ -69,7 +84,9 @@ const addAuthToOperation = ({ authState, operation }: any) => {
 // asking for re-authentication via getAuth.
 const didAuthError = ({ error }: any) => {
   return error.graphQLErrors.some(
-    (e: any) => e.extensions?.code === "invalid-jwt"
+    (e: any) =>
+      e.extensions?.code === "invalid-jwt" ||
+      e.extensions?.code === "invalid-headers"
   );
 };
 

@@ -16,9 +16,17 @@
 
 @tailwind base;
 
+html {
+  @apply h-full;
+}
+
 body {
-  @apply bg-base ring-offset-paper;
+  @apply bg-base ring-offset-paper h-full;
   color: var(--color-text);
+}
+
+div#__next {
+  height: 100%;
 }
 
 @tailwind components;
@@ -27,6 +35,9 @@ body {
 @import "../components/Button/button.scss";
 @import "../components/Container/container.scss";
 @import "../components/Dialog/dialog.scss";
+@import "../components/Spinner/spinner.scss";
+@import "../components/Input/input.scss";
+@import "../components/FormControl/formControl.scss";
 
 .r-icon {
   @apply h-6 w-6;

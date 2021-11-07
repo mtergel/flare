@@ -12,7 +12,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  _varchar: any;
   timestamptz: any;
 };
 
@@ -60,19 +59,6 @@ export type String_Comparison_Exp = {
   _regex?: Maybe<Scalars['String']>;
   /** does the column match the given SQL regular expression */
   _similar?: Maybe<Scalars['String']>;
-};
-
-/** Boolean expression to compare columns of type "_varchar". All fields are combined with logical 'AND'. */
-export type _Varchar_Comparison_Exp = {
-  _eq?: Maybe<Scalars['_varchar']>;
-  _gt?: Maybe<Scalars['_varchar']>;
-  _gte?: Maybe<Scalars['_varchar']>;
-  _in?: Maybe<Array<Scalars['_varchar']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['_varchar']>;
-  _lte?: Maybe<Scalars['_varchar']>;
-  _neq?: Maybe<Scalars['_varchar']>;
-  _nin?: Maybe<Array<Scalars['_varchar']>>;
 };
 
 /** mutation root */
@@ -238,12 +224,12 @@ export type Users = {
   __typename?: 'users';
   created_at: Scalars['timestamptz'];
   email?: Maybe<Scalars['String']>;
-  imageUrl?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
   name: Scalars['String'];
-  phoneNumber?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
-  userHandle?: Maybe<Scalars['_varchar']>;
   user_id: Scalars['String'];
+  username?: Maybe<Scalars['String']>;
   verified: Scalars['Boolean'];
 };
 
@@ -276,33 +262,31 @@ export type Users_Bool_Exp = {
   _or?: Maybe<Array<Users_Bool_Exp>>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   email?: Maybe<String_Comparison_Exp>;
-  imageUrl?: Maybe<String_Comparison_Exp>;
+  image?: Maybe<String_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
-  phoneNumber?: Maybe<String_Comparison_Exp>;
+  phone?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
-  userHandle?: Maybe<_Varchar_Comparison_Exp>;
   user_id?: Maybe<String_Comparison_Exp>;
+  username?: Maybe<String_Comparison_Exp>;
   verified?: Maybe<Boolean_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "users" */
 export enum Users_Constraint {
   /** unique or primary key constraint */
-  UsersPkey = 'users_pkey',
-  /** unique or primary key constraint */
-  UsersUserHandleKey = 'users_user_handle_key'
+  UsersPkey = 'users_pkey'
 }
 
 /** input type for inserting data into table "users" */
 export type Users_Insert_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
-  imageUrl?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  phoneNumber?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
-  userHandle?: Maybe<Scalars['_varchar']>;
   user_id?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
   verified?: Maybe<Scalars['Boolean']>;
 };
 
@@ -311,11 +295,12 @@ export type Users_Max_Fields = {
   __typename?: 'users_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
-  imageUrl?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  phoneNumber?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user_id?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
@@ -323,11 +308,12 @@ export type Users_Min_Fields = {
   __typename?: 'users_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
-  imageUrl?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  phoneNumber?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user_id?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "users" */
@@ -350,12 +336,12 @@ export type Users_On_Conflict = {
 export type Users_Order_By = {
   created_at?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
-  imageUrl?: Maybe<Order_By>;
+  image?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
-  phoneNumber?: Maybe<Order_By>;
+  phone?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
-  userHandle?: Maybe<Order_By>;
   user_id?: Maybe<Order_By>;
+  username?: Maybe<Order_By>;
   verified?: Maybe<Order_By>;
 };
 
@@ -371,17 +357,17 @@ export enum Users_Select_Column {
   /** column name */
   Email = 'email',
   /** column name */
-  ImageUrl = 'imageUrl',
+  Image = 'image',
   /** column name */
   Name = 'name',
   /** column name */
-  PhoneNumber = 'phoneNumber',
+  Phone = 'phone',
   /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
-  UserHandle = 'userHandle',
-  /** column name */
   UserId = 'user_id',
+  /** column name */
+  Username = 'username',
   /** column name */
   Verified = 'verified'
 }
@@ -390,12 +376,12 @@ export enum Users_Select_Column {
 export type Users_Set_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
-  imageUrl?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  phoneNumber?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
-  userHandle?: Maybe<Scalars['_varchar']>;
   user_id?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
   verified?: Maybe<Scalars['Boolean']>;
 };
 
@@ -406,39 +392,77 @@ export enum Users_Update_Column {
   /** column name */
   Email = 'email',
   /** column name */
-  ImageUrl = 'imageUrl',
+  Image = 'image',
   /** column name */
   Name = 'name',
   /** column name */
-  PhoneNumber = 'phoneNumber',
+  Phone = 'phone',
   /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
-  UserHandle = 'userHandle',
-  /** column name */
   UserId = 'user_id',
+  /** column name */
+  Username = 'username',
   /** column name */
   Verified = 'verified'
 }
+
+export type UpdateUserMutationVariables = Exact<{
+  user_id: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'mutation_root', update_users_by_pk?: { __typename?: 'users', verified: boolean, user_id: string, username?: string | null | undefined, updated_at: any, phone?: string | null | undefined, name: string, image?: string | null | undefined, email?: string | null | undefined, created_at: any } | null | undefined };
 
 export type GetUserQueryVariables = Exact<{
   user_id: Scalars['String'];
 }>;
 
 
-export type GetUserQuery = { __typename?: 'query_root', users_by_pk?: { __typename?: 'users', user_id: string, verified: boolean, userHandle?: any | null | undefined, updated_at: any, phoneNumber?: string | null | undefined, name: string, imageUrl?: string | null | undefined, email?: string | null | undefined, created_at: any } | null | undefined };
+export type GetUserQuery = { __typename?: 'query_root', users_by_pk?: { __typename?: 'users', user_id: string, verified: boolean, username?: string | null | undefined, updated_at: any, phone?: string | null | undefined, name: string, image?: string | null | undefined, email?: string | null | undefined, created_at: any } | null | undefined };
+
+export type GetUserByUsernameQueryVariables = Exact<{
+  _eq: Scalars['String'];
+}>;
 
 
+export type GetUserByUsernameQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', username?: string | null | undefined, created_at: any, email?: string | null | undefined, image?: string | null | undefined, name: string, phone?: string | null | undefined, updated_at: any, user_id: string, verified: boolean }> };
+
+
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($user_id: String!, $name: String, $username: String) {
+  update_users_by_pk(
+    pk_columns: {user_id: $user_id}
+    _set: {name: $name, username: $username}
+  ) {
+    verified
+    user_id
+    username
+    updated_at
+    phone
+    name
+    image
+    email
+    created_at
+  }
+}
+    `;
+
+export function useUpdateUserMutation() {
+  return Urql.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument);
+};
 export const GetUserDocument = gql`
     query GetUser($user_id: String!) {
   users_by_pk(user_id: $user_id) {
     user_id
     verified
-    userHandle
+    username
     updated_at
-    phoneNumber
+    phone
     name
-    imageUrl
+    image
     email
     created_at
   }
@@ -447,4 +471,23 @@ export const GetUserDocument = gql`
 
 export function useGetUserQuery(options: Omit<Urql.UseQueryArgs<GetUserQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetUserQuery>({ query: GetUserDocument, ...options });
+};
+export const GetUserByUsernameDocument = gql`
+    query GetUserByUsername($_eq: String!) {
+  users(where: {username: {_eq: $_eq}}) {
+    username
+    created_at
+    email
+    image
+    name
+    phone
+    updated_at
+    user_id
+    verified
+  }
+}
+    `;
+
+export function useGetUserByUsernameQuery(options: Omit<Urql.UseQueryArgs<GetUserByUsernameQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetUserByUsernameQuery>({ query: GetUserByUsernameDocument, ...options });
 };

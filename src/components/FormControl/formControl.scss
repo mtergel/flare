@@ -1,0 +1,38 @@
+.formControl {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+
+  &.formError {
+    & input,
+    select {
+      @apply ring-2 ring-red-500;
+    }
+  }
+
+  & label {
+    @apply text-sm;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0.25rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  & .error {
+    @apply text-sm text-red-500 mt-2;
+  }
+
+  &.formDisabled {
+    & label {
+      @apply text-gray-300;
+    }
+    & input,
+    select {
+      @apply cursor-not-allowed bg-opacity-5 text-opacity-50 placeholder-opacity-50 placeholder-gray-400 text-gray-400;
+    }
+  }
+}

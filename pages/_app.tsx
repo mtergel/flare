@@ -1,6 +1,6 @@
 import "@/styles/globals.scss";
 import type { AppProps } from "next/app";
-import { NextPageWithLayout } from "types";
+import { NextPageWithLayout } from "utils/types";
 import { ThemeProvider } from "next-themes";
 import { IconContext } from "@react-icons/all-files/lib";
 import { IdProvider } from "@radix-ui/react-id";

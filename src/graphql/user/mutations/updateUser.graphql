@@ -1,0 +1,16 @@
+mutation UpdateUser($user_id: String!, $name: String, $username: String) {
+  update_users_by_pk(
+    pk_columns: { user_id: $user_id }
+    _set: { name: $name, username: $username }
+  ) {
+    verified
+    user_id
+    username
+    updated_at
+    phone
+    name
+    image
+    email
+    created_at
+  }
+}

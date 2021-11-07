@@ -12,6 +12,7 @@ import { useAuth } from "context/auth";
 import { useGetUserQuery } from "graphql/generated/graphql";
 import useDisclosure from "hooks/useDisclosure";
 import { auth } from "initApp";
+import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -21,6 +22,7 @@ const UserButton: React.FC<{}> = () => {
     return null;
   }
   if (user) {
+    console.log(user);
     return <UserDD />;
   } else {
     return <UserLogin />;
@@ -127,6 +129,7 @@ const UserLogin: React.FC<{}> = () => {
  */
 const UserDD: React.FC<{}> = () => {
   const { user, logout } = useAuth();
+  const router = useRouter();
   const [{ data }] = useGetUserQuery({
     variables: {
       user_id: user!.uid,
@@ -134,16 +137,22 @@ const UserDD: React.FC<{}> = () => {
   });
 
   if (data && data.users_by_pk) {
+    // redirect to onboarding
+    if (data.users_by_pk.username === null) {
+      router.replace("/onboarding");
+    }
     return (
       <div onClick={logout}>
-        <Image
-          unoptimized
-          alt=""
-          width={40}
-          height={40}
-          src={data.users_by_pk.imageUrl!}
-          className="rounded-full"
-        />
+        {data.users_by_pk.image && (
+          <Image
+            unoptimized
+            alt=""
+            width={40}
+            height={40}
+            src={data.users_by_pk.image!}
+            className="rounded-full"
+          />
+        )}
       </div>
     );
   }

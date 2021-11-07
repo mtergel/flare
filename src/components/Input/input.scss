@@ -1,0 +1,19 @@
+.input {
+  // base style
+  @apply bg-gray-400 bg-opacity-10 rounded-lg flex-shrink-0 outline-none border-0;
+  // base size
+  @apply h-12 text-sm px-4;
+  @apply transition-shadow;
+
+  &:focus {
+    @apply ring-2 ring-primary outline-none;
+  }
+
+  &:disabled {
+    @apply cursor-not-allowed bg-opacity-5 text-opacity-50 placeholder-opacity-50 placeholder-gray-400 text-gray-400;
+  }
+
+  &.input-full {
+    @apply w-full;
+  }
+}
