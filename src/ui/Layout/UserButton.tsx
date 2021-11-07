@@ -15,6 +15,7 @@ import { auth } from "initApp";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
 import { useState } from "react";
+import { useClient } from "urql";
 
 const UserButton: React.FC<{}> = () => {
   const { user, loading, error } = useAuth();
@@ -22,7 +23,6 @@ const UserButton: React.FC<{}> = () => {
     return null;
   }
   if (user) {
-    console.log(user);
     return <UserDD />;
   } else {
     return <UserLogin />;
@@ -45,9 +45,9 @@ const UserLogin: React.FC<{}> = () => {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
     } catch (error) {
+      // todo
       console.log(error);
 
-      // todo
       setLoadingState({
         ...loadingState,
         google: false,
@@ -64,8 +64,8 @@ const UserLogin: React.FC<{}> = () => {
       const provider = new GithubAuthProvider();
       await signInWithPopup(auth, provider);
     } catch (error) {
-      console.log(error);
       // todo
+      console.log(error);
       setLoadingState({
         ...loadingState,
         github: false,
@@ -130,11 +130,24 @@ const UserLogin: React.FC<{}> = () => {
 const UserDD: React.FC<{}> = () => {
   const { user, logout } = useAuth();
   const router = useRouter();
-  const [{ data }] = useGetUserQuery({
+  const [{ data, error }] = useGetUserQuery({
     variables: {
       user_id: user!.uid,
     },
   });
+
+  if (error) {
+    if (
+      error.graphQLErrors.some(
+        (e: any) => e.extensions?.code === "jwt-invalid-claims"
+      )
+    ) {
+      // after creating user the correct token leads to claims not found
+      // on gcp function 1-2 seconds
+      // redirect anyway and let the onboarding page handle it
+      router.replace("/onboarding");
+    }
+  }
 
   if (data && data.users_by_pk) {
     // redirect to onboarding

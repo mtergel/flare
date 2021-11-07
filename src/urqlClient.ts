@@ -86,12 +86,18 @@ const didAuthError = ({ error }: any) => {
   return error.graphQLErrors.some(
     (e: any) =>
       e.extensions?.code === "invalid-jwt" ||
-      e.extensions?.code === "invalid-headers"
+      e.extensions?.code === "invalid-headers" ||
+      e.extensions?.code === "jwt-invalid-claims"
   );
 };
 
 const willAuthError = ({ authState }: any) => {
   if (!authState) return true;
+
+  const token = cookie.get("token");
+  if (!token) {
+    return true;
+  }
   return false;
 };
 

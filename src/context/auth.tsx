@@ -37,7 +37,6 @@ const AuthProvider: React.FC<{}> = ({ children }) => {
         return;
       }
 
-      setUser(user);
       const tokenResult = await user.getIdTokenResult();
       if (tokenResult.claims["https://hasura.io/jwt/claims"]) {
         // token
@@ -62,6 +61,9 @@ const AuthProvider: React.FC<{}> = ({ children }) => {
           setError("Could not refetch tokens");
         }
       }
+
+      // put it at bottom to generate claims
+      setUser(user);
       setLoading(false);
     });
 

@@ -67,9 +67,8 @@ const OnboardinForm: React.FC<OnboardinFormProps> = ({
           username: data.handle,
           name: data.displayName,
         });
+        router.push("/");
       }
-
-      router.push("/");
     } catch (error) {
       // TODO add toast
       console.warn(error);
