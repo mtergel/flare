@@ -2,8 +2,19 @@ import { DetailedHTMLProps, forwardRef, HTMLAttributes } from "react";
 import clsx from "clsx";
 
 interface ContainerOptions {
-  isWide?: boolean;
+  size?: "wide" | "common";
 }
+const getSize = (size?: "wide" | "common") => {
+  switch (size) {
+    case "wide":
+      return "wide";
+    case "common": {
+      return "common";
+    }
+    default:
+      return "common";
+  }
+};
 
 type Ref = HTMLDivElement;
 
@@ -14,9 +25,9 @@ export type ContainerProps = DetailedHTMLProps<
   ContainerOptions;
 
 const Container = forwardRef<Ref, ContainerProps>((props, ref) => {
-  const { className, isWide, children, ...rest } = props;
+  const { className, size, children, ...rest } = props;
 
-  const merged = clsx(className, "container-base", isWide && "wide");
+  const merged = clsx(className, "container-base", getSize(size));
 
   return (
     <div ref={ref} {...rest} className={merged} data-testid="container">

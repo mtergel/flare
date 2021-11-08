@@ -11,3 +11,14 @@ query GetUserByUsername($_eq: String!) {
     verified
   }
 }
+
+query PublicGetUserByUsername($_eq: String!) {
+  users(where: { username: { _eq: $_eq } }) {
+    username
+    created_at
+    image
+    name
+    user_id
+    verified
+  }
+}

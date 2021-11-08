@@ -27,6 +27,7 @@ import useDisclosure from "hooks/useDisclosure";
 import { auth } from "initApp";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/dist/client/router";
+import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -189,18 +190,21 @@ const UserDD: React.FC<{}> = () => {
       <DropdownMenu>
         <DropdownMenuTrigger className="rounded-full focus:outline-none focus:ring-2 focus:ring-primary">
           <Avatar
-            src={data.users_by_pk.image || user?.photoURL || ""}
+            src={data.users_by_pk.image || undefined}
             fallback={data.users_by_pk.name[0]}
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent sideOffset={4}>
-          <DropdownMenuItem>
-            <div className="py-1">
+          <DropdownMenuItem
+            className="py-3 w-full flex-col items-start"
+            asChild
+          >
+            <a href={`/${data.users_by_pk.username!}`}>
               <h1 className="font-semibold text-sm">{data.users_by_pk.name}</h1>
               <h2 className="text-gray-400 text-xs">
                 {`@${data.users_by_pk.username}`}
               </h2>
-            </div>
+            </a>
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />

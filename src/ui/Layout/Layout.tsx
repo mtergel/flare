@@ -7,7 +7,7 @@ const Layout: React.FC<{}> = ({ children }) => {
   return (
     <>
       <header className="bg-paper">
-        <Container isWide className="h-16 flex items-center">
+        <Container size="wide" className="h-16 flex items-center">
           <h1>
             <Link href="/" passHref>
               <a className="text-lg font-bold flex-grow flex space-x-1 items-center">

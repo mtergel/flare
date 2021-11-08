@@ -430,6 +430,13 @@ export type GetUserByUsernameQueryVariables = Exact<{
 
 export type GetUserByUsernameQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', username?: string | null | undefined, created_at: any, email?: string | null | undefined, image?: string | null | undefined, name: string, phone?: string | null | undefined, updated_at: any, user_id: string, verified: boolean }> };
 
+export type PublicGetUserByUsernameQueryVariables = Exact<{
+  _eq: Scalars['String'];
+}>;
+
+
+export type PublicGetUserByUsernameQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', username?: string | null | undefined, created_at: any, image?: string | null | undefined, name: string, user_id: string, verified: boolean }> };
+
 
 export const UpdateUserDocument = gql`
     mutation UpdateUser($user_id: String!, $name: String, $username: String) {
@@ -490,4 +497,20 @@ export const GetUserByUsernameDocument = gql`
 
 export function useGetUserByUsernameQuery(options: Omit<Urql.UseQueryArgs<GetUserByUsernameQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetUserByUsernameQuery>({ query: GetUserByUsernameDocument, ...options });
+};
+export const PublicGetUserByUsernameDocument = gql`
+    query PublicGetUserByUsername($_eq: String!) {
+  users(where: {username: {_eq: $_eq}}) {
+    username
+    created_at
+    image
+    name
+    user_id
+    verified
+  }
+}
+    `;
+
+export function usePublicGetUserByUsernameQuery(options: Omit<Urql.UseQueryArgs<PublicGetUserByUsernameQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PublicGetUserByUsernameQuery>({ query: PublicGetUserByUsernameDocument, ...options });
 };
