@@ -2,19 +2,31 @@ import Avatar from "@/components/Avatar/Avatar";
 import Button from "@/components/Button/Button";
 import Dialog from "@/components/Dialog/Dialog";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuLeftSlot,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/Dropdown/Dropdown";
+import {
   GithubAuthProvider,
   GoogleAuthProvider,
   signInWithPopup,
 } from "@firebase/auth";
 import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
 import { FaGoogle } from "@react-icons/all-files/fa/FaGoogle";
+import { FiLogOut } from "@react-icons/all-files/fi/FiLogOut";
 import { MdFlare } from "@react-icons/all-files/md/MdFlare";
 import { useAuth } from "context/auth";
 import { useGetUserQuery } from "graphql/generated/graphql";
 import useDisclosure from "hooks/useDisclosure";
 import { auth } from "initApp";
+import { useTheme } from "next-themes";
 import { useRouter } from "next/dist/client/router";
-import Image from "next/image";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -146,6 +158,8 @@ const UserLogin: React.FC<{}> = () => {
  */
 const UserDD: React.FC<{}> = () => {
   const { user, logout } = useAuth();
+  const { theme, setTheme } = useTheme();
+
   const router = useRouter();
   const [{ data, error }] = useGetUserQuery({
     variables: {
@@ -172,12 +186,47 @@ const UserDD: React.FC<{}> = () => {
       router.replace("/onboarding");
     }
     return (
-      <div>
-        <Avatar
-          src={data.users_by_pk.image || user?.photoURL || ""}
-          fallback={data.users_by_pk.name[0]}
-        />
-      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger className="rounded-full focus:outline-none focus:ring-2 focus:ring-primary">
+          <Avatar
+            src={data.users_by_pk.image || user?.photoURL || ""}
+            fallback={data.users_by_pk.name[0]}
+          />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent sideOffset={4}>
+          <DropdownMenuItem>
+            <div className="py-1">
+              <h1 className="font-semibold text-sm">{data.users_by_pk.name}</h1>
+              <h2 className="text-gray-400 text-xs">
+                {`@${data.users_by_pk.username}`}
+              </h2>
+            </div>
+          </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+          <div className="py-1">
+            <DropdownMenuLabel>Theme</DropdownMenuLabel>
+            <DropdownMenuRadioGroup
+              value={theme}
+              onValueChange={(value) => setTheme(value)}
+            >
+              <DropdownMenuRadioItem value="system">
+                System
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+          </div>
+
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={logout}>
+            <DropdownMenuLeftSlot>
+              <FiLogOut />
+            </DropdownMenuLeftSlot>
+            Logout
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     );
   }
 

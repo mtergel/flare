@@ -44,6 +44,9 @@ module.exports = {
         ...theme("colors"),
         DEFAULT: theme("colors.border", "currentColor"),
       }),
+      fill: {
+        paper: "var(--color-paper)",
+      },
     },
   },
   variants: {
