@@ -43,4 +43,8 @@ div#__next {
   @apply h-6 w-6;
 }
 
+.toastOverride {
+  z-index: 10000;
+}
+
 @tailwind utilities;

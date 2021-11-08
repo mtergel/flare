@@ -15,7 +15,7 @@ import { auth } from "initApp";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
 import { useState } from "react";
-import { useClient } from "urql";
+import toast from "react-hot-toast";
 
 const UserButton: React.FC<{}> = () => {
   const { user, loading, error } = useAuth();
@@ -45,8 +45,16 @@ const UserLogin: React.FC<{}> = () => {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
     } catch (error) {
-      // todo
-      console.log(error);
+      if (error.code === "auth/popup-blocked") {
+        toast.error("Enable popups on this website");
+      } else if (
+        error.code === "auth/account-exists-with-different-credential"
+      ) {
+        toast.error("Email is used in an other provider");
+      }
+      if (error.code !== "auth/popup-closed-by-user") {
+        toast.error(error.message);
+      }
 
       setLoadingState({
         ...loadingState,
@@ -64,8 +72,16 @@ const UserLogin: React.FC<{}> = () => {
       const provider = new GithubAuthProvider();
       await signInWithPopup(auth, provider);
     } catch (error) {
-      // todo
-      console.log(error);
+      if (error.code === "auth/popup-blocked") {
+        toast.error("Enable popups on this website");
+      } else if (
+        error.code === "auth/account-exists-with-different-credential"
+      ) {
+        toast.error("Email is used in an other provider");
+      }
+      if (error.code !== "auth/popup-closed-by-user") {
+        toast.error(error.message);
+      }
       setLoadingState({
         ...loadingState,
         github: false,

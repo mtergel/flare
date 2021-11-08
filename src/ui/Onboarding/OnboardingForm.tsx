@@ -10,6 +10,7 @@ import {
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { useClient } from "urql";
 import { usernameReg } from "utils/regex";
 interface OnboardinFormProps {
@@ -70,8 +71,7 @@ const OnboardinForm: React.FC<OnboardinFormProps> = ({
         router.push("/");
       }
     } catch (error) {
-      // TODO add toast
-      console.warn(error);
+      toast.error(error?.message || "Unexpected error occured");
     }
   };
 

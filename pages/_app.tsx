@@ -7,6 +7,7 @@ import { IdProvider } from "@radix-ui/react-id";
 import AuthProvider from "context/auth";
 import { Provider } from "urql";
 import client from "urqlClient";
+import { Toaster } from "react-hot-toast";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -30,6 +31,23 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           </Provider>
         </IdProvider>
       </IconContext.Provider>
+      <Toaster
+        toastOptions={{
+          className: "toastOverride",
+          success: {
+            iconTheme: {
+              primary: "#10B981",
+              secondary: "white",
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: "#EF4444",
+              secondary: "white",
+            },
+          },
+        }}
+      />
     </ThemeProvider>
   );
 }
