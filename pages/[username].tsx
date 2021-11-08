@@ -41,6 +41,7 @@ const Profile: NextPageWithLayout = () => {
                   <div>
                     <h1 className="font-medium">{data.name}</h1>
                     <h2 className="text-gray-400 text-sm">@{data.username}</h2>
+                    <p className="mt-2">{data.bio}</p>
                   </div>
                 </div>
                 {data.user_id === user?.uid ? (

@@ -8,6 +8,7 @@ query GetUser($user_id: String!) {
     name
     image
     email
+    bio
     created_at
   }
 }

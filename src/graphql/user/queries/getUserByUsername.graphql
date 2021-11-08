@@ -6,6 +6,7 @@ query GetUserByUsername($_eq: String!) {
     image
     name
     phone
+    bio
     updated_at
     user_id
     verified
@@ -19,6 +20,7 @@ query PublicGetUserByUsername($_eq: String!) {
     image
     name
     user_id
+    bio
     verified
   }
 }
