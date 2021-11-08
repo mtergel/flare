@@ -1,3 +1,4 @@
+import Avatar from "@/components/Avatar/Avatar";
 import Button from "@/components/Button/Button";
 import Dialog from "@/components/Dialog/Dialog";
 import {
@@ -171,17 +172,11 @@ const UserDD: React.FC<{}> = () => {
       router.replace("/onboarding");
     }
     return (
-      <div onClick={logout}>
-        {data.users_by_pk.image && (
-          <Image
-            unoptimized
-            alt=""
-            width={40}
-            height={40}
-            src={data.users_by_pk.image!}
-            className="rounded-full"
-          />
-        )}
+      <div>
+        <Avatar
+          src={data.users_by_pk.image || user?.photoURL || ""}
+          fallback={data.users_by_pk.name[0]}
+        />
       </div>
     );
   }

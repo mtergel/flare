@@ -1,0 +1,24 @@
+.avatar {
+  @apply inline-flex items-center justify-end align-middle overflow-hidden select-none rounded-full bg-paper;
+
+  &.avatar-sm {
+    @apply h-8 w-8;
+  }
+
+  &.avatar-md {
+    @apply h-10 w-10;
+  }
+
+  &.avatar-lg {
+    @apply h-12 w-12;
+  }
+
+  img {
+    @apply w-full h-full object-cover;
+    border-radius: inherit;
+  }
+
+  & > .fallback {
+    @apply w-full h-full flex items-center justify-center bg-primary text-paper font-medium;
+  }
+}
