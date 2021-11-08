@@ -1,5 +1,7 @@
 import Avatar from "@/components/Avatar/Avatar";
+import Button from "@/components/Button/Button";
 import Container from "@/components/Container/Container";
+import { useAuth } from "context/auth";
 import {
   PublicGetUserByUsernameDocument,
   PublicGetUserByUsernameQuery,
@@ -15,7 +17,7 @@ import { NextPageWithLayout } from "utils/types";
 
 const Profile: NextPageWithLayout = () => {
   const router = useRouter();
-
+  const { user } = useAuth();
   const [res] = usePublicGetUserByUsernameQuery({
     variables: {
       _eq: router.query.username as string,
@@ -23,22 +25,29 @@ const Profile: NextPageWithLayout = () => {
   });
 
   if (res.data && res.data.users.length > 0) {
-    const user = res.data.users[0];
+    const data = res.data.users[0];
     return (
       <>
         <header className="bg-paper">
           <Container size="common">
-            <div className="py-12 pr-3">
-              <div>
-                <Avatar
-                  size="profile"
-                  src={user.image || undefined}
-                  fallback={user.name[0]}
-                />
-                <div>
-                  <h1 className="font-medium">{user.name}</h1>
-                  <h2 className="text-gray-400 text-sm">@{user.username}</h2>
+            <div className="py-12">
+              <div className="flex items-start justify-between">
+                <div className="flex flex-col gap-2 md:flex-row md:gap-6">
+                  <Avatar
+                    size="profile"
+                    src={data.image || undefined}
+                    fallback={data.name[0]}
+                  />
+                  <div>
+                    <h1 className="font-medium">{data.name}</h1>
+                    <h2 className="text-gray-400 text-sm">@{data.username}</h2>
+                  </div>
                 </div>
+                {data.user_id === user?.uid ? (
+                  <Button variant="outline">Edit profile</Button>
+                ) : (
+                  <Button color="primary">Follow</Button>
+                )}
               </div>
             </div>
           </Container>
