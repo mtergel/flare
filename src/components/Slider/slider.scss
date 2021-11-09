@@ -1,0 +1,37 @@
+.slider {
+  @apply cursor-pointer relative flex items-center select-none w-full;
+
+  &[data-orientation="horizontal"] {
+    @apply h-4;
+  }
+
+  &[data-orientation="vertical"] {
+    @apply flex-col w-5 h-24;
+  }
+
+  & .track {
+    @apply bg-gray-400 relative flex-grow rounded-full;
+
+    &[data-orientation="horizontal"] {
+      @apply h-1;
+    }
+
+    &[data-orientation="vertical"] {
+      @apply w-1;
+    }
+  }
+
+  & .range {
+    @apply absolute bg-primary rounded-full h-full;
+  }
+
+  & .thumb {
+    @apply block h-5 w-5 transition-shadow bg-paper border-2 border-primary shadow;
+
+    border-radius: 10px;
+
+    &:focus {
+      @apply ring-4;
+    }
+  }
+}

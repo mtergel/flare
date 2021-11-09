@@ -420,12 +420,11 @@ export enum Users_Update_Column {
 
 export type UpdateUserMutationVariables = Exact<{
   user_id: Scalars['String'];
-  name?: Maybe<Scalars['String']>;
-  username?: Maybe<Scalars['String']>;
+  _set?: Maybe<Users_Set_Input>;
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'mutation_root', update_users_by_pk?: { __typename?: 'users', verified: boolean, user_id: string, username?: string | null | undefined, updated_at: any, phone?: string | null | undefined, name: string, image?: string | null | undefined, email?: string | null | undefined, created_at: any } | null | undefined };
+export type UpdateUserMutation = { __typename?: 'mutation_root', update_users_by_pk?: { __typename?: 'users', verified: boolean, user_id: string, username?: string | null | undefined, updated_at: any, name: string, image?: string | null | undefined, created_at: any, bio?: string | null | undefined } | null | undefined };
 
 export type GetUserQueryVariables = Exact<{
   user_id: Scalars['String'];
@@ -450,20 +449,16 @@ export type PublicGetUserByUsernameQuery = { __typename?: 'query_root', users: A
 
 
 export const UpdateUserDocument = gql`
-    mutation UpdateUser($user_id: String!, $name: String, $username: String) {
-  update_users_by_pk(
-    pk_columns: {user_id: $user_id}
-    _set: {name: $name, username: $username}
-  ) {
+    mutation UpdateUser($user_id: String!, $_set: users_set_input) {
+  update_users_by_pk(pk_columns: {user_id: $user_id}, _set: $_set) {
     verified
     user_id
     username
     updated_at
-    phone
     name
     image
-    email
     created_at
+    bio
   }
 }
     `;

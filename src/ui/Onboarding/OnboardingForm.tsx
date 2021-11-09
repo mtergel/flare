@@ -45,8 +45,7 @@ const OnboardinForm: React.FC<OnboardinFormProps> = ({
 
   const onSubmit = async (data: { name: string; username: string }) => {
     try {
-      // check for handles
-
+      // check for usernames
       const res = await client
         .query<GetUserByUsernameQuery, GetUserByUsernameQueryVariables>(
           GetUserByUsernameDocument,
@@ -65,8 +64,10 @@ const OnboardinForm: React.FC<OnboardinFormProps> = ({
       } else {
         await updateUser({
           user_id: uid,
-          username: data.username,
-          name: data.name,
+          _set: {
+            username: data.username,
+            name: data.name,
+          },
         });
         router.push("/");
       }

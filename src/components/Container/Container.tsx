@@ -2,14 +2,17 @@ import { DetailedHTMLProps, forwardRef, HTMLAttributes } from "react";
 import clsx from "clsx";
 
 interface ContainerOptions {
-  size?: "wide" | "common";
+  size?: "wide" | "common" | "small";
 }
-const getSize = (size?: "wide" | "common") => {
+const getSize = (size?: "wide" | "common" | "small") => {
   switch (size) {
     case "wide":
       return "wide";
     case "common": {
       return "common";
+    }
+    case "small": {
+      return "small";
     }
     default:
       return "common";

@@ -12,6 +12,7 @@ interface DialogProps {
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   showInfo?: boolean;
+  contentClassname?: string;
 }
 const Dialog: React.FC<DialogProps> = ({
   children,
@@ -22,7 +23,10 @@ const Dialog: React.FC<DialogProps> = ({
   defaultOpen,
   onOpenChange,
   showInfo,
+  contentClassname,
 }) => {
+  const merged = clsx("dialog-content", contentClassname);
+
   return (
     <DialogPrimitive.Root
       open={open}
@@ -31,7 +35,7 @@ const Dialog: React.FC<DialogProps> = ({
     >
       <DialogPrimitive.Overlay className="dialog-overlay" />
       <DialogPrimitive.Trigger asChild>{children}</DialogPrimitive.Trigger>
-      <DialogPrimitive.Content className="dialog-content">
+      <DialogPrimitive.Content className={merged}>
         <DialogPrimitive.Title
           className={clsx("dialog-title", !showInfo && "invisible h-0")}
         >
