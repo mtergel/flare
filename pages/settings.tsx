@@ -10,10 +10,10 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { FiX } from "@react-icons/all-files/fi/FiX";
 import { useAuth } from "context/auth";
 import {
+  getDownloadURL,
   getStorage,
   ref,
   uploadString,
-  getDownloadURL,
 } from "firebase/storage";
 import {
   GetUserByUsernameDocument,
@@ -289,7 +289,9 @@ const ChangeAvatar: React.FC<ChangeAvatarProps> = ({ uid, image, name }) => {
       });
     } catch (error) {
       logger.debug("Error uploading/saving image: ", error);
-
+      if (error.code === "storage/unauthorized") {
+        toast.error("Maximum size limit is 1MB.");
+      }
       throw error;
     }
   };
@@ -299,14 +301,15 @@ const ChangeAvatar: React.FC<ChangeAvatarProps> = ({ uid, image, name }) => {
     toast.promise(uploadImage(base64), {
       loading: "Uploading...",
       success: <b>Uploaded!</b>,
-      error: <b>Could not save.</b>,
+      error: <p>Could not save.</p>,
     });
   };
 
   return (
     <>
-      <label className="text-center block cursor-pointer">
+      <label htmlFor="picture" className="text-center block cursor-pointer">
         <input
+          id="picture"
           accept="image/png, image/gif, image/jpeg"
           type="file"
           className="hidden"
