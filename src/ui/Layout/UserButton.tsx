@@ -172,7 +172,6 @@ const UserDD: React.FC<UserDDProps> = ({ id }) => {
   });
 
   if (error) {
-    console.log(error);
     if (
       error.graphQLErrors.some(
         (e: any) => e.extensions?.code === "jwt-invalid-claims"
