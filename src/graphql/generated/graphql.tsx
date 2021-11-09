@@ -222,6 +222,7 @@ export type Timestamptz_Comparison_Exp = {
  */
 export type Users = {
   __typename?: 'users';
+  bio?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   email?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
@@ -260,6 +261,7 @@ export type Users_Bool_Exp = {
   _and?: Maybe<Array<Users_Bool_Exp>>;
   _not?: Maybe<Users_Bool_Exp>;
   _or?: Maybe<Array<Users_Bool_Exp>>;
+  bio?: Maybe<String_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   email?: Maybe<String_Comparison_Exp>;
   image?: Maybe<String_Comparison_Exp>;
@@ -279,6 +281,7 @@ export enum Users_Constraint {
 
 /** input type for inserting data into table "users" */
 export type Users_Insert_Input = {
+  bio?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
@@ -293,6 +296,7 @@ export type Users_Insert_Input = {
 /** aggregate max on columns */
 export type Users_Max_Fields = {
   __typename?: 'users_max_fields';
+  bio?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
@@ -306,6 +310,7 @@ export type Users_Max_Fields = {
 /** aggregate min on columns */
 export type Users_Min_Fields = {
   __typename?: 'users_min_fields';
+  bio?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
@@ -334,6 +339,7 @@ export type Users_On_Conflict = {
 
 /** Ordering options when selecting data from "users". */
 export type Users_Order_By = {
+  bio?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
   image?: Maybe<Order_By>;
@@ -352,6 +358,8 @@ export type Users_Pk_Columns_Input = {
 
 /** select columns of table "users" */
 export enum Users_Select_Column {
+  /** column name */
+  Bio = 'bio',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -374,6 +382,7 @@ export enum Users_Select_Column {
 
 /** input type for updating data in table "users" */
 export type Users_Set_Input = {
+  bio?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
@@ -387,6 +396,8 @@ export type Users_Set_Input = {
 
 /** update columns of table "users" */
 export enum Users_Update_Column {
+  /** column name */
+  Bio = 'bio',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -409,43 +420,45 @@ export enum Users_Update_Column {
 
 export type UpdateUserMutationVariables = Exact<{
   user_id: Scalars['String'];
-  name?: Maybe<Scalars['String']>;
-  username?: Maybe<Scalars['String']>;
+  _set?: Maybe<Users_Set_Input>;
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'mutation_root', update_users_by_pk?: { __typename?: 'users', verified: boolean, user_id: string, username?: string | null | undefined, updated_at: any, phone?: string | null | undefined, name: string, image?: string | null | undefined, email?: string | null | undefined, created_at: any } | null | undefined };
+export type UpdateUserMutation = { __typename?: 'mutation_root', update_users_by_pk?: { __typename?: 'users', verified: boolean, user_id: string, username?: string | null | undefined, updated_at: any, name: string, image?: string | null | undefined, created_at: any, bio?: string | null | undefined } | null | undefined };
 
 export type GetUserQueryVariables = Exact<{
   user_id: Scalars['String'];
 }>;
 
 
-export type GetUserQuery = { __typename?: 'query_root', users_by_pk?: { __typename?: 'users', user_id: string, verified: boolean, username?: string | null | undefined, updated_at: any, phone?: string | null | undefined, name: string, image?: string | null | undefined, email?: string | null | undefined, created_at: any } | null | undefined };
+export type GetUserQuery = { __typename?: 'query_root', users_by_pk?: { __typename?: 'users', user_id: string, verified: boolean, username?: string | null | undefined, updated_at: any, name: string, image?: string | null | undefined, bio?: string | null | undefined, created_at: any } | null | undefined };
 
 export type GetUserByUsernameQueryVariables = Exact<{
   _eq: Scalars['String'];
 }>;
 
 
-export type GetUserByUsernameQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', username?: string | null | undefined, created_at: any, email?: string | null | undefined, image?: string | null | undefined, name: string, phone?: string | null | undefined, updated_at: any, user_id: string, verified: boolean }> };
+export type GetUserByUsernameQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', username?: string | null | undefined, created_at: any, image?: string | null | undefined, name: string, bio?: string | null | undefined, user_id: string, verified: boolean }> };
+
+export type PublicGetUserByUsernameQueryVariables = Exact<{
+  _eq: Scalars['String'];
+}>;
+
+
+export type PublicGetUserByUsernameQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', username?: string | null | undefined, created_at: any, image?: string | null | undefined, name: string, user_id: string, bio?: string | null | undefined, verified: boolean }> };
 
 
 export const UpdateUserDocument = gql`
-    mutation UpdateUser($user_id: String!, $name: String, $username: String) {
-  update_users_by_pk(
-    pk_columns: {user_id: $user_id}
-    _set: {name: $name, username: $username}
-  ) {
+    mutation UpdateUser($user_id: String!, $_set: users_set_input) {
+  update_users_by_pk(pk_columns: {user_id: $user_id}, _set: $_set) {
     verified
     user_id
     username
     updated_at
-    phone
     name
     image
-    email
     created_at
+    bio
   }
 }
     `;
@@ -460,10 +473,9 @@ export const GetUserDocument = gql`
     verified
     username
     updated_at
-    phone
     name
     image
-    email
+    bio
     created_at
   }
 }
@@ -477,11 +489,9 @@ export const GetUserByUsernameDocument = gql`
   users(where: {username: {_eq: $_eq}}) {
     username
     created_at
-    email
     image
     name
-    phone
-    updated_at
+    bio
     user_id
     verified
   }
@@ -490,4 +500,21 @@ export const GetUserByUsernameDocument = gql`
 
 export function useGetUserByUsernameQuery(options: Omit<Urql.UseQueryArgs<GetUserByUsernameQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetUserByUsernameQuery>({ query: GetUserByUsernameDocument, ...options });
+};
+export const PublicGetUserByUsernameDocument = gql`
+    query PublicGetUserByUsername($_eq: String!) {
+  users(where: {username: {_eq: $_eq}}) {
+    username
+    created_at
+    image
+    name
+    user_id
+    bio
+    verified
+  }
+}
+    `;
+
+export function usePublicGetUserByUsernameQuery(options: Omit<Urql.UseQueryArgs<PublicGetUserByUsernameQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PublicGetUserByUsernameQuery>({ query: PublicGetUserByUsernameDocument, ...options });
 };

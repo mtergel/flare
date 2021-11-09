@@ -1,6 +1,6 @@
 .input {
   // base style
-  @apply bg-gray-400 bg-opacity-10 rounded-lg flex-shrink-0 outline-none border-0;
+  @apply bg-primary dark:bg-gray-400 dark:bg-opacity-10  bg-opacity-10 rounded-lg flex-shrink-0 outline-none border-0;
   // base size
   @apply h-12 text-sm px-4;
   @apply transition-shadow;

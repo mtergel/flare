@@ -34,8 +34,8 @@ const OnboardinForm: React.FC<OnboardinFormProps> = ({
     formState: { isSubmitting, errors },
   } = useForm({
     defaultValues: {
-      displayName,
-      handle,
+      name: displayName,
+      username: handle,
     },
   });
 
@@ -43,30 +43,31 @@ const OnboardinForm: React.FC<OnboardinFormProps> = ({
   const client = useClient();
   const [result, updateUser] = useUpdateUserMutation();
 
-  const onSubmit = async (data: { displayName: string; handle: string }) => {
+  const onSubmit = async (data: { name: string; username: string }) => {
     try {
-      // check for handles
-
+      // check for usernames
       const res = await client
         .query<GetUserByUsernameQuery, GetUserByUsernameQueryVariables>(
           GetUserByUsernameDocument,
           {
-            _eq: data.handle,
+            _eq: data.username,
           }
         )
         .toPromise();
 
       if (res.data?.users && res.data.users.length > 0) {
         // user exists
-        setError("handle", {
+        setError("username", {
           type: "value",
           message: "This username is already taken",
         });
       } else {
         await updateUser({
           user_id: uid,
-          username: data.handle,
-          name: data.displayName,
+          _set: {
+            username: data.username,
+            name: data.name,
+          },
         });
         router.push("/");
       }
@@ -85,21 +86,22 @@ const OnboardinForm: React.FC<OnboardinFormProps> = ({
             <h2 className="text-lg">Let&apos;s decide the name</h2>
             <p className="text-gray-400 text-sm">
               A username is the @username other Flare users can use to find you.
-              A nickname is the name visible to users on your profile. You can
+              A name is the name visible to users on your profile. You can
               always change these later.
             </p>
           </div>
         </header>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl inValid={!!errors.displayName}>
-            <label htmlFor="username">Nickname</label>
+          <FormControl inValid={!!errors.name}>
+            <label htmlFor="name">Name</label>
             <Input
-              id="username"
+              id="name"
+              autoComplete="off"
               isFullWidth
-              {...register("displayName", {
+              {...register("name", {
                 disabled: isSubmitting,
                 required: {
-                  message: "A nickname is required",
+                  message: "A name is required",
                   value: true,
                 },
                 maxLength: {
@@ -108,16 +110,17 @@ const OnboardinForm: React.FC<OnboardinFormProps> = ({
                 },
               })}
             />
-            {errors.displayName && (
-              <span className="error">{errors.displayName.message}</span>
+            {errors.name && (
+              <span className="error">{errors.name.message}</span>
             )}
           </FormControl>
-          <FormControl inValid={!!errors.handle}>
+          <FormControl inValid={!!errors.username}>
             <label htmlFor="username">Username</label>
             <Input
               id="username"
+              autoComplete="off"
               isFullWidth
-              {...register("handle", {
+              {...register("username", {
                 disabled: isSubmitting,
                 required: {
                   message: "An username is required",
@@ -139,8 +142,8 @@ const OnboardinForm: React.FC<OnboardinFormProps> = ({
               })}
             />
 
-            {errors.handle ? (
-              <span className="error">{errors.handle.message}</span>
+            {errors.username ? (
+              <span className="error">{errors.username.message}</span>
             ) : (
               <p className="text-gray-400 text-sm mt-2">
                 You can enter alphanumeric characters and underscore.

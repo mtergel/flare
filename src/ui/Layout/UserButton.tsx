@@ -20,6 +20,7 @@ import {
 import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
 import { FaGoogle } from "@react-icons/all-files/fa/FaGoogle";
 import { FiLogOut } from "@react-icons/all-files/fi/FiLogOut";
+import { FiSettings } from "@react-icons/all-files/fi/FiSettings";
 import { MdFlare } from "@react-icons/all-files/md/MdFlare";
 import { useAuth } from "context/auth";
 import { useGetUserQuery } from "graphql/generated/graphql";
@@ -36,7 +37,7 @@ const UserButton: React.FC<{}> = () => {
     return null;
   }
   if (user) {
-    return <UserDD />;
+    return <UserDD id={user.uid} />;
   } else {
     return <UserLogin />;
   }
@@ -156,14 +157,17 @@ const UserLogin: React.FC<{}> = () => {
 /**
  * User DropDown component
  */
-const UserDD: React.FC<{}> = () => {
-  const { user, logout } = useAuth();
+interface UserDDProps {
+  id: string;
+}
+const UserDD: React.FC<UserDDProps> = ({ id }) => {
+  const { logout } = useAuth();
   const { theme, setTheme } = useTheme();
 
   const router = useRouter();
-  const [{ data, error }] = useGetUserQuery({
+  const [{ data, error, fetching }] = useGetUserQuery({
     variables: {
-      user_id: user!.uid,
+      user_id: id,
     },
   });
 
@@ -189,18 +193,27 @@ const UserDD: React.FC<{}> = () => {
       <DropdownMenu>
         <DropdownMenuTrigger className="rounded-full focus:outline-none focus:ring-2 focus:ring-primary">
           <Avatar
-            src={data.users_by_pk.image || user?.photoURL || ""}
+            src={data.users_by_pk.image || undefined}
             fallback={data.users_by_pk.name[0]}
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent sideOffset={4}>
-          <DropdownMenuItem>
-            <div className="py-1">
+          <DropdownMenuItem
+            onClick={() => router.push(`/${data.users_by_pk!.username!}`)}
+          >
+            <div>
               <h1 className="font-semibold text-sm">{data.users_by_pk.name}</h1>
               <h2 className="text-gray-400 text-xs">
                 {`@${data.users_by_pk.username}`}
               </h2>
             </div>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem onClick={() => router.push("/settings")}>
+            <DropdownMenuLeftSlot>
+              <FiSettings />
+            </DropdownMenuLeftSlot>
+            Settings
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />

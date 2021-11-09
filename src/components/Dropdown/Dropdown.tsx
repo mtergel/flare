@@ -40,11 +40,12 @@ export const DropdownMenuLabel = forwardRef<
 export const DropdownMenuItem = forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Item>,
   React.ComponentProps<typeof DropdownMenuPrimitive.Item>
->(({ children, ...props }, forwardedRef) => {
+>(({ children, className, ...props }, forwardedRef) => {
+  const merged = clsx("dropdown-item", className);
   return (
     <DropdownMenuPrimitive.Item
       {...props}
-      className="dropdown-item"
+      className={merged}
       ref={forwardedRef}
     >
       {children}

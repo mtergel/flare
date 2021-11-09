@@ -5,9 +5,9 @@ import UserButton from "./UserButton";
 
 const Layout: React.FC<{}> = ({ children }) => {
   return (
-    <>
+    <div className="flex flex-col h-full">
       <header className="bg-paper">
-        <Container isWide className="h-16 flex items-center">
+        <Container size="wide" className="h-16 flex items-center">
           <h1>
             <Link href="/" passHref>
               <a className="text-lg font-bold flex-grow flex space-x-1 items-center">
@@ -23,9 +23,9 @@ const Layout: React.FC<{}> = ({ children }) => {
           </div>
         </Container>
       </header>
-      <main>{children}</main>
+      <main className="flex-grow">{children}</main>
       <footer></footer>
-    </>
+    </div>
   );
 };
 

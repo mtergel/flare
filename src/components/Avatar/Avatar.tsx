@@ -8,7 +8,7 @@ interface AvatarProps
   size?: SizeVariant;
 }
 
-type SizeVariant = "sm" | "md" | "lg";
+type SizeVariant = "sm" | "md" | "lg" | "profile";
 
 const getSize = (size?: SizeVariant) => {
   switch (size) {
@@ -19,6 +19,8 @@ const getSize = (size?: SizeVariant) => {
     }
     case "lg":
       return "avatar-lg";
+    case "profile":
+      return "avatar-profile";
     default:
       return "avatar-md";
   }

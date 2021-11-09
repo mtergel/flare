@@ -13,11 +13,11 @@
 
   &:focus,
   &:hover {
-    @apply bg-opacity-20 bg-gray-400;
+    @apply bg-opacity-50 bg-gray-200;
   }
 
   & .dropdown-item-left-slot {
-    @apply text-gray-500 inline-flex items-center mr-2;
+    @apply text-gray-400 inline-flex items-center mr-2;
 
     & svg {
       @apply h-4 w-4;
@@ -39,7 +39,7 @@
     @apply pr-5 py-2 pl-9 relative outline-none cursor-pointer;
     &:focus,
     &:hover {
-      @apply bg-opacity-20 bg-gray-400;
+      @apply bg-opacity-50 bg-gray-200;
     }
 
     & > .dropdown-radio-icon {

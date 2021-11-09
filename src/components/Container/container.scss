@@ -5,4 +5,12 @@
   &.wide {
     @apply max-w-7xl;
   }
+
+  &.common {
+    @apply max-w-5xl;
+  }
+
+  &.small {
+    @apply max-w-3xl;
+  }
 }
