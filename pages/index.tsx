@@ -1,5 +1,5 @@
-import { NextPageWithLayout } from "utils/types";
 import Layout from "ui/Layout/Layout";
+import { NextPageWithLayout } from "utils/types";
 
 const Home: NextPageWithLayout = () => {
   return (

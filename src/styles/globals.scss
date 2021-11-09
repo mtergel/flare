@@ -47,6 +47,9 @@ div#__next {
 }
 
 .toastOverride {
+  @apply text-sm dark:border dark:border-gray-500 dark:border-opacity-20;
+  background: var(--color-paper) !important;
+  color: var(--color-text-primary) !important;
   z-index: 10000;
 }
 

@@ -10,12 +10,10 @@ import {
 } from "firebase/storage";
 import { useUpdateUserMutation } from "graphql/generated/graphql";
 import useDisclosure from "hooks/useDisclosure";
-import { nanoid } from "nanoid";
 import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
 import ImageCrop from "ui/Settings/ImageCrop";
 import logger from "utils/logger";
-import renameFile from "utils/renameFile";
 
 interface ChangeAvatarProps {
   uid: string;
@@ -32,9 +30,7 @@ const ChangeAvatar: React.FC<ChangeAvatarProps> = ({ uid, image, name }) => {
 
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const extension = e.target.files[0].name.split(".").pop();
-      const name = `${nanoid()}.${extension}`;
-      const file = renameFile(e.target.files[0], name);
+      const file = e.target.files[0];
       setPath(URL.createObjectURL(file));
       onOpen();
     }
