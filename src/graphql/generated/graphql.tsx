@@ -432,14 +432,14 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { __typename?: 'query_root', users_by_pk?: { __typename?: 'users', user_id: string, verified: boolean, username?: string | null | undefined, updated_at: any, phone?: string | null | undefined, name: string, image?: string | null | undefined, email?: string | null | undefined, bio?: string | null | undefined, created_at: any } | null | undefined };
+export type GetUserQuery = { __typename?: 'query_root', users_by_pk?: { __typename?: 'users', user_id: string, verified: boolean, username?: string | null | undefined, updated_at: any, name: string, image?: string | null | undefined, bio?: string | null | undefined, created_at: any } | null | undefined };
 
 export type GetUserByUsernameQueryVariables = Exact<{
   _eq: Scalars['String'];
 }>;
 
 
-export type GetUserByUsernameQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', username?: string | null | undefined, created_at: any, email?: string | null | undefined, image?: string | null | undefined, name: string, phone?: string | null | undefined, bio?: string | null | undefined, updated_at: any, user_id: string, verified: boolean }> };
+export type GetUserByUsernameQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', username?: string | null | undefined, created_at: any, image?: string | null | undefined, name: string, bio?: string | null | undefined, user_id: string, verified: boolean }> };
 
 export type PublicGetUserByUsernameQueryVariables = Exact<{
   _eq: Scalars['String'];
@@ -478,10 +478,8 @@ export const GetUserDocument = gql`
     verified
     username
     updated_at
-    phone
     name
     image
-    email
     bio
     created_at
   }
@@ -496,12 +494,9 @@ export const GetUserByUsernameDocument = gql`
   users(where: {username: {_eq: $_eq}}) {
     username
     created_at
-    email
     image
     name
-    phone
     bio
-    updated_at
     user_id
     verified
   }

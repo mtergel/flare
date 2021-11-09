@@ -4,10 +4,8 @@ query GetUser($user_id: String!) {
     verified
     username
     updated_at
-    phone
     name
     image
-    email
     bio
     created_at
   }

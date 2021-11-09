@@ -11,13 +11,14 @@ import {
 import { GetServerSideProps } from "next";
 import { initUrqlClient, withUrqlClient } from "next-urql";
 import { useRouter } from "next/dist/client/router";
+import Layout from "ui/Layout/Layout";
 import ErrorMessage from "ui/misc/ErrorMessage";
 import { cacheExchange, dedupExchange, fetchExchange, ssrExchange } from "urql";
-import { NextPageWithLayout } from "utils/types";
+import { NextComponentTypeWithLayout, NextPageWithLayout } from "utils/types";
 
 const Profile: NextPageWithLayout = () => {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const [res] = usePublicGetUserByUsernameQuery({
     variables: {
       _eq: router.query.username as string,
@@ -26,6 +27,9 @@ const Profile: NextPageWithLayout = () => {
 
   if (res.data && res.data.users.length > 0) {
     const data = res.data.users[0];
+    const handleEdit = () => {
+      router.push("/settings");
+    };
     return (
       <>
         <header className="bg-paper">
@@ -44,11 +48,14 @@ const Profile: NextPageWithLayout = () => {
                     <p className="mt-2">{data.bio}</p>
                   </div>
                 </div>
-                {data.user_id === user?.uid ? (
-                  <Button variant="outline">Edit profile</Button>
-                ) : (
-                  <Button color="primary">Follow</Button>
-                )}
+                {!loading &&
+                  (data.user_id === user?.uid ? (
+                    <Button onClick={handleEdit} variant="outline">
+                      Edit profile
+                    </Button>
+                  ) : (
+                    <Button color="primary">Follow</Button>
+                  ))}
               </div>
             </div>
           </Container>
@@ -93,9 +100,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default withUrqlClient(
+const withUrql: NextComponentTypeWithLayout = withUrqlClient(
   (ssr) => ({
     url: "https://flare.hasura.app/v1/graphql",
   }),
   { ssr: false } // Important so we don't wrap our component in getInitialProps
 )(Profile);
+
+withUrql.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
+
+export default withUrql;

@@ -2,12 +2,9 @@ query GetUserByUsername($_eq: String!) {
   users(where: { username: { _eq: $_eq } }) {
     username
     created_at
-    email
     image
     name
-    phone
     bio
-    updated_at
     user_id
     verified
   }

@@ -8,20 +8,13 @@ import AuthProvider from "context/auth";
 import { Provider } from "urql";
 import client from "urqlClient";
 import { Toaster } from "react-hot-toast";
-import Layout from "ui/Layout/Layout";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-  let getLayout = Component.getLayout ?? ((page) => page);
-
-  if (Component.displayName === "withUrqlClient(Profile)") {
-    getLayout = function getLayout(page) {
-      return <Layout>{page}</Layout>;
-    };
-  }
+  const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
     <ThemeProvider

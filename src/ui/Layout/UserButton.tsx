@@ -20,6 +20,7 @@ import {
 import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
 import { FaGoogle } from "@react-icons/all-files/fa/FaGoogle";
 import { FiLogOut } from "@react-icons/all-files/fi/FiLogOut";
+import { FiSettings } from "@react-icons/all-files/fi/FiSettings";
 import { MdFlare } from "@react-icons/all-files/md/MdFlare";
 import { useAuth } from "context/auth";
 import { useGetUserQuery } from "graphql/generated/graphql";
@@ -27,7 +28,6 @@ import useDisclosure from "hooks/useDisclosure";
 import { auth } from "initApp";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/dist/client/router";
-import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -37,7 +37,7 @@ const UserButton: React.FC<{}> = () => {
     return null;
   }
   if (user) {
-    return <UserDD />;
+    return <UserDD id={user.uid} />;
   } else {
     return <UserLogin />;
   }
@@ -157,18 +157,22 @@ const UserLogin: React.FC<{}> = () => {
 /**
  * User DropDown component
  */
-const UserDD: React.FC<{}> = () => {
-  const { user, logout } = useAuth();
+interface UserDDProps {
+  id: string;
+}
+const UserDD: React.FC<UserDDProps> = ({ id }) => {
+  const { logout } = useAuth();
   const { theme, setTheme } = useTheme();
 
   const router = useRouter();
-  const [{ data, error }] = useGetUserQuery({
+  const [{ data, error, fetching }] = useGetUserQuery({
     variables: {
-      user_id: user!.uid,
+      user_id: id,
     },
   });
 
   if (error) {
+    console.log(error);
     if (
       error.graphQLErrors.some(
         (e: any) => e.extensions?.code === "jwt-invalid-claims"
@@ -196,15 +200,21 @@ const UserDD: React.FC<{}> = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent sideOffset={4}>
           <DropdownMenuItem
-            className="py-3 w-full flex-col items-start"
-            asChild
+            onClick={() => router.push(`/${data.users_by_pk!.username!}`)}
           >
-            <a href={`/${data.users_by_pk.username!}`}>
+            <div>
               <h1 className="font-semibold text-sm">{data.users_by_pk.name}</h1>
               <h2 className="text-gray-400 text-xs">
                 {`@${data.users_by_pk.username}`}
               </h2>
-            </a>
+            </div>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem onClick={() => router.push("/settings")}>
+            <DropdownMenuLeftSlot>
+              <FiSettings />
+            </DropdownMenuLeftSlot>
+            Settings
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />
