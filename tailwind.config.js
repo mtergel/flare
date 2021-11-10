@@ -48,9 +48,14 @@ module.exports = {
         paper: "var(--color-paper)",
       },
     },
+    nightwind: {
+      typography: true,
+    },
   },
   variants: {
-    extend: {},
+    extend: {
+      typography: ["dark"],
+    },
   },
-  plugins: [require("nightwind")],
+  plugins: [require("nightwind"), require("@tailwindcss/typography")],
 };

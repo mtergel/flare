@@ -155,7 +155,7 @@
     @apply border-border bg-opacity-0;
     &:hover,
     &:focus {
-      @apply bg-opacity-10;
+      @apply bg-opacity-10 text-primary;
     }
   }
 
@@ -164,7 +164,7 @@
     @apply bg-opacity-0;
     &:hover,
     &:focus {
-      @apply bg-opacity-10;
+      @apply bg-opacity-10 text-primary;
     }
   }
 }
