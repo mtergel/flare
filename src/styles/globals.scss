@@ -29,6 +29,7 @@ div#__next {
   height: 100%;
 }
 
+// tiptap styling
 .ProseMirror {
   @apply outline-none p-4 rounded-lg;
   pre {
@@ -111,6 +112,7 @@ div#__next {
 @import "../components/Dropdown/dropdown.scss";
 @import "../components/Slider/slider.scss";
 @import "../components/Editor/editor.scss";
+@import "../components/Switch/switch.scss";
 
 .r-icon {
   @apply h-6 w-6;
