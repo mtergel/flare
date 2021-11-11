@@ -29,3 +29,8 @@
     }
   }
 }
+
+.editor-title {
+  @apply text-4xl font-bold w-full py-2 mt-5 mb-8 bg-transparent resize-none outline-none border-none;
+  line-height: 1.5;
+}

@@ -71,6 +71,7 @@ const Profile: NextPageWithLayout = () => {
   }
 };
 
+// maybe change this to ISR later.
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const params = context.params;
   const ssrCache = ssrExchange({ isClient: false });

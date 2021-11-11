@@ -33,6 +33,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       </IconContext.Provider>
       <Toaster
         toastOptions={{
+          position: "bottom-right",
           className: "toastOverride",
           success: {
             iconTheme: {

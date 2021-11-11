@@ -31,9 +31,9 @@ div#__next {
 
 // tiptap styling
 .ProseMirror {
-  @apply outline-none p-4 rounded-lg;
+  @apply outline-none p-4 rounded-lg min-h-[448px];
   pre {
-    background: #0d0d0d !important;
+    background: #272b33 !important;
     color: #fff !important;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
@@ -116,6 +116,14 @@ div#__next {
 
 .r-icon {
   @apply h-6 w-6;
+}
+
+.gray-bg {
+  @apply bg-gray-100 dark:bg-gray-100 dark:bg-opacity-5;
+}
+
+.emoji-mart-anchor-bar {
+  width: 56% !important;
 }
 
 .toastOverride {
