@@ -133,6 +133,7 @@ const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
       className={merged}
       data-loading={isLoading}
       data-testid="button"
+      type={type}
     >
       {leftIcon && !isLoading && (
         <ButtonIcon className="-ml-2 mr-3 h-5 w-5">{leftIcon}</ButtonIcon>
