@@ -28,6 +28,7 @@ import useDisclosure from "hooks/useDisclosure";
 import { auth } from "initApp";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/dist/client/router";
+import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -155,7 +156,7 @@ const UserLogin: React.FC<{}> = () => {
 };
 
 /**
- * User DropDown component
+ * User Dropdown component
  */
 interface UserDDProps {
   id: string;
@@ -163,7 +164,7 @@ interface UserDDProps {
 const UserDD: React.FC<UserDDProps> = ({ id }) => {
   const { logout } = useAuth();
   const { theme, setTheme } = useTheme();
-
+  const { isOpen, setIsOpen, onClose } = useDisclosure();
   const router = useRouter();
   const [{ data, error, fetching }] = useGetUserQuery({
     variables: {
@@ -190,7 +191,7 @@ const UserDD: React.FC<UserDDProps> = ({ id }) => {
       router.replace("/onboarding");
     }
     return (
-      <DropdownMenu>
+      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger className="rounded-full focus:outline-none focus:ring-2 focus:ring-primary">
           <Avatar
             src={data.users_by_pk.image || undefined}
@@ -198,23 +199,29 @@ const UserDD: React.FC<UserDDProps> = ({ id }) => {
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent sideOffset={4}>
-          <DropdownMenuItem
-            onClick={() => router.push(`/${data.users_by_pk!.username!}`)}
-          >
-            <div>
-              <h1 className="font-semibold text-sm">{data.users_by_pk.name}</h1>
-              <h2 className="text-gray-400 text-xs">
-                {`@${data.users_by_pk.username}`}
-              </h2>
-            </div>
-          </DropdownMenuItem>
+          <Link href={`/${data.users_by_pk!.username!}`} passHref>
+            <DropdownMenuItem asChild>
+              <a className="block" onClick={onClose}>
+                <h1 className="font-semibold text-sm">
+                  {data.users_by_pk.name}
+                </h1>
+                <h2 className="text-gray-400 text-xs">
+                  {`@${data.users_by_pk.username}`}
+                </h2>
+              </a>
+            </DropdownMenuItem>
+          </Link>
 
-          <DropdownMenuItem onClick={() => router.push("/settings")}>
-            <DropdownMenuLeftSlot>
-              <FiSettings />
-            </DropdownMenuLeftSlot>
-            Settings
-          </DropdownMenuItem>
+          <Link href={`/settings`} passHref>
+            <DropdownMenuItem asChild>
+              <a onClick={onClose}>
+                <DropdownMenuLeftSlot>
+                  <FiSettings />
+                </DropdownMenuLeftSlot>
+                Settings
+              </a>
+            </DropdownMenuItem>
+          </Link>
 
           <DropdownMenuSeparator />
           <div className="py-1">
