@@ -54,7 +54,6 @@ const Dialog: React.FC<DialogProps> = ({
           <IconButton
             className="absolute top-3 right-3"
             variant="ghost"
-            size="sm"
             aria-label="cross"
             icon={<FiX />}
           />

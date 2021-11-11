@@ -3,10 +3,14 @@
 }
 
 .dialog-content {
-  @apply bg-paper rounded-lg fixed max-w-lg p-6 overflow-y-auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  @apply inset-0 transform-none rounded-none bg-paper fixed p-6 overflow-y-auto;
+
+  @media (min-width: 640px) {
+    @apply rounded-lg max-w-lg;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .dialog-title {
