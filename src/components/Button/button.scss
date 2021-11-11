@@ -99,6 +99,10 @@
     }
   }
 
+  &.ibtn-round {
+    @apply rounded-full;
+  }
+
   // colors
   &.btn-primary {
     @apply bg-primary-500 text-white;
