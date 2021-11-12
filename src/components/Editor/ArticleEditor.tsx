@@ -3,14 +3,14 @@ import Container from "@/components/Container/Container";
 import Editor from "@/components/Editor/Editor";
 import IconButton from "@/components/IconButton/IconButton";
 import Switch from "@/components/Switch/Switch";
-import { defaultEmojis, getRandomEmoji } from "@/utils/const";
+import { getRandomEmoji } from "@/utils/const";
 import { FiArrowLeft } from "@react-icons/all-files/fi/FiArrowLeft";
 import { FiSliders } from "@react-icons/all-files/fi/FiSliders";
 import { FiSun } from "@react-icons/all-files/fi/FiSun";
-import { Picker } from "emoji-mart";
 import "emoji-mart/css/emoji-mart.css";
 import useDisclosure from "hooks/useDisclosure";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Dialog from "../Dialog/Dialog";
@@ -21,6 +21,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "../Dropdown/Dropdown";
+import EmojiPicker from "./EmojiPicker";
 
 interface ArticleEditorProps {
   id?: string | null;
@@ -29,6 +30,7 @@ interface ArticleEditorProps {
   published?: boolean | null;
   emoji?: string | null;
 }
+
 const ArticleEditor: React.FC<ArticleEditorProps> = ({
   id,
   title,
@@ -41,7 +43,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     register,
     handleSubmit,
     control,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isDirty },
   } = useForm({
     defaultValues: {
       id,
@@ -60,14 +62,17 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     body_html: string;
     published: boolean;
   }) => {
-    console.log(data);
     if (data.title) {
-      console.log(data);
-
       if (data.published) {
-        // open modal
+        onOpen();
       } else {
         // just proceed normal
+        let res;
+        if (data.id) {
+          // const res =await update()
+        } else {
+          // const res = await create();
+        }
       }
     } else {
       if (!data.title) {
@@ -81,12 +86,15 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
       <header className="h-16 shadow-md dark:border-b">
         <Container className="h-full">
           <div className="flex items-center justify-between h-full">
-            <IconButton
-              variant="ghost"
-              aria-label="dashboard"
-              isRound
-              icon={<FiArrowLeft />}
-            />
+            <Link href="/" passHref>
+              <IconButton
+                variant="ghost"
+                aria-label="dashboard"
+                isRound
+                icon={<FiArrowLeft />}
+                as="a"
+              />
+            </Link>
             <div className="flex items-center space-x-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -142,7 +150,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
               open={isOpen}
               onOpenChange={setIsOpen}
               content={
-                <>
+                <div className="flex flex-col h-full">
                   <header>
                     <h1>
                       <div className="text-lg font-bold flex-grow flex space-x-1 items-center">
@@ -150,19 +158,32 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
                       </div>
                     </h1>
                   </header>
-                  <div className="space-y-2 mt-8">
-                    <Controller
-                      control={control}
-                      name="emoji"
-                      render={({ field }) => (
-                        <EmojiPicker
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
-                      )}
-                    />
+                  <div className="mt-8 flex-grow flex flex-col">
+                    <div className="flex flex-col flex-grow space-y-2">
+                      <Controller
+                        control={control}
+                        name="emoji"
+                        render={({ field }) => (
+                          <EmojiPicker
+                            value={field.value}
+                            onChange={field.onChange}
+                          />
+                        )}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-center">
+                      <Button
+                        type="button"
+                        color="primary"
+                        disabled={!isDirty}
+                        isLoading={isSubmitting}
+                      >
+                        {isDirty ? "Save" : "Saved"}
+                      </Button>
+                    </div>
                   </div>
-                </>
+                </div>
               }
             >
               <IconButton
@@ -200,51 +221,15 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
               type="button"
               onClick={handleSubmit(onSubmit)}
               color="primary"
+              disabled={!isDirty}
+              isLoading={isSubmitting}
             >
-              Save
+              {isDirty ? "Save" : "Saved"}
             </Button>
           </div>
         </Container>
       </form>
     </>
-  );
-};
-
-interface EmojiPickerProps {
-  value: string;
-  onChange: (emoji: string) => void;
-}
-const EmojiPicker: React.FC<EmojiPickerProps> = ({ value, onChange }) => {
-  const { isOpen, setIsOpen, onClose } = useDisclosure();
-  const { resolvedTheme } = useTheme();
-
-  return (
-    <section className="relative">
-      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-        <DropdownMenuTrigger asChild>
-          <button className="flex items-center gray-bg w-full p-5 rounded-lg">
-            <span className="text-5xl border-r pr-4 mr-5">{value}</span>
-            <div className="flex flex-col items-start text-left text-sm text-gray-600">
-              <span>Select an eye catching emoji</span>
-            </div>
-          </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent sideOffset={4}>
-          <Picker
-            color={"#3EA8FF"}
-            recent={defaultEmojis}
-            theme={resolvedTheme as any}
-            showPreview={false}
-            showSkinTones={false}
-            exclude={["flags", "symbols"]}
-            onSelect={(data) => {
-              // @ts-ignore
-              onChange(data.native);
-            }}
-          />
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </section>
   );
 };
 
