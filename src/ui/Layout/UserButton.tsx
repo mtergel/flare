@@ -12,25 +12,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/Dropdown/Dropdown";
-import {
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "@firebase/auth";
-import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
-import { FaGoogle } from "@react-icons/all-files/fa/FaGoogle";
 import { FiLogOut } from "@react-icons/all-files/fi/FiLogOut";
 import { FiSettings } from "@react-icons/all-files/fi/FiSettings";
-import { MdFlare } from "@react-icons/all-files/md/MdFlare";
 import { useAuth } from "context/auth";
 import { useGetUserQuery } from "graphql/generated/graphql";
 import useDisclosure from "hooks/useDisclosure";
-import { auth } from "initApp";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
-import { useState } from "react";
-import toast from "react-hot-toast";
+import LoginForm from "ui/Auth/LoginForm";
 
 const UserButton: React.FC<{}> = () => {
   const { user, loading, error } = useAuth();
@@ -45,64 +35,7 @@ const UserButton: React.FC<{}> = () => {
 };
 
 const UserLogin: React.FC<{}> = () => {
-  const [loadingState, setLoadingState] = useState({
-    google: false,
-    github: false,
-    facebook: false,
-  });
   const { isOpen, setIsOpen, onOpen } = useDisclosure();
-  const handleGoogle = async () => {
-    try {
-      setLoadingState({
-        ...loadingState,
-        google: true,
-      });
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      if (error.code === "auth/popup-blocked") {
-        toast.error("Enable popups on this website");
-      } else if (
-        error.code === "auth/account-exists-with-different-credential"
-      ) {
-        toast.error("Email is used in an other provider");
-      }
-      if (error.code !== "auth/popup-closed-by-user") {
-        toast.error(error.message);
-      }
-
-      setLoadingState({
-        ...loadingState,
-        google: false,
-      });
-    }
-  };
-
-  const handleGithub = async () => {
-    try {
-      setLoadingState({
-        ...loadingState,
-        github: true,
-      });
-      const provider = new GithubAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      if (error.code === "auth/popup-blocked") {
-        toast.error("Enable popups on this website");
-      } else if (
-        error.code === "auth/account-exists-with-different-credential"
-      ) {
-        toast.error("Email is used in an other provider");
-      }
-      if (error.code !== "auth/popup-closed-by-user") {
-        toast.error(error.message);
-      }
-      setLoadingState({
-        ...loadingState,
-        github: false,
-      });
-    }
-  };
 
   return (
     <Dialog
@@ -110,43 +43,7 @@ const UserLogin: React.FC<{}> = () => {
       description="Where programmers share ideas and help each other grow."
       open={isOpen}
       onOpenChange={setIsOpen}
-      content={
-        <>
-          <header>
-            <h1>
-              <div className="text-lg font-bold flex-grow flex space-x-1 items-center">
-                <span>
-                  <MdFlare className="text-primary-500" />
-                </span>
-                <span className="text-2xl tracking-wider">Flare</span>
-              </div>
-            </h1>
-            <p className="text-secondary text-sm pt-4">
-              Where programmers share ideas and help each other grow.
-            </p>
-          </header>
-          <div className="space-y-2 mt-8">
-            <Button
-              isLoading={loadingState.google}
-              loadingText="Please wait"
-              isFullWidth
-              onClick={handleGoogle}
-              leftIcon={<FaGoogle />}
-            >
-              Continue with Google
-            </Button>
-            <Button
-              isLoading={loadingState.github}
-              loadingText="Please wait"
-              isFullWidth
-              onClick={handleGithub}
-              leftIcon={<FaGithub />}
-            >
-              Continue with Github
-            </Button>
-          </div>
-        </>
-      }
+      content={<LoginForm />}
     >
       <Button size="sm" color="primary" onClick={onOpen}>
         Log in

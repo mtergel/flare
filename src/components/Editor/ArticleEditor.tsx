@@ -4,23 +4,12 @@ import Editor from "@/components/Editor/Editor";
 import IconButton from "@/components/IconButton/IconButton";
 import Switch from "@/components/Switch/Switch";
 import { getRandomEmoji } from "@/utils/const";
-import { FiArrowLeft } from "@react-icons/all-files/fi/FiArrowLeft";
 import { FiSliders } from "@react-icons/all-files/fi/FiSliders";
-import { FiSun } from "@react-icons/all-files/fi/FiSun";
 import "emoji-mart/css/emoji-mart.css";
 import useDisclosure from "hooks/useDisclosure";
-import { useTheme } from "next-themes";
-import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Dialog from "../Dialog/Dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "../Dropdown/Dropdown";
 import EmojiPicker from "./EmojiPicker";
 
 interface ArticleEditorProps {
@@ -38,7 +27,6 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
   published,
   emoji,
 }) => {
-  const { theme, setTheme } = useTheme();
   const {
     register,
     handleSubmit,
@@ -83,49 +71,6 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
 
   return (
     <>
-      <header className="h-16 shadow-md dark:border-b">
-        <Container className="h-full">
-          <div className="flex items-center justify-between h-full">
-            <Link href="/" passHref>
-              <IconButton
-                variant="ghost"
-                aria-label="dashboard"
-                isRound
-                icon={<FiArrowLeft />}
-                as="a"
-              />
-            </Link>
-            <div className="flex items-center space-x-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <IconButton
-                    variant="ghost"
-                    aria-label="theme"
-                    isRound
-                    icon={<FiSun />}
-                  />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent sideOffset={4}>
-                  <DropdownMenuRadioGroup
-                    value={theme}
-                    onValueChange={(value) => setTheme(value)}
-                  >
-                    <DropdownMenuRadioItem value="system">
-                      System
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="light">
-                      Light
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem value="dark">
-                      Dark
-                    </DropdownMenuRadioItem>
-                  </DropdownMenuRadioGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </div>
-        </Container>
-      </header>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Container size="small">
           <textarea
