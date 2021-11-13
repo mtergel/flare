@@ -1,16 +1,16 @@
-import { MdFlare } from "@react-icons/all-files/md/MdFlare";
-import { useState } from "react";
+import Button from "@/components/Button/Button";
 import {
   GithubAuthProvider,
   GoogleAuthProvider,
   signInWithPopup,
 } from "@firebase/auth";
-import toast from "react-hot-toast";
-import { auth } from "initApp";
-import Button from "@/components/Button/Button";
+import { FirebaseError } from "@firebase/util";
 import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
 import { FaGoogle } from "@react-icons/all-files/fa/FaGoogle";
-import { FirebaseError } from "@firebase/util";
+import { MdFlare } from "@react-icons/all-files/md/MdFlare";
+import { auth } from "initApp";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const handleError = (error: FirebaseError) => {
   switch (error.code) {
@@ -30,6 +30,7 @@ const handleError = (error: FirebaseError) => {
 
     default: {
       toast.error(error.message);
+      break;
     }
   }
 };
@@ -75,17 +76,17 @@ const LoginForm: React.FC<{}> = () => {
   };
 
   return (
-    <div className="h-full flex flex-col">
-      <header>
+    <div className="pt-8 h-full flex flex-col">
+      <header className="text-center flex flex-col items-center justify-center">
         <h1>
-          <div className="text-lg font-bold flex-grow flex space-x-1 items-center">
+          <div className="font-bold flex-grow flex space-x-1 items-center">
             <span>
-              <MdFlare className="text-primary-500" />
+              <MdFlare className="text-primary-500 h-10 w-10" />
             </span>
-            <span className="text-2xl tracking-wider">Flare</span>
+            <span className="text-4xl tracking-wider">Flare</span>
           </div>
         </h1>
-        <p className="text-secondary text-sm pt-4">
+        <p className="text-secondary pt-4">
           Where programmers share ideas and help each other grow.
         </p>
       </header>
@@ -96,6 +97,7 @@ const LoginForm: React.FC<{}> = () => {
           isFullWidth
           onClick={handleGoogle}
           leftIcon={<FaGoogle />}
+          variant="outline"
         >
           Continue with Google
         </Button>
@@ -105,6 +107,7 @@ const LoginForm: React.FC<{}> = () => {
           isFullWidth
           onClick={handleGithub}
           leftIcon={<FaGithub />}
+          variant="outline"
         >
           Continue with Github
         </Button>

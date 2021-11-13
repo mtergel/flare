@@ -116,13 +116,13 @@ const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
   const Element = rest.as || "button";
 
   const merged = clsx(
-    className,
     "btn",
     getSize(size),
     getVariant(variant),
     getColor(color),
     isLoading && (loadingText ? "btn-loading" : "btn-loading-no-text"),
-    isFullWidth && "btn-full"
+    isFullWidth && "btn-full",
+    className
   );
 
   return (

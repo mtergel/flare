@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/Dropdown/Dropdown";
+import Skeleton from "@/components/Skeleton/Skeleton";
 import { FiLogOut } from "@react-icons/all-files/fi/FiLogOut";
 import { FiSettings } from "@react-icons/all-files/fi/FiSettings";
 import { useAuth } from "context/auth";
@@ -80,6 +81,10 @@ const UserDD: React.FC<UserDDProps> = ({ id }) => {
       // redirect anyway and let the onboarding page handle it
       router.replace("/onboarding");
     }
+  }
+
+  if (fetching) {
+    return <Skeleton className="rounded-full w-10 h-10" />;
   }
 
   if (data && data.users_by_pk) {
