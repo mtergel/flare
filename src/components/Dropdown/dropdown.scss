@@ -3,7 +3,7 @@
 }
 
 .dropdown-content {
-  @apply min-w-[230px] bg-paper flex flex-col overflow-hidden rounded text-sm;
+  @apply min-w-[230px] bg-paper flex flex-col overflow-hidden rounded text-sm dark:border;
   box-shadow: 0 3px 12px -1px #04253f40;
 }
 
