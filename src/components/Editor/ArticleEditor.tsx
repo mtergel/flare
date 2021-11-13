@@ -80,7 +80,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
           className="editor-title"
           {...register("title")}
         />
-        <div className="border rounded-md overflow-hidden">
+        <div className="md:border md:rounded-md md:overflow-hidden">
           <Controller
             control={control}
             name="body_html"

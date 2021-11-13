@@ -31,73 +31,27 @@ div#__next {
   height: 100%;
 }
 
-// tiptap styling
-.ProseMirror {
-  @apply outline-none p-4 rounded-lg min-h-[448px];
-  pre {
-    background: #272b33 !important;
-    color: #fff !important;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
+.editor-container {
+  & .EasyMDEContainer .CodeMirror {
+    border: unset;
 
-    code {
-      color: inherit;
-      padding: 0;
-      background: none;
-      font-size: 0.8rem;
-    }
+    @apply border border-border border-solid;
+    @apply mx-0 my-4 p-2 md:mx-2;
+    @apply rounded resize-y;
+    @apply min-h-[300px];
+    @apply bg-base text-tDefault;
 
-    .hljs-comment,
-    .hljs-quote {
-      color: #616161;
+    &:focus-within {
+      @apply bg-paper ring-2 ring-primary;
     }
+  }
 
-    .hljs-variable,
-    .hljs-template-variable,
-    .hljs-attribute,
-    .hljs-tag,
-    .hljs-name,
-    .hljs-regexp,
-    .hljs-link,
-    .hljs-name,
-    .hljs-selector-id,
-    .hljs-selector-class {
-      color: #f98181;
-    }
+  & .CodeMirror-selected {
+    background: highlight !important;
+  }
 
-    .hljs-number,
-    .hljs-meta,
-    .hljs-built_in,
-    .hljs-builtin-name,
-    .hljs-literal,
-    .hljs-type,
-    .hljs-params {
-      color: #fbbc88;
-    }
-
-    .hljs-string,
-    .hljs-symbol,
-    .hljs-bullet {
-      color: #b9f18d;
-    }
-
-    .hljs-title,
-    .hljs-section {
-      color: #faf594;
-    }
-
-    .hljs-keyword,
-    .hljs-selector-tag {
-      color: #70cff8;
-    }
-
-    .hljs-emphasis {
-      font-style: italic;
-    }
-
-    .hljs-strong {
-      font-weight: 700;
-    }
+  & .CodeMirror-cursor {
+    @apply border-tDefault;
   }
 }
 

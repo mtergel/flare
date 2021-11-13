@@ -21,6 +21,7 @@
     "@urql/exchange-auth": "^0.1.6",
     "browser-image-compression": "^1.0.16",
     "clsx": "^1.1.1",
+    "easymde": "^2.15.0",
     "emoji-mart": "^3.0.1",
     "firebase": "^9.3.0",
     "firebase-admin": "^10.0.0",
@@ -40,6 +41,7 @@
     "react-is": "^17.0.2",
     "react-markdown": "^7.1.0",
     "react-select": "^5.2.1",
+    "react-simplemde-editor": "^5.0.2",
     "sass": "^1.43.4",
     "urql": "^2.0.5"
   },
