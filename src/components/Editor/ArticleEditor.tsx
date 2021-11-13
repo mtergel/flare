@@ -70,25 +70,25 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Container size="small">
-          <textarea
-            placeholder="Title"
-            maxLength={70}
-            spellCheck={false}
-            rows={1}
-            className="editor-title"
-            {...register("title")}
-          />
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Container size="small">
+        <textarea
+          placeholder="Title"
+          maxLength={70}
+          spellCheck={false}
+          rows={1}
+          className="editor-title"
+          {...register("title")}
+        />
+        <div className="border rounded-md overflow-hidden">
           <Controller
             control={control}
             name="body_html"
             render={({ field }) => (
-              <Editor content={field.value} onChange={field.onChange} />
+              <Editor markdown={field.value} onChange={field.onChange} />
             )}
           />
-          <div className="py-4 flex items-center justify-end space-x-6">
+          <div className="flex items-center justify-end space-x-6 mx-2 mb-2">
             <Dialog
               title="Settings"
               description="Article settings"
@@ -172,9 +172,9 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
               {isDirty ? "Save" : "Saved"}
             </Button>
           </div>
-        </Container>
-      </form>
-    </>
+        </div>
+      </Container>
+    </form>
   );
 };
 

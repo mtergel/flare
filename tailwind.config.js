@@ -24,6 +24,8 @@ module.exports = {
         paper: "var(--color-paper)",
         base: "var(--color-bg)",
         border: "var(--color-border)",
+        tDefault: "var(--color-text-default)",
+        tMuted: "var(--color-text-muted)",
       },
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],

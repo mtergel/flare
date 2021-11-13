@@ -1,9 +1,10 @@
 .light {
-  --color-bg: #f0f2f5;
+  --color-bg: #f6f8fa;
   --color-paper: #fff;
   --color-text-primary: #3c4043;
   --color-border: #dadce0;
-  --color-text: #0f0f0f;
+  --color-text-default: #0f0f0f;
+  --color-text-muted: #57606a;
 }
 
 .dark {
@@ -11,7 +12,8 @@
   --color-paper: #202124;
   --color-text-primary: #e8eaed;
   --color-border: #5f6368;
-  --color-text: #e3e3e3;
+  --color-text-default: #e3e3e3;
+  --color-text-muted: #768390;
 }
 
 @tailwind base;
@@ -22,7 +24,7 @@ html {
 
 body {
   @apply bg-base ring-offset-paper h-full;
-  color: var(--color-text);
+  color: var(--color-text-default);
 }
 
 div#__next {
@@ -114,6 +116,7 @@ div#__next {
 @import "../components/Editor/editor.scss";
 @import "../components/Switch/switch.scss";
 @import "../components/Skeleton/skeleton.scss";
+@import "../components/Tabs/tabs.scss";
 
 .r-icon {
   @apply h-6 w-6;

@@ -27,10 +27,12 @@ const NewArticleContainer: NextPageWithLayout = () => {
 
 const NewArticle: React.FC<{}> = () => {
   return (
-    <>
+    <div className="h-full flex flex-col">
       <MinHeader />
-      <ArticleEditor />
-    </>
+      <div className="bg-paper flex-grow">
+        <ArticleEditor />
+      </div>
+    </div>
   );
 };
 
