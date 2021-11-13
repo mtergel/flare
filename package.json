@@ -42,6 +42,8 @@
     "react-markdown": "^7.1.0",
     "react-select": "^5.2.1",
     "react-simplemde-editor": "^5.0.2",
+    "react-syntax-highlighter": "^15.4.5",
+    "remark-gfm": "^3.0.1",
     "sass": "^1.43.4",
     "urql": "^2.0.5"
   },
@@ -58,6 +60,7 @@
     "@types/js-cookie": "^3.0.0",
     "@types/node": "16.11.6",
     "@types/react": "17.0.34",
+    "@types/react-syntax-highlighter": "^13.5.2",
     "autoprefixer": "^10.4.0",
     "babel-jest": "^27.3.1",
     "eslint": "7",

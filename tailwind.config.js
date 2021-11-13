@@ -49,6 +49,29 @@ module.exports = {
       fill: {
         paper: "var(--color-paper)",
       },
+      typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            pre: {
+              backgroundColor: "inherit",
+              paddingRight: "0",
+              paddingLeft: "0",
+            },
+            h1: {
+              paddingBottom: ".2em",
+              marginBottom: "1.1rem",
+              borderBottom: `1px solid ${theme("colors.border")}`,
+            },
+            a: {
+              color: theme("colors.primary.500"),
+              textDecoration: "none",
+              "&:hover": {
+                textDecoration: "underline",
+              },
+            },
+          },
+        },
+      }),
     },
     nightwind: {
       typography: true,

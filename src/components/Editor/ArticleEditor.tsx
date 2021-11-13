@@ -36,7 +36,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     defaultValues: {
       id,
       title,
-      body_html,
+      body_html: body_html ?? "",
       published,
       emoji: emoji ?? getRandomEmoji(),
     },
@@ -50,6 +50,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     body_html: string;
     published: boolean;
   }) => {
+    console.log(data);
     if (data.title) {
       if (data.published) {
         onOpen();

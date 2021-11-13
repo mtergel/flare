@@ -53,6 +53,12 @@ div#__next {
   & .CodeMirror-cursor {
     @apply border-tDefault;
   }
+
+  & .editor-preview-tw {
+    @apply mx-0 my-4 p-2 md:mx-2;
+    @apply min-h-[300px];
+    @apply max-w-full;
+  }
 }
 
 @tailwind components;

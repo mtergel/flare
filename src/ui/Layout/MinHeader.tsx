@@ -16,7 +16,7 @@ const MinHeader: React.FC<{}> = () => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <header className="h-16 shadow-md dark:border-b">
+    <header className="h-16 flex-shrink-0 shadow-md dark:border-b">
       <Container className="h-full">
         <div className="flex items-center justify-between h-full">
           <Link href="/" passHref>
