@@ -3,22 +3,30 @@ import Container from "@/components/Container/Container";
 import Editor from "@/components/Editor/Editor";
 import Switch from "@/components/Switch/Switch";
 import { getRandomEmoji } from "@/utils/const";
+import { EditTag } from "@/utils/types";
 import dayjs from "dayjs";
+import debounce from "debounce-promise";
 import "emoji-mart/css/emoji-mart.css";
 import {
+  Posts_Tags_Constraint,
+  Posts_Tags_Update_Column,
+  Post_Type_Enum,
   SearchTagsByKeywordDocument,
   SearchTagsByKeywordQuery,
+  Tags_Constraint,
+  Tags_Update_Column,
+  useCreatePostMutation,
   useListTagsForSelectQuery,
 } from "graphql/generated/graphql";
 import useLocalStorage from "hooks/useLocalStorage";
+import { nanoid } from "nanoid";
 import { useCallback, useEffect } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import AsyncCreatable from "react-select/async-creatable";
+import slugify from "slugify";
 import { useClient } from "urql";
 import EmojiPicker from "./EmojiPicker";
-import debounce from "debounce-promise";
-import { EditTag } from "@/utils/types";
 
 interface ArticleEditorProps {
   id?: string | null;
@@ -42,6 +50,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     handleSubmit,
     control,
     formState: { isSubmitting, isDirty },
+    setError,
   } = useForm({
     defaultValues: {
       id,
@@ -53,29 +62,74 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     },
   });
 
-  const {} = useFieldArray({
-    control,
-    name: "tag_keyword",
-  });
-
+  const [_post, createPost] = useCreatePostMutation();
   const onSubmit = async (data: {
     id?: string | null;
     title: string;
     body_markdown: string;
     published: boolean;
+    emoji: string;
     tag_keyword: EditTag[];
   }) => {
-    console.log(data);
     if (data.title) {
-      // just proceed normal
+      // // check for new tags
+      // const newTags = data.tag_keyword
+      //   .filter((i) => i.__isNew__)
+      //   .map((i) => ({
+      //     keyword: i.value,
+      //   }));
+      // // create new tags
+      // if (newTags.length > 0) {
+      //   await insertTags({
+      //     objects: newTags,
+      //   });
+      // }
+
       if (data.id) {
         // const res =await update()
       } else {
-        // const res = await create();
+        // create post
+        const postRes = await createPost({
+          object: {
+            body_markdown: data.body_markdown,
+            emoji: data.emoji,
+            published: data.published,
+            post_type: Post_Type_Enum.Article,
+            title: data.title,
+            slug:
+              slugify(data.title, {
+                lower: true,
+                strict: true,
+              }) + `-${nanoid(5)}`,
+            posts_tags: {
+              data: data.tag_keyword.map((i) => ({
+                tag: {
+                  data: {
+                    keyword: i.value,
+                  },
+                  on_conflict: {
+                    constraint: Tags_Constraint.TagsPkey,
+                    update_columns: [Tags_Update_Column.Keyword],
+                  },
+                },
+              })),
+              on_conflict: {
+                constraint: Posts_Tags_Constraint.PostsTablePkey,
+                update_columns: [Posts_Tags_Update_Column.TagKeyword],
+              },
+            },
+          },
+        });
+
+        console.log(postRes);
       }
     } else {
       if (!data.title) {
         toast.error("An title is required.");
+        setError("title", {
+          type: "required",
+          message: "A title is required",
+        });
       }
     }
   };

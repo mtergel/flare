@@ -173,7 +173,7 @@ export type Mutation_RootDelete_Posts_TagsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Posts_Tags_By_PkArgs = {
-  id_post_tags: Scalars['bigint'];
+  id: Scalars['bigint'];
 };
 
 
@@ -185,7 +185,7 @@ export type Mutation_RootDelete_TagsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Tags_By_PkArgs = {
-  id: Scalars['bigint'];
+  keyword: Scalars['String'];
 };
 
 
@@ -319,7 +319,6 @@ export type Mutation_RootUpdate_Posts_Tags_By_PkArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_TagsArgs = {
-  _inc?: Maybe<Tags_Inc_Input>;
   _set?: Maybe<Tags_Set_Input>;
   where: Tags_Bool_Exp;
 };
@@ -327,7 +326,6 @@ export type Mutation_RootUpdate_TagsArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Tags_By_PkArgs = {
-  _inc?: Maybe<Tags_Inc_Input>;
   _set?: Maybe<Tags_Set_Input>;
   pk_columns: Tags_Pk_Columns_Input;
 };
@@ -842,7 +840,7 @@ export type Posts_Sum_Order_By = {
 };
 
 /**
- * many-to-many rel of posts and tags
+ * junction table
  *
  *
  * columns and relationships of "posts_tags"
@@ -850,7 +848,8 @@ export type Posts_Sum_Order_By = {
  */
 export type Posts_Tags = {
   __typename?: 'posts_tags';
-  id_post_tags: Scalars['bigint'];
+  id: Scalars['bigint'];
+  owner?: Maybe<Scalars['String']>;
   /** An object relationship */
   post: Posts;
   post_id: Scalars['bigint'];
@@ -914,13 +913,13 @@ export type Posts_Tags_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Posts_Tags_Avg_Fields = {
   __typename?: 'posts_tags_avg_fields';
-  id_post_tags?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
   post_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "posts_tags" */
 export type Posts_Tags_Avg_Order_By = {
-  id_post_tags?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   post_id?: Maybe<Order_By>;
 };
 
@@ -929,7 +928,8 @@ export type Posts_Tags_Bool_Exp = {
   _and?: Maybe<Array<Posts_Tags_Bool_Exp>>;
   _not?: Maybe<Posts_Tags_Bool_Exp>;
   _or?: Maybe<Array<Posts_Tags_Bool_Exp>>;
-  id_post_tags?: Maybe<Bigint_Comparison_Exp>;
+  id?: Maybe<Bigint_Comparison_Exp>;
+  owner?: Maybe<String_Comparison_Exp>;
   post?: Maybe<Posts_Bool_Exp>;
   post_id?: Maybe<Bigint_Comparison_Exp>;
   tag?: Maybe<Tags_Bool_Exp>;
@@ -939,18 +939,19 @@ export type Posts_Tags_Bool_Exp = {
 /** unique or primary key constraints on table "posts_tags" */
 export enum Posts_Tags_Constraint {
   /** unique or primary key constraint */
-  PostsTagsPkey = 'posts_tags_pkey'
+  PostsTablePkey = 'posts_table_pkey'
 }
 
 /** input type for incrementing numeric columns in table "posts_tags" */
 export type Posts_Tags_Inc_Input = {
-  id_post_tags?: Maybe<Scalars['bigint']>;
+  id?: Maybe<Scalars['bigint']>;
   post_id?: Maybe<Scalars['bigint']>;
 };
 
 /** input type for inserting data into table "posts_tags" */
 export type Posts_Tags_Insert_Input = {
-  id_post_tags?: Maybe<Scalars['bigint']>;
+  id?: Maybe<Scalars['bigint']>;
+  owner?: Maybe<Scalars['String']>;
   post?: Maybe<Posts_Obj_Rel_Insert_Input>;
   post_id?: Maybe<Scalars['bigint']>;
   tag?: Maybe<Tags_Obj_Rel_Insert_Input>;
@@ -960,14 +961,16 @@ export type Posts_Tags_Insert_Input = {
 /** aggregate max on columns */
 export type Posts_Tags_Max_Fields = {
   __typename?: 'posts_tags_max_fields';
-  id_post_tags?: Maybe<Scalars['bigint']>;
+  id?: Maybe<Scalars['bigint']>;
+  owner?: Maybe<Scalars['String']>;
   post_id?: Maybe<Scalars['bigint']>;
   tag_keyword?: Maybe<Scalars['String']>;
 };
 
 /** order by max() on columns of table "posts_tags" */
 export type Posts_Tags_Max_Order_By = {
-  id_post_tags?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  owner?: Maybe<Order_By>;
   post_id?: Maybe<Order_By>;
   tag_keyword?: Maybe<Order_By>;
 };
@@ -975,14 +978,16 @@ export type Posts_Tags_Max_Order_By = {
 /** aggregate min on columns */
 export type Posts_Tags_Min_Fields = {
   __typename?: 'posts_tags_min_fields';
-  id_post_tags?: Maybe<Scalars['bigint']>;
+  id?: Maybe<Scalars['bigint']>;
+  owner?: Maybe<Scalars['String']>;
   post_id?: Maybe<Scalars['bigint']>;
   tag_keyword?: Maybe<Scalars['String']>;
 };
 
 /** order by min() on columns of table "posts_tags" */
 export type Posts_Tags_Min_Order_By = {
-  id_post_tags?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  owner?: Maybe<Order_By>;
   post_id?: Maybe<Order_By>;
   tag_keyword?: Maybe<Order_By>;
 };
@@ -1005,7 +1010,8 @@ export type Posts_Tags_On_Conflict = {
 
 /** Ordering options when selecting data from "posts_tags". */
 export type Posts_Tags_Order_By = {
-  id_post_tags?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  owner?: Maybe<Order_By>;
   post?: Maybe<Posts_Order_By>;
   post_id?: Maybe<Order_By>;
   tag?: Maybe<Tags_Order_By>;
@@ -1014,13 +1020,15 @@ export type Posts_Tags_Order_By = {
 
 /** primary key columns input for table: posts_tags */
 export type Posts_Tags_Pk_Columns_Input = {
-  id_post_tags: Scalars['bigint'];
+  id: Scalars['bigint'];
 };
 
 /** select columns of table "posts_tags" */
 export enum Posts_Tags_Select_Column {
   /** column name */
-  IdPostTags = 'id_post_tags',
+  Id = 'id',
+  /** column name */
+  Owner = 'owner',
   /** column name */
   PostId = 'post_id',
   /** column name */
@@ -1029,7 +1037,8 @@ export enum Posts_Tags_Select_Column {
 
 /** input type for updating data in table "posts_tags" */
 export type Posts_Tags_Set_Input = {
-  id_post_tags?: Maybe<Scalars['bigint']>;
+  id?: Maybe<Scalars['bigint']>;
+  owner?: Maybe<Scalars['String']>;
   post_id?: Maybe<Scalars['bigint']>;
   tag_keyword?: Maybe<Scalars['String']>;
 };
@@ -1037,59 +1046,61 @@ export type Posts_Tags_Set_Input = {
 /** aggregate stddev on columns */
 export type Posts_Tags_Stddev_Fields = {
   __typename?: 'posts_tags_stddev_fields';
-  id_post_tags?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
   post_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "posts_tags" */
 export type Posts_Tags_Stddev_Order_By = {
-  id_post_tags?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   post_id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Posts_Tags_Stddev_Pop_Fields = {
   __typename?: 'posts_tags_stddev_pop_fields';
-  id_post_tags?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
   post_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "posts_tags" */
 export type Posts_Tags_Stddev_Pop_Order_By = {
-  id_post_tags?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   post_id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Posts_Tags_Stddev_Samp_Fields = {
   __typename?: 'posts_tags_stddev_samp_fields';
-  id_post_tags?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
   post_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "posts_tags" */
 export type Posts_Tags_Stddev_Samp_Order_By = {
-  id_post_tags?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   post_id?: Maybe<Order_By>;
 };
 
 /** aggregate sum on columns */
 export type Posts_Tags_Sum_Fields = {
   __typename?: 'posts_tags_sum_fields';
-  id_post_tags?: Maybe<Scalars['bigint']>;
+  id?: Maybe<Scalars['bigint']>;
   post_id?: Maybe<Scalars['bigint']>;
 };
 
 /** order by sum() on columns of table "posts_tags" */
 export type Posts_Tags_Sum_Order_By = {
-  id_post_tags?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   post_id?: Maybe<Order_By>;
 };
 
 /** update columns of table "posts_tags" */
 export enum Posts_Tags_Update_Column {
   /** column name */
-  IdPostTags = 'id_post_tags',
+  Id = 'id',
+  /** column name */
+  Owner = 'owner',
   /** column name */
   PostId = 'post_id',
   /** column name */
@@ -1099,39 +1110,39 @@ export enum Posts_Tags_Update_Column {
 /** aggregate var_pop on columns */
 export type Posts_Tags_Var_Pop_Fields = {
   __typename?: 'posts_tags_var_pop_fields';
-  id_post_tags?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
   post_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "posts_tags" */
 export type Posts_Tags_Var_Pop_Order_By = {
-  id_post_tags?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   post_id?: Maybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Posts_Tags_Var_Samp_Fields = {
   __typename?: 'posts_tags_var_samp_fields';
-  id_post_tags?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
   post_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "posts_tags" */
 export type Posts_Tags_Var_Samp_Order_By = {
-  id_post_tags?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   post_id?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Posts_Tags_Variance_Fields = {
   __typename?: 'posts_tags_variance_fields';
-  id_post_tags?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
   post_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "posts_tags" */
 export type Posts_Tags_Variance_Order_By = {
-  id_post_tags?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   post_id?: Maybe<Order_By>;
 };
 
@@ -1296,7 +1307,7 @@ export type Query_RootPosts_Tags_AggregateArgs = {
 
 
 export type Query_RootPosts_Tags_By_PkArgs = {
-  id_post_tags: Scalars['bigint'];
+  id: Scalars['bigint'];
 };
 
 
@@ -1339,7 +1350,7 @@ export type Query_RootTags_AggregateArgs = {
 
 
 export type Query_RootTags_By_PkArgs = {
-  id: Scalars['bigint'];
+  keyword: Scalars['String'];
 };
 
 
@@ -1473,7 +1484,7 @@ export type Subscription_RootPosts_Tags_AggregateArgs = {
 
 
 export type Subscription_RootPosts_Tags_By_PkArgs = {
-  id_post_tags: Scalars['bigint'];
+  id: Scalars['bigint'];
 };
 
 
@@ -1516,7 +1527,7 @@ export type Subscription_RootTags_AggregateArgs = {
 
 
 export type Subscription_RootTags_By_PkArgs = {
-  id: Scalars['bigint'];
+  keyword: Scalars['String'];
 };
 
 
@@ -1543,7 +1554,7 @@ export type Subscription_RootUsers_By_PkArgs = {
 };
 
 /**
- * article tags
+ * post tags
  *
  *
  * columns and relationships of "tags"
@@ -1551,8 +1562,7 @@ export type Subscription_RootUsers_By_PkArgs = {
  */
 export type Tags = {
   __typename?: 'tags';
-  id: Scalars['bigint'];
-  image_url?: Maybe<Scalars['String']>;
+  image: Scalars['String'];
   included: Scalars['Boolean'];
   keyword: Scalars['String'];
   name?: Maybe<Scalars['String']>;
@@ -1564,7 +1574,7 @@ export type Tags = {
 
 
 /**
- * article tags
+ * post tags
  *
  *
  * columns and relationships of "tags"
@@ -1580,7 +1590,7 @@ export type TagsPosts_TagsArgs = {
 
 
 /**
- * article tags
+ * post tags
  *
  *
  * columns and relationships of "tags"
@@ -1604,17 +1614,9 @@ export type Tags_Aggregate = {
 /** aggregate fields of "tags" */
 export type Tags_Aggregate_Fields = {
   __typename?: 'tags_aggregate_fields';
-  avg?: Maybe<Tags_Avg_Fields>;
   count: Scalars['Int'];
   max?: Maybe<Tags_Max_Fields>;
   min?: Maybe<Tags_Min_Fields>;
-  stddev?: Maybe<Tags_Stddev_Fields>;
-  stddev_pop?: Maybe<Tags_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Tags_Stddev_Samp_Fields>;
-  sum?: Maybe<Tags_Sum_Fields>;
-  var_pop?: Maybe<Tags_Var_Pop_Fields>;
-  var_samp?: Maybe<Tags_Var_Samp_Fields>;
-  variance?: Maybe<Tags_Variance_Fields>;
 };
 
 
@@ -1624,19 +1626,12 @@ export type Tags_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** aggregate avg on columns */
-export type Tags_Avg_Fields = {
-  __typename?: 'tags_avg_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
 /** Boolean expression to filter rows from the table "tags". All fields are combined with a logical 'AND'. */
 export type Tags_Bool_Exp = {
   _and?: Maybe<Array<Tags_Bool_Exp>>;
   _not?: Maybe<Tags_Bool_Exp>;
   _or?: Maybe<Array<Tags_Bool_Exp>>;
-  id?: Maybe<Bigint_Comparison_Exp>;
-  image_url?: Maybe<String_Comparison_Exp>;
+  image?: Maybe<String_Comparison_Exp>;
   included?: Maybe<Boolean_Comparison_Exp>;
   keyword?: Maybe<String_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
@@ -1646,22 +1641,12 @@ export type Tags_Bool_Exp = {
 /** unique or primary key constraints on table "tags" */
 export enum Tags_Constraint {
   /** unique or primary key constraint */
-  TagsKeyword = 'tags_keyword',
-  /** unique or primary key constraint */
-  TagsKeywordKey = 'tags_keyword_key',
-  /** unique or primary key constraint */
   TagsPkey = 'tags_pkey'
 }
 
-/** input type for incrementing numeric columns in table "tags" */
-export type Tags_Inc_Input = {
-  id?: Maybe<Scalars['bigint']>;
-};
-
 /** input type for inserting data into table "tags" */
 export type Tags_Insert_Input = {
-  id?: Maybe<Scalars['bigint']>;
-  image_url?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
   included?: Maybe<Scalars['Boolean']>;
   keyword?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -1671,8 +1656,7 @@ export type Tags_Insert_Input = {
 /** aggregate max on columns */
 export type Tags_Max_Fields = {
   __typename?: 'tags_max_fields';
-  id?: Maybe<Scalars['bigint']>;
-  image_url?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
   keyword?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
 };
@@ -1680,8 +1664,7 @@ export type Tags_Max_Fields = {
 /** aggregate min on columns */
 export type Tags_Min_Fields = {
   __typename?: 'tags_min_fields';
-  id?: Maybe<Scalars['bigint']>;
-  image_url?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
   keyword?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
 };
@@ -1711,8 +1694,7 @@ export type Tags_On_Conflict = {
 
 /** Ordering options when selecting data from "tags". */
 export type Tags_Order_By = {
-  id?: Maybe<Order_By>;
-  image_url?: Maybe<Order_By>;
+  image?: Maybe<Order_By>;
   included?: Maybe<Order_By>;
   keyword?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
@@ -1721,15 +1703,13 @@ export type Tags_Order_By = {
 
 /** primary key columns input for table: tags */
 export type Tags_Pk_Columns_Input = {
-  id: Scalars['bigint'];
+  keyword: Scalars['String'];
 };
 
 /** select columns of table "tags" */
 export enum Tags_Select_Column {
   /** column name */
-  Id = 'id',
-  /** column name */
-  ImageUrl = 'image_url',
+  Image = 'image',
   /** column name */
   Included = 'included',
   /** column name */
@@ -1740,43 +1720,16 @@ export enum Tags_Select_Column {
 
 /** input type for updating data in table "tags" */
 export type Tags_Set_Input = {
-  id?: Maybe<Scalars['bigint']>;
-  image_url?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
   included?: Maybe<Scalars['Boolean']>;
   keyword?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
 };
 
-/** aggregate stddev on columns */
-export type Tags_Stddev_Fields = {
-  __typename?: 'tags_stddev_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Tags_Stddev_Pop_Fields = {
-  __typename?: 'tags_stddev_pop_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Tags_Stddev_Samp_Fields = {
-  __typename?: 'tags_stddev_samp_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate sum on columns */
-export type Tags_Sum_Fields = {
-  __typename?: 'tags_sum_fields';
-  id?: Maybe<Scalars['bigint']>;
-};
-
 /** update columns of table "tags" */
 export enum Tags_Update_Column {
   /** column name */
-  Id = 'id',
-  /** column name */
-  ImageUrl = 'image_url',
+  Image = 'image',
   /** column name */
   Included = 'included',
   /** column name */
@@ -1784,24 +1737,6 @@ export enum Tags_Update_Column {
   /** column name */
   Name = 'name'
 }
-
-/** aggregate var_pop on columns */
-export type Tags_Var_Pop_Fields = {
-  __typename?: 'tags_var_pop_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate var_samp on columns */
-export type Tags_Var_Samp_Fields = {
-  __typename?: 'tags_var_samp_fields';
-  id?: Maybe<Scalars['Float']>;
-};
-
-/** aggregate variance on columns */
-export type Tags_Variance_Fields = {
-  __typename?: 'tags_variance_fields';
-  id?: Maybe<Scalars['Float']>;
-};
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
@@ -2067,6 +2002,20 @@ export enum Users_Update_Column {
   Verified = 'verified'
 }
 
+export type CreatePostMutationVariables = Exact<{
+  object: Posts_Insert_Input;
+}>;
+
+
+export type CreatePostMutation = { __typename?: 'mutation_root', insert_posts_one?: { __typename?: 'posts', slug: string } | null | undefined };
+
+export type InsertTagsMutationVariables = Exact<{
+  objects: Array<Tags_Insert_Input> | Tags_Insert_Input;
+}>;
+
+
+export type InsertTagsMutation = { __typename?: 'mutation_root', insert_tags?: { __typename?: 'tags_mutation_response', affected_rows: number } | null | undefined };
+
 export type ListTagsForSelectQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -2119,6 +2068,28 @@ export type GetUserByUsernamePostsQueryVariables = Exact<{
 export type GetUserByUsernamePostsQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', username?: string | null | undefined, created_at: any, image?: string | null | undefined, name: string, user_id: string, bio?: string | null | undefined, verified: boolean, posts_aggregate: { __typename?: 'posts_aggregate', aggregate?: { __typename?: 'posts_aggregate_fields', count: number } | null | undefined }, posts: Array<{ __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, post_type: Post_Type_Enum, published: boolean, slug: string, title: string, updated_at?: any | null | undefined, posts_tags: Array<{ __typename?: 'posts_tags', tag_keyword: string }> }> }> };
 
 
+export const CreatePostDocument = gql`
+    mutation CreatePost($object: posts_insert_input!) {
+  insert_posts_one(object: $object) {
+    slug
+  }
+}
+    `;
+
+export function useCreatePostMutation() {
+  return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
+};
+export const InsertTagsDocument = gql`
+    mutation InsertTags($objects: [tags_insert_input!]!) {
+  insert_tags(objects: $objects) {
+    affected_rows
+  }
+}
+    `;
+
+export function useInsertTagsMutation() {
+  return Urql.useMutation<InsertTagsMutation, InsertTagsMutationVariables>(InsertTagsDocument);
+};
 export const ListTagsForSelectDocument = gql`
     query ListTagsForSelect {
   tags(where: {included: {_eq: true}}) {
