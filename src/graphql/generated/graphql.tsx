@@ -86,6 +86,14 @@ export type Mutation_Root = {
   delete_posts?: Maybe<Posts_Mutation_Response>;
   /** delete single row from the table: "posts" */
   delete_posts_by_pk?: Maybe<Posts>;
+  /** delete data from the table: "posts_tags" */
+  delete_posts_tags?: Maybe<Posts_Tags_Mutation_Response>;
+  /** delete single row from the table: "posts_tags" */
+  delete_posts_tags_by_pk?: Maybe<Posts_Tags>;
+  /** delete data from the table: "tags" */
+  delete_tags?: Maybe<Tags_Mutation_Response>;
+  /** delete single row from the table: "tags" */
+  delete_tags_by_pk?: Maybe<Tags>;
   /** delete data from the table: "users" */
   delete_users?: Maybe<Users_Mutation_Response>;
   /** delete single row from the table: "users" */
@@ -98,6 +106,14 @@ export type Mutation_Root = {
   insert_posts?: Maybe<Posts_Mutation_Response>;
   /** insert a single row into the table: "posts" */
   insert_posts_one?: Maybe<Posts>;
+  /** insert data into the table: "posts_tags" */
+  insert_posts_tags?: Maybe<Posts_Tags_Mutation_Response>;
+  /** insert a single row into the table: "posts_tags" */
+  insert_posts_tags_one?: Maybe<Posts_Tags>;
+  /** insert data into the table: "tags" */
+  insert_tags?: Maybe<Tags_Mutation_Response>;
+  /** insert a single row into the table: "tags" */
+  insert_tags_one?: Maybe<Tags>;
   /** insert data into the table: "users" */
   insert_users?: Maybe<Users_Mutation_Response>;
   /** insert a single row into the table: "users" */
@@ -110,6 +126,14 @@ export type Mutation_Root = {
   update_posts?: Maybe<Posts_Mutation_Response>;
   /** update single row of the table: "posts" */
   update_posts_by_pk?: Maybe<Posts>;
+  /** update data of the table: "posts_tags" */
+  update_posts_tags?: Maybe<Posts_Tags_Mutation_Response>;
+  /** update single row of the table: "posts_tags" */
+  update_posts_tags_by_pk?: Maybe<Posts_Tags>;
+  /** update data of the table: "tags" */
+  update_tags?: Maybe<Tags_Mutation_Response>;
+  /** update single row of the table: "tags" */
+  update_tags_by_pk?: Maybe<Tags>;
   /** update data of the table: "users" */
   update_users?: Maybe<Users_Mutation_Response>;
   /** update single row of the table: "users" */
@@ -137,6 +161,30 @@ export type Mutation_RootDelete_PostsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Posts_By_PkArgs = {
+  id: Scalars['bigint'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Posts_TagsArgs = {
+  where: Posts_Tags_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Posts_Tags_By_PkArgs = {
+  id_post_tags: Scalars['bigint'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_TagsArgs = {
+  where: Tags_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Tags_By_PkArgs = {
   id: Scalars['bigint'];
 };
 
@@ -182,6 +230,34 @@ export type Mutation_RootInsert_Posts_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Posts_TagsArgs = {
+  objects: Array<Posts_Tags_Insert_Input>;
+  on_conflict?: Maybe<Posts_Tags_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Posts_Tags_OneArgs = {
+  object: Posts_Tags_Insert_Input;
+  on_conflict?: Maybe<Posts_Tags_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_TagsArgs = {
+  objects: Array<Tags_Insert_Input>;
+  on_conflict?: Maybe<Tags_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Tags_OneArgs = {
+  object: Tags_Insert_Input;
+  on_conflict?: Maybe<Tags_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_UsersArgs = {
   objects: Array<Users_Insert_Input>;
   on_conflict?: Maybe<Users_On_Conflict>;
@@ -222,6 +298,38 @@ export type Mutation_RootUpdate_Posts_By_PkArgs = {
   _inc?: Maybe<Posts_Inc_Input>;
   _set?: Maybe<Posts_Set_Input>;
   pk_columns: Posts_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Posts_TagsArgs = {
+  _inc?: Maybe<Posts_Tags_Inc_Input>;
+  _set?: Maybe<Posts_Tags_Set_Input>;
+  where: Posts_Tags_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Posts_Tags_By_PkArgs = {
+  _inc?: Maybe<Posts_Tags_Inc_Input>;
+  _set?: Maybe<Posts_Tags_Set_Input>;
+  pk_columns: Posts_Tags_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_TagsArgs = {
+  _inc?: Maybe<Tags_Inc_Input>;
+  _set?: Maybe<Tags_Set_Input>;
+  where: Tags_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Tags_By_PkArgs = {
+  _inc?: Maybe<Tags_Inc_Input>;
+  _set?: Maybe<Tags_Set_Input>;
+  pk_columns: Tags_Pk_Columns_Input;
 };
 
 
@@ -398,9 +506,15 @@ export enum Post_Type_Update_Column {
  */
 export type Posts = {
   __typename?: 'posts';
+  body_markdown?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  emoji?: Maybe<Scalars['String']>;
   id: Scalars['bigint'];
   post_type: Post_Type_Enum;
+  /** An array relationship */
+  posts_tags: Array<Posts_Tags>;
+  /** An aggregate relationship */
+  posts_tags_aggregate: Posts_Tags_Aggregate;
   published: Scalars['Boolean'];
   slug: Scalars['String'];
   title: Scalars['String'];
@@ -408,6 +522,38 @@ export type Posts = {
   /** An object relationship */
   user: Users;
   user_id: Scalars['String'];
+};
+
+
+/**
+ * contains article/notebook/books
+ *
+ *
+ * columns and relationships of "posts"
+ *
+ */
+export type PostsPosts_TagsArgs = {
+  distinct_on?: Maybe<Array<Posts_Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Posts_Tags_Order_By>>;
+  where?: Maybe<Posts_Tags_Bool_Exp>;
+};
+
+
+/**
+ * contains article/notebook/books
+ *
+ *
+ * columns and relationships of "posts"
+ *
+ */
+export type PostsPosts_Tags_AggregateArgs = {
+  distinct_on?: Maybe<Array<Posts_Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Posts_Tags_Order_By>>;
+  where?: Maybe<Posts_Tags_Bool_Exp>;
 };
 
 /** aggregated selection of "posts" */
@@ -478,9 +624,12 @@ export type Posts_Bool_Exp = {
   _and?: Maybe<Array<Posts_Bool_Exp>>;
   _not?: Maybe<Posts_Bool_Exp>;
   _or?: Maybe<Array<Posts_Bool_Exp>>;
+  body_markdown?: Maybe<String_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  emoji?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Bigint_Comparison_Exp>;
   post_type?: Maybe<Post_Type_Enum_Comparison_Exp>;
+  posts_tags?: Maybe<Posts_Tags_Bool_Exp>;
   published?: Maybe<Boolean_Comparison_Exp>;
   slug?: Maybe<String_Comparison_Exp>;
   title?: Maybe<String_Comparison_Exp>;
@@ -502,9 +651,12 @@ export type Posts_Inc_Input = {
 
 /** input type for inserting data into table "posts" */
 export type Posts_Insert_Input = {
+  body_markdown?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  emoji?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['bigint']>;
   post_type?: Maybe<Post_Type_Enum>;
+  posts_tags?: Maybe<Posts_Tags_Arr_Rel_Insert_Input>;
   published?: Maybe<Scalars['Boolean']>;
   slug?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
@@ -516,7 +668,9 @@ export type Posts_Insert_Input = {
 /** aggregate max on columns */
 export type Posts_Max_Fields = {
   __typename?: 'posts_max_fields';
+  body_markdown?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  emoji?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['bigint']>;
   slug?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
@@ -526,7 +680,9 @@ export type Posts_Max_Fields = {
 
 /** order by max() on columns of table "posts" */
 export type Posts_Max_Order_By = {
+  body_markdown?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  emoji?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   slug?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
@@ -537,7 +693,9 @@ export type Posts_Max_Order_By = {
 /** aggregate min on columns */
 export type Posts_Min_Fields = {
   __typename?: 'posts_min_fields';
+  body_markdown?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  emoji?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['bigint']>;
   slug?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
@@ -547,7 +705,9 @@ export type Posts_Min_Fields = {
 
 /** order by min() on columns of table "posts" */
 export type Posts_Min_Order_By = {
+  body_markdown?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  emoji?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   slug?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
@@ -564,6 +724,13 @@ export type Posts_Mutation_Response = {
   returning: Array<Posts>;
 };
 
+/** input type for inserting object relation for remote table "posts" */
+export type Posts_Obj_Rel_Insert_Input = {
+  data: Posts_Insert_Input;
+  /** on conflict condition */
+  on_conflict?: Maybe<Posts_On_Conflict>;
+};
+
 /** on conflict condition type for table "posts" */
 export type Posts_On_Conflict = {
   constraint: Posts_Constraint;
@@ -573,9 +740,12 @@ export type Posts_On_Conflict = {
 
 /** Ordering options when selecting data from "posts". */
 export type Posts_Order_By = {
+  body_markdown?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  emoji?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   post_type?: Maybe<Order_By>;
+  posts_tags_aggregate?: Maybe<Posts_Tags_Aggregate_Order_By>;
   published?: Maybe<Order_By>;
   slug?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
@@ -592,7 +762,11 @@ export type Posts_Pk_Columns_Input = {
 /** select columns of table "posts" */
 export enum Posts_Select_Column {
   /** column name */
+  BodyMarkdown = 'body_markdown',
+  /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Emoji = 'emoji',
   /** column name */
   Id = 'id',
   /** column name */
@@ -611,7 +785,9 @@ export enum Posts_Select_Column {
 
 /** input type for updating data in table "posts" */
 export type Posts_Set_Input = {
+  body_markdown?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  emoji?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['bigint']>;
   post_type?: Maybe<Post_Type_Enum>;
   published?: Maybe<Scalars['Boolean']>;
@@ -665,10 +841,308 @@ export type Posts_Sum_Order_By = {
   id?: Maybe<Order_By>;
 };
 
+/**
+ * many-to-many rel of posts and tags
+ *
+ *
+ * columns and relationships of "posts_tags"
+ *
+ */
+export type Posts_Tags = {
+  __typename?: 'posts_tags';
+  id_post_tags: Scalars['bigint'];
+  /** An object relationship */
+  post: Posts;
+  post_id: Scalars['bigint'];
+  /** An object relationship */
+  tag: Tags;
+  tag_keyword: Scalars['String'];
+};
+
+/** aggregated selection of "posts_tags" */
+export type Posts_Tags_Aggregate = {
+  __typename?: 'posts_tags_aggregate';
+  aggregate?: Maybe<Posts_Tags_Aggregate_Fields>;
+  nodes: Array<Posts_Tags>;
+};
+
+/** aggregate fields of "posts_tags" */
+export type Posts_Tags_Aggregate_Fields = {
+  __typename?: 'posts_tags_aggregate_fields';
+  avg?: Maybe<Posts_Tags_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Posts_Tags_Max_Fields>;
+  min?: Maybe<Posts_Tags_Min_Fields>;
+  stddev?: Maybe<Posts_Tags_Stddev_Fields>;
+  stddev_pop?: Maybe<Posts_Tags_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Posts_Tags_Stddev_Samp_Fields>;
+  sum?: Maybe<Posts_Tags_Sum_Fields>;
+  var_pop?: Maybe<Posts_Tags_Var_Pop_Fields>;
+  var_samp?: Maybe<Posts_Tags_Var_Samp_Fields>;
+  variance?: Maybe<Posts_Tags_Variance_Fields>;
+};
+
+
+/** aggregate fields of "posts_tags" */
+export type Posts_Tags_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Posts_Tags_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "posts_tags" */
+export type Posts_Tags_Aggregate_Order_By = {
+  avg?: Maybe<Posts_Tags_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Posts_Tags_Max_Order_By>;
+  min?: Maybe<Posts_Tags_Min_Order_By>;
+  stddev?: Maybe<Posts_Tags_Stddev_Order_By>;
+  stddev_pop?: Maybe<Posts_Tags_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Posts_Tags_Stddev_Samp_Order_By>;
+  sum?: Maybe<Posts_Tags_Sum_Order_By>;
+  var_pop?: Maybe<Posts_Tags_Var_Pop_Order_By>;
+  var_samp?: Maybe<Posts_Tags_Var_Samp_Order_By>;
+  variance?: Maybe<Posts_Tags_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "posts_tags" */
+export type Posts_Tags_Arr_Rel_Insert_Input = {
+  data: Array<Posts_Tags_Insert_Input>;
+  /** on conflict condition */
+  on_conflict?: Maybe<Posts_Tags_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Posts_Tags_Avg_Fields = {
+  __typename?: 'posts_tags_avg_fields';
+  id_post_tags?: Maybe<Scalars['Float']>;
+  post_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "posts_tags" */
+export type Posts_Tags_Avg_Order_By = {
+  id_post_tags?: Maybe<Order_By>;
+  post_id?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "posts_tags". All fields are combined with a logical 'AND'. */
+export type Posts_Tags_Bool_Exp = {
+  _and?: Maybe<Array<Posts_Tags_Bool_Exp>>;
+  _not?: Maybe<Posts_Tags_Bool_Exp>;
+  _or?: Maybe<Array<Posts_Tags_Bool_Exp>>;
+  id_post_tags?: Maybe<Bigint_Comparison_Exp>;
+  post?: Maybe<Posts_Bool_Exp>;
+  post_id?: Maybe<Bigint_Comparison_Exp>;
+  tag?: Maybe<Tags_Bool_Exp>;
+  tag_keyword?: Maybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "posts_tags" */
+export enum Posts_Tags_Constraint {
+  /** unique or primary key constraint */
+  PostsTagsPkey = 'posts_tags_pkey'
+}
+
+/** input type for incrementing numeric columns in table "posts_tags" */
+export type Posts_Tags_Inc_Input = {
+  id_post_tags?: Maybe<Scalars['bigint']>;
+  post_id?: Maybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "posts_tags" */
+export type Posts_Tags_Insert_Input = {
+  id_post_tags?: Maybe<Scalars['bigint']>;
+  post?: Maybe<Posts_Obj_Rel_Insert_Input>;
+  post_id?: Maybe<Scalars['bigint']>;
+  tag?: Maybe<Tags_Obj_Rel_Insert_Input>;
+  tag_keyword?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Posts_Tags_Max_Fields = {
+  __typename?: 'posts_tags_max_fields';
+  id_post_tags?: Maybe<Scalars['bigint']>;
+  post_id?: Maybe<Scalars['bigint']>;
+  tag_keyword?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "posts_tags" */
+export type Posts_Tags_Max_Order_By = {
+  id_post_tags?: Maybe<Order_By>;
+  post_id?: Maybe<Order_By>;
+  tag_keyword?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Posts_Tags_Min_Fields = {
+  __typename?: 'posts_tags_min_fields';
+  id_post_tags?: Maybe<Scalars['bigint']>;
+  post_id?: Maybe<Scalars['bigint']>;
+  tag_keyword?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "posts_tags" */
+export type Posts_Tags_Min_Order_By = {
+  id_post_tags?: Maybe<Order_By>;
+  post_id?: Maybe<Order_By>;
+  tag_keyword?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "posts_tags" */
+export type Posts_Tags_Mutation_Response = {
+  __typename?: 'posts_tags_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Posts_Tags>;
+};
+
+/** on conflict condition type for table "posts_tags" */
+export type Posts_Tags_On_Conflict = {
+  constraint: Posts_Tags_Constraint;
+  update_columns?: Array<Posts_Tags_Update_Column>;
+  where?: Maybe<Posts_Tags_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "posts_tags". */
+export type Posts_Tags_Order_By = {
+  id_post_tags?: Maybe<Order_By>;
+  post?: Maybe<Posts_Order_By>;
+  post_id?: Maybe<Order_By>;
+  tag?: Maybe<Tags_Order_By>;
+  tag_keyword?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: posts_tags */
+export type Posts_Tags_Pk_Columns_Input = {
+  id_post_tags: Scalars['bigint'];
+};
+
+/** select columns of table "posts_tags" */
+export enum Posts_Tags_Select_Column {
+  /** column name */
+  IdPostTags = 'id_post_tags',
+  /** column name */
+  PostId = 'post_id',
+  /** column name */
+  TagKeyword = 'tag_keyword'
+}
+
+/** input type for updating data in table "posts_tags" */
+export type Posts_Tags_Set_Input = {
+  id_post_tags?: Maybe<Scalars['bigint']>;
+  post_id?: Maybe<Scalars['bigint']>;
+  tag_keyword?: Maybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type Posts_Tags_Stddev_Fields = {
+  __typename?: 'posts_tags_stddev_fields';
+  id_post_tags?: Maybe<Scalars['Float']>;
+  post_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "posts_tags" */
+export type Posts_Tags_Stddev_Order_By = {
+  id_post_tags?: Maybe<Order_By>;
+  post_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Posts_Tags_Stddev_Pop_Fields = {
+  __typename?: 'posts_tags_stddev_pop_fields';
+  id_post_tags?: Maybe<Scalars['Float']>;
+  post_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "posts_tags" */
+export type Posts_Tags_Stddev_Pop_Order_By = {
+  id_post_tags?: Maybe<Order_By>;
+  post_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Posts_Tags_Stddev_Samp_Fields = {
+  __typename?: 'posts_tags_stddev_samp_fields';
+  id_post_tags?: Maybe<Scalars['Float']>;
+  post_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "posts_tags" */
+export type Posts_Tags_Stddev_Samp_Order_By = {
+  id_post_tags?: Maybe<Order_By>;
+  post_id?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Posts_Tags_Sum_Fields = {
+  __typename?: 'posts_tags_sum_fields';
+  id_post_tags?: Maybe<Scalars['bigint']>;
+  post_id?: Maybe<Scalars['bigint']>;
+};
+
+/** order by sum() on columns of table "posts_tags" */
+export type Posts_Tags_Sum_Order_By = {
+  id_post_tags?: Maybe<Order_By>;
+  post_id?: Maybe<Order_By>;
+};
+
+/** update columns of table "posts_tags" */
+export enum Posts_Tags_Update_Column {
+  /** column name */
+  IdPostTags = 'id_post_tags',
+  /** column name */
+  PostId = 'post_id',
+  /** column name */
+  TagKeyword = 'tag_keyword'
+}
+
+/** aggregate var_pop on columns */
+export type Posts_Tags_Var_Pop_Fields = {
+  __typename?: 'posts_tags_var_pop_fields';
+  id_post_tags?: Maybe<Scalars['Float']>;
+  post_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "posts_tags" */
+export type Posts_Tags_Var_Pop_Order_By = {
+  id_post_tags?: Maybe<Order_By>;
+  post_id?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Posts_Tags_Var_Samp_Fields = {
+  __typename?: 'posts_tags_var_samp_fields';
+  id_post_tags?: Maybe<Scalars['Float']>;
+  post_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "posts_tags" */
+export type Posts_Tags_Var_Samp_Order_By = {
+  id_post_tags?: Maybe<Order_By>;
+  post_id?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Posts_Tags_Variance_Fields = {
+  __typename?: 'posts_tags_variance_fields';
+  id_post_tags?: Maybe<Scalars['Float']>;
+  post_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "posts_tags" */
+export type Posts_Tags_Variance_Order_By = {
+  id_post_tags?: Maybe<Order_By>;
+  post_id?: Maybe<Order_By>;
+};
+
 /** update columns of table "posts" */
 export enum Posts_Update_Column {
   /** column name */
+  BodyMarkdown = 'body_markdown',
+  /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Emoji = 'emoji',
   /** column name */
   Id = 'id',
   /** column name */
@@ -732,6 +1206,22 @@ export type Query_Root = {
   posts_aggregate: Posts_Aggregate;
   /** fetch data from the table: "posts" using primary key columns */
   posts_by_pk?: Maybe<Posts>;
+  /** An array relationship */
+  posts_tags: Array<Posts_Tags>;
+  /** An aggregate relationship */
+  posts_tags_aggregate: Posts_Tags_Aggregate;
+  /** fetch data from the table: "posts_tags" using primary key columns */
+  posts_tags_by_pk?: Maybe<Posts_Tags>;
+  /** execute function "search_tags_by_keyword" which returns "tags" */
+  search_tags_by_keyword: Array<Tags>;
+  /** execute function "search_tags_by_keyword" and query aggregates on result of table type "tags" */
+  search_tags_by_keyword_aggregate: Tags_Aggregate;
+  /** fetch data from the table: "tags" */
+  tags: Array<Tags>;
+  /** fetch aggregated fields from the table: "tags" */
+  tags_aggregate: Tags_Aggregate;
+  /** fetch data from the table: "tags" using primary key columns */
+  tags_by_pk?: Maybe<Tags>;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -787,6 +1277,72 @@ export type Query_RootPosts_By_PkArgs = {
 };
 
 
+export type Query_RootPosts_TagsArgs = {
+  distinct_on?: Maybe<Array<Posts_Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Posts_Tags_Order_By>>;
+  where?: Maybe<Posts_Tags_Bool_Exp>;
+};
+
+
+export type Query_RootPosts_Tags_AggregateArgs = {
+  distinct_on?: Maybe<Array<Posts_Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Posts_Tags_Order_By>>;
+  where?: Maybe<Posts_Tags_Bool_Exp>;
+};
+
+
+export type Query_RootPosts_Tags_By_PkArgs = {
+  id_post_tags: Scalars['bigint'];
+};
+
+
+export type Query_RootSearch_Tags_By_KeywordArgs = {
+  args: Search_Tags_By_Keyword_Args;
+  distinct_on?: Maybe<Array<Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Tags_Order_By>>;
+  where?: Maybe<Tags_Bool_Exp>;
+};
+
+
+export type Query_RootSearch_Tags_By_Keyword_AggregateArgs = {
+  args: Search_Tags_By_Keyword_Args;
+  distinct_on?: Maybe<Array<Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Tags_Order_By>>;
+  where?: Maybe<Tags_Bool_Exp>;
+};
+
+
+export type Query_RootTagsArgs = {
+  distinct_on?: Maybe<Array<Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Tags_Order_By>>;
+  where?: Maybe<Tags_Bool_Exp>;
+};
+
+
+export type Query_RootTags_AggregateArgs = {
+  distinct_on?: Maybe<Array<Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Tags_Order_By>>;
+  where?: Maybe<Tags_Bool_Exp>;
+};
+
+
+export type Query_RootTags_By_PkArgs = {
+  id: Scalars['bigint'];
+};
+
+
 export type Query_RootUsersArgs = {
   distinct_on?: Maybe<Array<Users_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -809,6 +1365,10 @@ export type Query_RootUsers_By_PkArgs = {
   user_id: Scalars['String'];
 };
 
+export type Search_Tags_By_Keyword_Args = {
+  search?: Maybe<Scalars['String']>;
+};
+
 export type Subscription_Root = {
   __typename?: 'subscription_root';
   /** fetch data from the table: "post_type" */
@@ -823,6 +1383,22 @@ export type Subscription_Root = {
   posts_aggregate: Posts_Aggregate;
   /** fetch data from the table: "posts" using primary key columns */
   posts_by_pk?: Maybe<Posts>;
+  /** An array relationship */
+  posts_tags: Array<Posts_Tags>;
+  /** An aggregate relationship */
+  posts_tags_aggregate: Posts_Tags_Aggregate;
+  /** fetch data from the table: "posts_tags" using primary key columns */
+  posts_tags_by_pk?: Maybe<Posts_Tags>;
+  /** execute function "search_tags_by_keyword" which returns "tags" */
+  search_tags_by_keyword: Array<Tags>;
+  /** execute function "search_tags_by_keyword" and query aggregates on result of table type "tags" */
+  search_tags_by_keyword_aggregate: Tags_Aggregate;
+  /** fetch data from the table: "tags" */
+  tags: Array<Tags>;
+  /** fetch aggregated fields from the table: "tags" */
+  tags_aggregate: Tags_Aggregate;
+  /** fetch data from the table: "tags" using primary key columns */
+  tags_by_pk?: Maybe<Tags>;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -878,6 +1454,72 @@ export type Subscription_RootPosts_By_PkArgs = {
 };
 
 
+export type Subscription_RootPosts_TagsArgs = {
+  distinct_on?: Maybe<Array<Posts_Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Posts_Tags_Order_By>>;
+  where?: Maybe<Posts_Tags_Bool_Exp>;
+};
+
+
+export type Subscription_RootPosts_Tags_AggregateArgs = {
+  distinct_on?: Maybe<Array<Posts_Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Posts_Tags_Order_By>>;
+  where?: Maybe<Posts_Tags_Bool_Exp>;
+};
+
+
+export type Subscription_RootPosts_Tags_By_PkArgs = {
+  id_post_tags: Scalars['bigint'];
+};
+
+
+export type Subscription_RootSearch_Tags_By_KeywordArgs = {
+  args: Search_Tags_By_Keyword_Args;
+  distinct_on?: Maybe<Array<Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Tags_Order_By>>;
+  where?: Maybe<Tags_Bool_Exp>;
+};
+
+
+export type Subscription_RootSearch_Tags_By_Keyword_AggregateArgs = {
+  args: Search_Tags_By_Keyword_Args;
+  distinct_on?: Maybe<Array<Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Tags_Order_By>>;
+  where?: Maybe<Tags_Bool_Exp>;
+};
+
+
+export type Subscription_RootTagsArgs = {
+  distinct_on?: Maybe<Array<Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Tags_Order_By>>;
+  where?: Maybe<Tags_Bool_Exp>;
+};
+
+
+export type Subscription_RootTags_AggregateArgs = {
+  distinct_on?: Maybe<Array<Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Tags_Order_By>>;
+  where?: Maybe<Tags_Bool_Exp>;
+};
+
+
+export type Subscription_RootTags_By_PkArgs = {
+  id: Scalars['bigint'];
+};
+
+
 export type Subscription_RootUsersArgs = {
   distinct_on?: Maybe<Array<Users_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -898,6 +1540,267 @@ export type Subscription_RootUsers_AggregateArgs = {
 
 export type Subscription_RootUsers_By_PkArgs = {
   user_id: Scalars['String'];
+};
+
+/**
+ * article tags
+ *
+ *
+ * columns and relationships of "tags"
+ *
+ */
+export type Tags = {
+  __typename?: 'tags';
+  id: Scalars['bigint'];
+  image_url?: Maybe<Scalars['String']>;
+  included: Scalars['Boolean'];
+  keyword: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  posts_tags: Array<Posts_Tags>;
+  /** An aggregate relationship */
+  posts_tags_aggregate: Posts_Tags_Aggregate;
+};
+
+
+/**
+ * article tags
+ *
+ *
+ * columns and relationships of "tags"
+ *
+ */
+export type TagsPosts_TagsArgs = {
+  distinct_on?: Maybe<Array<Posts_Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Posts_Tags_Order_By>>;
+  where?: Maybe<Posts_Tags_Bool_Exp>;
+};
+
+
+/**
+ * article tags
+ *
+ *
+ * columns and relationships of "tags"
+ *
+ */
+export type TagsPosts_Tags_AggregateArgs = {
+  distinct_on?: Maybe<Array<Posts_Tags_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Posts_Tags_Order_By>>;
+  where?: Maybe<Posts_Tags_Bool_Exp>;
+};
+
+/** aggregated selection of "tags" */
+export type Tags_Aggregate = {
+  __typename?: 'tags_aggregate';
+  aggregate?: Maybe<Tags_Aggregate_Fields>;
+  nodes: Array<Tags>;
+};
+
+/** aggregate fields of "tags" */
+export type Tags_Aggregate_Fields = {
+  __typename?: 'tags_aggregate_fields';
+  avg?: Maybe<Tags_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Tags_Max_Fields>;
+  min?: Maybe<Tags_Min_Fields>;
+  stddev?: Maybe<Tags_Stddev_Fields>;
+  stddev_pop?: Maybe<Tags_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Tags_Stddev_Samp_Fields>;
+  sum?: Maybe<Tags_Sum_Fields>;
+  var_pop?: Maybe<Tags_Var_Pop_Fields>;
+  var_samp?: Maybe<Tags_Var_Samp_Fields>;
+  variance?: Maybe<Tags_Variance_Fields>;
+};
+
+
+/** aggregate fields of "tags" */
+export type Tags_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Tags_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Tags_Avg_Fields = {
+  __typename?: 'tags_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "tags". All fields are combined with a logical 'AND'. */
+export type Tags_Bool_Exp = {
+  _and?: Maybe<Array<Tags_Bool_Exp>>;
+  _not?: Maybe<Tags_Bool_Exp>;
+  _or?: Maybe<Array<Tags_Bool_Exp>>;
+  id?: Maybe<Bigint_Comparison_Exp>;
+  image_url?: Maybe<String_Comparison_Exp>;
+  included?: Maybe<Boolean_Comparison_Exp>;
+  keyword?: Maybe<String_Comparison_Exp>;
+  name?: Maybe<String_Comparison_Exp>;
+  posts_tags?: Maybe<Posts_Tags_Bool_Exp>;
+};
+
+/** unique or primary key constraints on table "tags" */
+export enum Tags_Constraint {
+  /** unique or primary key constraint */
+  TagsKeyword = 'tags_keyword',
+  /** unique or primary key constraint */
+  TagsKeywordKey = 'tags_keyword_key',
+  /** unique or primary key constraint */
+  TagsPkey = 'tags_pkey'
+}
+
+/** input type for incrementing numeric columns in table "tags" */
+export type Tags_Inc_Input = {
+  id?: Maybe<Scalars['bigint']>;
+};
+
+/** input type for inserting data into table "tags" */
+export type Tags_Insert_Input = {
+  id?: Maybe<Scalars['bigint']>;
+  image_url?: Maybe<Scalars['String']>;
+  included?: Maybe<Scalars['Boolean']>;
+  keyword?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  posts_tags?: Maybe<Posts_Tags_Arr_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type Tags_Max_Fields = {
+  __typename?: 'tags_max_fields';
+  id?: Maybe<Scalars['bigint']>;
+  image_url?: Maybe<Scalars['String']>;
+  keyword?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Tags_Min_Fields = {
+  __typename?: 'tags_min_fields';
+  id?: Maybe<Scalars['bigint']>;
+  image_url?: Maybe<Scalars['String']>;
+  keyword?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "tags" */
+export type Tags_Mutation_Response = {
+  __typename?: 'tags_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Tags>;
+};
+
+/** input type for inserting object relation for remote table "tags" */
+export type Tags_Obj_Rel_Insert_Input = {
+  data: Tags_Insert_Input;
+  /** on conflict condition */
+  on_conflict?: Maybe<Tags_On_Conflict>;
+};
+
+/** on conflict condition type for table "tags" */
+export type Tags_On_Conflict = {
+  constraint: Tags_Constraint;
+  update_columns?: Array<Tags_Update_Column>;
+  where?: Maybe<Tags_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "tags". */
+export type Tags_Order_By = {
+  id?: Maybe<Order_By>;
+  image_url?: Maybe<Order_By>;
+  included?: Maybe<Order_By>;
+  keyword?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  posts_tags_aggregate?: Maybe<Posts_Tags_Aggregate_Order_By>;
+};
+
+/** primary key columns input for table: tags */
+export type Tags_Pk_Columns_Input = {
+  id: Scalars['bigint'];
+};
+
+/** select columns of table "tags" */
+export enum Tags_Select_Column {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ImageUrl = 'image_url',
+  /** column name */
+  Included = 'included',
+  /** column name */
+  Keyword = 'keyword',
+  /** column name */
+  Name = 'name'
+}
+
+/** input type for updating data in table "tags" */
+export type Tags_Set_Input = {
+  id?: Maybe<Scalars['bigint']>;
+  image_url?: Maybe<Scalars['String']>;
+  included?: Maybe<Scalars['Boolean']>;
+  keyword?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type Tags_Stddev_Fields = {
+  __typename?: 'tags_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Tags_Stddev_Pop_Fields = {
+  __typename?: 'tags_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Tags_Stddev_Samp_Fields = {
+  __typename?: 'tags_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Tags_Sum_Fields = {
+  __typename?: 'tags_sum_fields';
+  id?: Maybe<Scalars['bigint']>;
+};
+
+/** update columns of table "tags" */
+export enum Tags_Update_Column {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ImageUrl = 'image_url',
+  /** column name */
+  Included = 'included',
+  /** column name */
+  Keyword = 'keyword',
+  /** column name */
+  Name = 'name'
+}
+
+/** aggregate var_pop on columns */
+export type Tags_Var_Pop_Fields = {
+  __typename?: 'tags_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Tags_Var_Samp_Fields = {
+  __typename?: 'tags_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Tags_Variance_Fields = {
+  __typename?: 'tags_variance_fields';
+  id?: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
@@ -1164,6 +2067,18 @@ export enum Users_Update_Column {
   Verified = 'verified'
 }
 
+export type ListTagsForSelectQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListTagsForSelectQuery = { __typename?: 'query_root', tags: Array<{ __typename?: 'tags', keyword: string }> };
+
+export type SearchTagsByKeywordQueryVariables = Exact<{
+  search: Scalars['String'];
+}>;
+
+
+export type SearchTagsByKeywordQuery = { __typename?: 'query_root', search_tags_by_keyword: Array<{ __typename?: 'tags', keyword: string }> };
+
 export type UpdateUserMutationVariables = Exact<{
   user_id: Scalars['String'];
   _set?: Maybe<Users_Set_Input>;
@@ -1201,9 +2116,31 @@ export type GetUserByUsernamePostsQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByUsernamePostsQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', username?: string | null | undefined, created_at: any, image?: string | null | undefined, name: string, user_id: string, bio?: string | null | undefined, verified: boolean, posts_aggregate: { __typename?: 'posts_aggregate', nodes: Array<{ __typename?: 'posts', title: string, slug: string, published: boolean, post_type: Post_Type_Enum, id: any, user: { __typename?: 'users', username?: string | null | undefined } }> } }> };
+export type GetUserByUsernamePostsQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', username?: string | null | undefined, created_at: any, image?: string | null | undefined, name: string, user_id: string, bio?: string | null | undefined, verified: boolean, posts_aggregate: { __typename?: 'posts_aggregate', aggregate?: { __typename?: 'posts_aggregate_fields', count: number } | null | undefined }, posts: Array<{ __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, post_type: Post_Type_Enum, published: boolean, slug: string, title: string, updated_at?: any | null | undefined, posts_tags: Array<{ __typename?: 'posts_tags', tag_keyword: string }> }> }> };
 
 
+export const ListTagsForSelectDocument = gql`
+    query ListTagsForSelect {
+  tags(where: {included: {_eq: true}}) {
+    keyword
+  }
+}
+    `;
+
+export function useListTagsForSelectQuery(options: Omit<Urql.UseQueryArgs<ListTagsForSelectQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ListTagsForSelectQuery>({ query: ListTagsForSelectDocument, ...options });
+};
+export const SearchTagsByKeywordDocument = gql`
+    query SearchTagsByKeyword($search: String!) {
+  search_tags_by_keyword(args: {search: $search}) {
+    keyword
+  }
+}
+    `;
+
+export function useSearchTagsByKeywordQuery(options: Omit<Urql.UseQueryArgs<SearchTagsByKeywordQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<SearchTagsByKeywordQuery>({ query: SearchTagsByKeywordDocument, ...options });
+};
 export const UpdateUserDocument = gql`
     mutation UpdateUser($user_id: String!, $_set: users_set_input) {
   update_users_by_pk(pk_columns: {user_id: $user_id}, _set: $_set) {
@@ -1284,20 +2221,23 @@ export const GetUserByUsernamePostsDocument = gql`
     user_id
     bio
     verified
-    posts_aggregate(
-      offset: $offset
-      limit: $limit
-      order_by: {created_at: $created_at}
-    ) {
-      nodes {
-        user {
-          username
-        }
-        title
-        slug
-        published
-        post_type
-        id
+    posts_aggregate {
+      aggregate {
+        count
+      }
+    }
+    posts(offset: $offset, limit: $limit, order_by: {created_at: $created_at}) {
+      body_markdown
+      created_at
+      emoji
+      id
+      post_type
+      published
+      slug
+      title
+      updated_at
+      posts_tags {
+        tag_keyword
       }
     }
   }

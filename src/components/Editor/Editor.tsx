@@ -58,32 +58,36 @@ const Editor: React.FC<EditorProps> = ({ markdown, onChange }) => {
           />
         </TabsContent>
         <TabsContent value="preview">
-          <div className="prose prose-sm editor-preview-tw">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              components={{
-                code({ node, inline, className, children, ...props }) {
-                  const match = /language-(\w+)/.exec(className || "");
-                  return !inline && match ? (
-                    // @ts-ignore
-                    <SyntaxHighlighter
-                      style={dracula}
-                      language={match[1]}
-                      PreTag="div"
-                      {...props}
-                    >
-                      {String(children).replace(/\n$/, "")}
-                    </SyntaxHighlighter>
-                  ) : (
-                    <code className={className} {...props}>
-                      {children}
-                    </code>
-                  );
-                },
-              }}
-            >
-              {value}
-            </ReactMarkdown>
+          <div className="prose editor-preview-tw border-b-2">
+            {value ? (
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  code({ node, inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || "");
+                    return !inline && match ? (
+                      // @ts-ignore
+                      <SyntaxHighlighter
+                        style={dracula}
+                        language={match[1]}
+                        PreTag="div"
+                        {...props}
+                      >
+                        {String(children).replace(/\n$/, "")}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                    );
+                  },
+                }}
+              >
+                {value}
+              </ReactMarkdown>
+            ) : (
+              <p>Nothing to preview.</p>
+            )}
           </div>
         </TabsContent>
       </Tabs>

@@ -12,20 +12,27 @@ query GetUserByUsernamePosts(
     user_id
     bio
     verified
-    posts_aggregate(
+    posts_aggregate {
+      aggregate {
+        count
+      }
+    }
+    posts(
       offset: $offset
       limit: $limit
       order_by: { created_at: $created_at }
     ) {
-      nodes {
-        user {
-          username
-        }
-        title
-        slug
-        published
-        post_type
-        id
+      body_markdown
+      created_at
+      emoji
+      id
+      post_type
+      published
+      slug
+      title
+      updated_at
+      posts_tags {
+        tag_keyword
       }
     }
   }

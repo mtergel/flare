@@ -1,16 +1,23 @@
 import Button from "@/components/Button/Button";
 import Container from "@/components/Container/Container";
 import Editor from "@/components/Editor/Editor";
-import IconButton from "@/components/IconButton/IconButton";
 import Switch from "@/components/Switch/Switch";
 import { getRandomEmoji } from "@/utils/const";
-import { FiSliders } from "@react-icons/all-files/fi/FiSliders";
+import dayjs from "dayjs";
 import "emoji-mart/css/emoji-mart.css";
-import useDisclosure from "hooks/useDisclosure";
-import { Controller, useForm } from "react-hook-form";
+import {
+  SearchTagsByKeywordDocument,
+  SearchTagsByKeywordQuery,
+  useListTagsForSelectQuery,
+} from "graphql/generated/graphql";
+import useLocalStorage from "hooks/useLocalStorage";
+import { useCallback, useEffect } from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import Dialog from "../Dialog/Dialog";
+import AsyncCreatable from "react-select/async-creatable";
+import { useClient } from "urql";
 import EmojiPicker from "./EmojiPicker";
+import debounce from "debounce-promise";
 
 interface ArticleEditorProps {
   id?: string | null;
@@ -18,6 +25,9 @@ interface ArticleEditorProps {
   body_html?: string | null;
   published?: boolean | null;
   emoji?: string | null;
+  tag_keyword?: {
+    keyword: string;
+  }[];
 }
 
 const ArticleEditor: React.FC<ArticleEditorProps> = ({
@@ -26,6 +36,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
   body_html,
   published,
   emoji,
+  tag_keyword,
 }) => {
   const {
     register,
@@ -39,10 +50,14 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
       body_html: body_html ?? "",
       published,
       emoji: emoji ?? getRandomEmoji(),
+      tag_keyword,
     },
   });
 
-  const { isOpen, setIsOpen, onOpen } = useDisclosure();
+  const {} = useFieldArray({
+    control,
+    name: "tag_keyword",
+  });
 
   const onSubmit = async (data: {
     id?: string | null;
@@ -50,13 +65,10 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     body_html: string;
     published: boolean;
   }) => {
-    console.log(data);
     if (data.title) {
       if (data.published) {
-        onOpen();
       } else {
         // just proceed normal
-        let res;
         if (data.id) {
           // const res =await update()
         } else {
@@ -71,7 +83,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="pb-20">
       <Container size="small">
         <textarea
           placeholder="Title"
@@ -89,62 +101,20 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
               <Editor markdown={field.value} onChange={field.onChange} />
             )}
           />
-          <div className="flex items-center justify-end space-x-6 mx-2 mb-2">
-            <Dialog
-              title="Settings"
-              description="Article settings"
-              open={isOpen}
-              onOpenChange={setIsOpen}
-              content={
-                <div className="flex flex-col h-full">
-                  <header>
-                    <h1>
-                      <div className="text-lg font-bold flex-grow flex space-x-1 items-center">
-                        <span className="text-3xl">Settings</span>
-                      </div>
-                    </h1>
-                  </header>
-                  <div className="mt-8 flex-grow flex flex-col">
-                    <div className="flex flex-col flex-grow space-y-2">
-                      <Controller
-                        control={control}
-                        name="emoji"
-                        render={({ field }) => (
-                          <EmojiPicker
-                            value={field.value}
-                            onChange={field.onChange}
-                          />
-                        )}
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-center">
-                      <Button
-                        type="button"
-                        color="primary"
-                        disabled={!isDirty}
-                        isLoading={isSubmitting}
-                      >
-                        {isDirty ? "Save" : "Saved"}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              }
-            >
-              <IconButton
-                onClick={onOpen}
-                isRound
-                variant="ghost"
-                aria-label="article-settings"
-                icon={<FiSliders />}
-                type="button"
-              />
-            </Dialog>
-
+          <div className="m-2 space-y-2">
+            <Controller
+              control={control}
+              name="emoji"
+              render={({ field }) => (
+                <EmojiPicker value={field.value} onChange={field.onChange} />
+              )}
+            />
+            <TagSelector />
+          </div>
+          <div className="flex items-center space-x-6 justify-end mx-2 mb-2">
             <div className="flex items-center space-x-2">
               <label
-                htmlFor="publish"
+                htmlFor="published"
                 className="text-sm font-semibold text-gray-500"
               >
                 Publish
@@ -154,7 +124,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
                 name="published"
                 render={({ field }) => (
                   <Switch
-                    id="publish"
+                    id="published"
                     name={field.name}
                     ref={field.ref}
                     checked={field.value || false}
@@ -176,6 +146,89 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
         </div>
       </Container>
     </form>
+  );
+};
+
+interface TagSelectorProps {
+  // value: string[];
+  // onChange: (value: string) => void;
+}
+const TagSelector: React.FC<TagSelectorProps> = ({}) => {
+  const client = useClient();
+  const handleSearch = async (inputValue: string | undefined) => {
+    if (inputValue) {
+      try {
+        const res = await client
+          .query(SearchTagsByKeywordDocument, {
+            search: inputValue,
+          })
+          .toPromise();
+        return (
+          res.data as SearchTagsByKeywordQuery
+        ).search_tags_by_keyword.map((i) => ({
+          value: i.keyword,
+          label: i.keyword,
+        }));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  // eslint-disable-next-line
+  const debouncedSearch = useCallback(debounce(handleSearch, 300), []);
+
+  const [options, setOptions] = useLocalStorage("AUTOCOMPLETE", {
+    items: [],
+    timestamp: Date.now(),
+  });
+
+  const [res] = useListTagsForSelectQuery({
+    pause: options.items.length !== 0,
+  });
+
+  const d1 = dayjs(options.timestamp);
+  const today = dayjs();
+
+  useEffect(() => {
+    if (today.subtract(3, "day") > d1) {
+      setOptions({
+        items: [],
+      });
+    }
+
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (res.data) {
+      setOptions({
+        items: res.data.tags.map((i) => i.keyword),
+        timestamp: Date.now(),
+      });
+    }
+
+    // eslint-disable-next-line
+  }, [res.data]);
+
+  const _options = options.items.map((i: string) => ({
+    value: i,
+    label: i,
+  }));
+
+  return (
+    <div className="tag-field">
+      <AsyncCreatable
+        isMulti
+        placeholder="Select tags"
+        isDisabled={res.fetching || !!res.error}
+        classNamePrefix="rs"
+        formatCreateLabel={(inputValue) => inputValue}
+        cacheOptions
+        defaultOptions={_options}
+        loadOptions={debouncedSearch}
+      />
+    </div>
   );
 };
 

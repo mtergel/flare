@@ -1,0 +1,3 @@
+mutation CreateTagsOne($keyword!) {
+  insert_tags_one(object: {keyword: $keyword})
+}

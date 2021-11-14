@@ -61,6 +61,55 @@ div#__next {
   }
 }
 
+.tag-field {
+  @apply h-52;
+
+  & .rs__control {
+    @apply bg-base border-0 shadow-none text-sm text-tMuted;
+
+    & .rs__value-container {
+      padding: 6px 8px;
+
+      & .rs__multi-value {
+        @apply bg-paper text-sm shadow-sm rounded;
+        margin: 4px 7px 4px 0;
+
+        & .rs__multi-value__label {
+          @apply text-tDefault text-sm;
+        }
+
+        & .rs__multi-value__remove {
+          @apply text-tMuted;
+        }
+      }
+    }
+
+    & .rs__clear-indicator {
+      @apply text-tMuted;
+    }
+
+    & .rs__indicator-separator {
+      @apply bg-tMuted;
+    }
+
+    & .rs__dropdown-indicator {
+      @apply text-tMuted;
+    }
+  }
+
+  & .rs__menu {
+    @apply shadow rounded-none bg-paper;
+  }
+
+  & .rs__menu-list {
+    @apply bg-paper text-sm max-h-32;
+
+    & .rs__option--is-focused {
+      @apply text-primary bg-primary bg-opacity-20;
+    }
+  }
+}
+
 @tailwind components;
 
 // components

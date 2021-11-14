@@ -54,8 +54,10 @@ module.exports = {
           css: {
             pre: {
               backgroundColor: "inherit",
-              paddingRight: "0",
-              paddingLeft: "0",
+              paddingRight: 0,
+              paddingLeft: 0,
+              marginLeft: 0,
+              marginRight: 0,
             },
             h1: {
               paddingBottom: ".2em",

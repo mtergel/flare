@@ -1,0 +1,5 @@
+query SearchTagsByKeyword($search: String!) {
+  search_tags_by_keyword(args: { search: $search }) {
+    keyword
+  }
+}
