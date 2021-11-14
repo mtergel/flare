@@ -1,3 +1,5 @@
-mutation CreateTagsOne($keyword!) {
-  insert_tags_one(object: {keyword: $keyword})
+mutation InsertTags($objects: [tags_insert_input!]!) {
+  insert_tags(objects: $objects) {
+    affected_rows
+  }
 }

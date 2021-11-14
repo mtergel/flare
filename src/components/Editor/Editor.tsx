@@ -16,7 +16,7 @@ const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
 });
 
 const options = {
-  autofocus: true,
+  autofocus: false,
   spellChecker: false,
   placeholder: "Write your post content here...",
   toolbar: [],

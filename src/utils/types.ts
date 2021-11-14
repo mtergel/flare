@@ -16,3 +16,9 @@ export type NextComponentTypeWithLayout = NextComponentType<
 > & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
+
+export type EditTag = {
+  value: string;
+  label: string;
+  __isNew__?: boolean;
+};

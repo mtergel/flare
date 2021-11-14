@@ -67,6 +67,13 @@ div#__next {
   & .rs__control {
     @apply bg-base border-0 shadow-none text-sm text-tMuted;
 
+    & .rs__input {
+      color: var(--color-text-default) !important;
+      &::placeholder {
+        @apply text-tMuted;
+      }
+    }
+
     & .rs__value-container {
       padding: 6px 8px;
 

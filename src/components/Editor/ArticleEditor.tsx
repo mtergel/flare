@@ -18,22 +18,21 @@ import AsyncCreatable from "react-select/async-creatable";
 import { useClient } from "urql";
 import EmojiPicker from "./EmojiPicker";
 import debounce from "debounce-promise";
+import { EditTag } from "@/utils/types";
 
 interface ArticleEditorProps {
   id?: string | null;
   title?: string | null;
-  body_html?: string | null;
+  body_markdown?: string | null;
   published?: boolean | null;
   emoji?: string | null;
-  tag_keyword?: {
-    keyword: string;
-  }[];
+  tag_keyword?: EditTag[];
 }
 
 const ArticleEditor: React.FC<ArticleEditorProps> = ({
   id,
   title,
-  body_html,
+  body_markdown,
   published,
   emoji,
   tag_keyword,
@@ -47,10 +46,10 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     defaultValues: {
       id,
       title,
-      body_html: body_html ?? "",
+      body_markdown: body_markdown ?? "",
       published,
       emoji: emoji ?? getRandomEmoji(),
-      tag_keyword,
+      tag_keyword: tag_keyword ?? [],
     },
   });
 
@@ -62,18 +61,17 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
   const onSubmit = async (data: {
     id?: string | null;
     title: string;
-    body_html: string;
+    body_markdown: string;
     published: boolean;
+    tag_keyword: EditTag[];
   }) => {
+    console.log(data);
     if (data.title) {
-      if (data.published) {
+      // just proceed normal
+      if (data.id) {
+        // const res =await update()
       } else {
-        // just proceed normal
-        if (data.id) {
-          // const res =await update()
-        } else {
-          // const res = await create();
-        }
+        // const res = await create();
       }
     } else {
       if (!data.title) {
@@ -89,6 +87,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
           placeholder="Title"
           maxLength={70}
           spellCheck={false}
+          autoFocus
           rows={1}
           className="editor-title"
           {...register("title")}
@@ -96,7 +95,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
         <div className="md:border md:rounded-md md:overflow-hidden">
           <Controller
             control={control}
-            name="body_html"
+            name="body_markdown"
             render={({ field }) => (
               <Editor markdown={field.value} onChange={field.onChange} />
             )}
@@ -109,7 +108,13 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
                 <EmojiPicker value={field.value} onChange={field.onChange} />
               )}
             />
-            <TagSelector />
+            <Controller
+              control={control}
+              name="tag_keyword"
+              render={({ field }) => (
+                <TagSelector value={field.value} onChange={field.onChange} />
+              )}
+            />
           </div>
           <div className="flex items-center space-x-6 justify-end mx-2 mb-2">
             <div className="flex items-center space-x-2">
@@ -150,10 +155,10 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
 };
 
 interface TagSelectorProps {
-  // value: string[];
-  // onChange: (value: string) => void;
+  value: EditTag[];
+  onChange: (value: EditTag[]) => void;
 }
-const TagSelector: React.FC<TagSelectorProps> = ({}) => {
+const TagSelector: React.FC<TagSelectorProps> = ({ value, onChange }) => {
   const client = useClient();
   const handleSearch = async (inputValue: string | undefined) => {
     if (inputValue) {
@@ -219,6 +224,7 @@ const TagSelector: React.FC<TagSelectorProps> = ({}) => {
   return (
     <div className="tag-field">
       <AsyncCreatable
+        value={value}
         isMulti
         placeholder="Select tags"
         isDisabled={res.fetching || !!res.error}
@@ -227,6 +233,9 @@ const TagSelector: React.FC<TagSelectorProps> = ({}) => {
         cacheOptions
         defaultOptions={_options}
         loadOptions={debouncedSearch}
+        onChange={(newValue) => {
+          onChange(newValue as []);
+        }}
       />
     </div>
   );
