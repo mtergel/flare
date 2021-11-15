@@ -76,9 +76,11 @@ const Editor: React.FC<EditorProps> = ({ markdown, onChange }) => {
                         {String(children).replace(/\n$/, "")}
                       </SyntaxHighlighter>
                     ) : (
-                      <code className={className} {...props}>
-                        {children}
-                      </code>
+                      <div className="code-block">
+                        <code className={className} {...props}>
+                          {children}
+                        </code>
+                      </div>
                     );
                   },
                 }}

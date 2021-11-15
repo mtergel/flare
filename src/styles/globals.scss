@@ -61,6 +61,26 @@ div#__next {
   }
 }
 
+// used when language is not typed in on md-preview
+.code-block {
+  color: rgb(248, 248, 242);
+  background: rgb(40, 42, 54) none repeat scroll 0% 0%;
+  text-shadow: rgba(0, 0, 0, 0.3) 0px 1px;
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+  line-height: 1.5;
+  tab-size: 4;
+  hyphens: none;
+  padding: 1em;
+  margin: 0.5em 0px;
+  overflow: auto;
+  border-radius: 0.3em;
+}
+
 .tag-field {
   @apply h-52;
 
