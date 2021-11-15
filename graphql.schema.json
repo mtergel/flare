@@ -4546,6 +4546,18 @@
             "description": "unique or primary key constraint",
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "posts_slug",
+            "description": "unique or primary key constraint",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "posts_slug_key",
+            "description": "unique or primary key constraint",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -6612,6 +6624,12 @@
         "enumValues": [
           {
             "name": "posts_table_pkey",
+            "description": "unique or primary key constraint",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "posts_tags_post_id_tag_keyword_key",
             "description": "unique or primary key constraint",
             "isDeprecated": false,
             "deprecationReason": null

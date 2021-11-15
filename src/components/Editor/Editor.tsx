@@ -7,10 +7,8 @@ import {
 import "easymde/dist/easymde.min.css";
 import dynamic from "next/dynamic";
 import { useCallback, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import Preview from "./Preview";
+
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
 });
@@ -59,37 +57,7 @@ const Editor: React.FC<EditorProps> = ({ markdown, onChange }) => {
         </TabsContent>
         <TabsContent value="preview">
           <div className="prose editor-preview-tw border-b-2">
-            {value ? (
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  code({ node, inline, className, children, ...props }) {
-                    const match = /language-(\w+)/.exec(className || "");
-                    return !inline && match ? (
-                      // @ts-ignore
-                      <SyntaxHighlighter
-                        style={dracula}
-                        language={match[1]}
-                        PreTag="div"
-                        {...props}
-                      >
-                        {String(children).replace(/\n$/, "")}
-                      </SyntaxHighlighter>
-                    ) : (
-                      <div className="code-block">
-                        <code className={className} {...props}>
-                          {children}
-                        </code>
-                      </div>
-                    );
-                  },
-                }}
-              >
-                {value}
-              </ReactMarkdown>
-            ) : (
-              <p>Nothing to preview.</p>
-            )}
+            {value ? <Preview value={value} /> : <p>Nothing to preview.</p>}
           </div>
         </TabsContent>
       </Tabs>

@@ -1,5 +1,8 @@
 mutation CreatePost($object: posts_insert_input!) {
   insert_posts_one(object: $object) {
     slug
+    user {
+      username
+    }
   }
 }

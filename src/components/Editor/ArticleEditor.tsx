@@ -8,25 +8,25 @@ import dayjs from "dayjs";
 import debounce from "debounce-promise";
 import "emoji-mart/css/emoji-mart.css";
 import {
-  Posts_Tags_Constraint,
-  Posts_Tags_Update_Column,
   Post_Type_Enum,
   SearchTagsByKeywordDocument,
   SearchTagsByKeywordQuery,
-  Tags_Constraint,
-  Tags_Update_Column,
   useCreatePostMutation,
+  useInsertTagsMutation,
   useListTagsForSelectQuery,
 } from "graphql/generated/graphql";
 import useLocalStorage from "hooks/useLocalStorage";
-import { nanoid } from "nanoid";
+import md5 from "md5";
+import { useRouter } from "next/dist/client/router";
 import { useCallback, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import AsyncCreatable from "react-select/async-creatable";
 import slugify from "slugify";
 import { useClient } from "urql";
+import logger from "utils/logger";
 import EmojiPicker from "./EmojiPicker";
+import postid from "@/utils/postid";
 
 interface ArticleEditorProps {
   id?: string | null;
@@ -62,6 +62,8 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     },
   });
 
+  const router = useRouter();
+  const [_tags, insertTags] = useInsertTagsMutation();
   const [_post, createPost] = useCreatePostMutation();
   const onSubmit = async (data: {
     id?: string | null;
@@ -71,57 +73,81 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     emoji: string;
     tag_keyword: EditTag[];
   }) => {
-    if (data.title) {
-      // // check for new tags
-      // const newTags = data.tag_keyword
-      //   .filter((i) => i.__isNew__)
-      //   .map((i) => ({
-      //     keyword: i.value,
-      //   }));
-      // // create new tags
-      // if (newTags.length > 0) {
-      //   await insertTags({
-      //     objects: newTags,
-      //   });
-      // }
+    if (data.title && data.tag_keyword.length <= 4) {
+      // check for new tags
+      // by creating it beforehand
+      // we dont need permission to upsert (tags)(user)
+      const newTags = data.tag_keyword
+        .filter((i) => i.__isNew__)
+        .map((i) => ({
+          keyword: i.value,
+        }));
+      // create new tags
+      if (newTags.length > 0) {
+        await insertTags({
+          objects: newTags,
+        });
+      }
 
       if (data.id) {
-        // const res =await update()
+        // TODO Update
       } else {
-        // create post
-        const postRes = await createPost({
-          object: {
-            body_markdown: data.body_markdown,
-            emoji: data.emoji,
-            published: data.published,
-            post_type: Post_Type_Enum.Article,
-            title: data.title,
-            slug:
-              slugify(data.title, {
-                lower: true,
-                strict: true,
-              }) + `-${nanoid(5)}`,
-            posts_tags: {
-              data: data.tag_keyword.map((i) => ({
-                tag: {
-                  data: {
-                    keyword: i.value,
-                  },
-                  on_conflict: {
-                    constraint: Tags_Constraint.TagsPkey,
-                    update_columns: [Tags_Update_Column.Keyword],
-                  },
-                },
-              })),
-              on_conflict: {
-                constraint: Posts_Tags_Constraint.PostsTablePkey,
-                update_columns: [Posts_Tags_Update_Column.TagKeyword],
+        try {
+          // create post
+          const slug =
+            slugify(data.title, {
+              lower: true,
+              strict: true,
+            }) + `-${postid()}`;
+
+          const postRes = await createPost({
+            object: {
+              body_markdown: data.body_markdown,
+              emoji: data.emoji,
+              published: data.published,
+              post_type: Post_Type_Enum.Article,
+              title: data.title,
+              slug: slug,
+              posts_tags: {
+                data: data.tag_keyword.map((j) => ({
+                  tag_keyword: j.label,
+                })),
               },
             },
-          },
-        });
+          });
 
-        console.log(postRes);
+          if (postRes.data && postRes.data.insert_posts_one) {
+            const createdPost = postRes.data.insert_posts_one;
+            if (data.published) {
+              // just redirect to new created post
+              router.push(
+                `${createdPost.user.username}/articles/${createdPost.slug}`
+              );
+            } else {
+              // try creating preview
+              try {
+                const hashValue = md5(
+                  createdPost.slug + process.env.NEXT_PUBLIC_SALT
+                );
+
+                // this will redirect to successful
+                await fetch(
+                  `/api/preview?slug=${createdPost.slug}&preview=${hashValue}`
+                );
+              } catch (error) {
+                logger.debug(error);
+                toast.error(
+                  "Error occured when trying to generate preview url."
+                );
+                router.push("/dashboard");
+              }
+            }
+          } else {
+            router.push("/dashboard");
+          }
+        } catch (error) {
+          toast.error(error.message);
+        }
       }
     } else {
       if (!data.title) {
@@ -129,6 +155,12 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
         setError("title", {
           type: "required",
           message: "A title is required",
+        });
+      } else {
+        toast.error("Exceeds the maximum of 4 tags.");
+        setError("tag_keyword", {
+          type: "maxLength",
+          message: "Exceeds the maximum of 4 tags",
         });
       }
     }
@@ -142,7 +174,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
           maxLength={70}
           spellCheck={false}
           autoFocus
-          rows={1}
+          rows={2}
           className="editor-title"
           {...register("title")}
         />

@@ -639,7 +639,11 @@ export type Posts_Bool_Exp = {
 /** unique or primary key constraints on table "posts" */
 export enum Posts_Constraint {
   /** unique or primary key constraint */
-  PostsPkey = 'posts_pkey'
+  PostsPkey = 'posts_pkey',
+  /** unique or primary key constraint */
+  PostsSlug = 'posts_slug',
+  /** unique or primary key constraint */
+  PostsSlugKey = 'posts_slug_key'
 }
 
 /** input type for incrementing numeric columns in table "posts" */
@@ -939,7 +943,9 @@ export type Posts_Tags_Bool_Exp = {
 /** unique or primary key constraints on table "posts_tags" */
 export enum Posts_Tags_Constraint {
   /** unique or primary key constraint */
-  PostsTablePkey = 'posts_table_pkey'
+  PostsTablePkey = 'posts_table_pkey',
+  /** unique or primary key constraint */
+  PostsTagsPostIdTagKeywordKey = 'posts_tags_post_id_tag_keyword_key'
 }
 
 /** input type for incrementing numeric columns in table "posts_tags" */
@@ -2007,7 +2013,19 @@ export type CreatePostMutationVariables = Exact<{
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'mutation_root', insert_posts_one?: { __typename?: 'posts', slug: string } | null | undefined };
+export type CreatePostMutation = { __typename?: 'mutation_root', insert_posts_one?: { __typename?: 'posts', slug: string, user: { __typename?: 'users', username?: string | null | undefined } } | null | undefined };
+
+export type GetPostBySlugQueryVariables = Exact<{
+  _eq: Scalars['String'];
+}>;
+
+
+export type GetPostBySlugQuery = { __typename?: 'query_root', posts: Array<{ __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, post_type: Post_Type_Enum, published: boolean, slug: string, title: string, posts_tags: Array<{ __typename?: 'posts_tags', tag: { __typename?: 'tags', image: string, keyword: string, name?: string | null | undefined } }>, user: { __typename?: 'users', image?: string | null | undefined, name: string, username?: string | null | undefined, bio?: string | null | undefined, verified: boolean } }> };
+
+export type PostsStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PostsStaticPathsQuery = { __typename?: 'query_root', posts: Array<{ __typename?: 'posts', slug: string, user: { __typename?: 'users', username?: string | null | undefined } }> };
 
 export type InsertTagsMutationVariables = Exact<{
   objects: Array<Tags_Insert_Input> | Tags_Insert_Input;
@@ -2072,12 +2090,61 @@ export const CreatePostDocument = gql`
     mutation CreatePost($object: posts_insert_input!) {
   insert_posts_one(object: $object) {
     slug
+    user {
+      username
+    }
   }
 }
     `;
 
 export function useCreatePostMutation() {
   return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
+};
+export const GetPostBySlugDocument = gql`
+    query GetPostBySlug($_eq: String!) {
+  posts(where: {slug: {_eq: $_eq}}, limit: 1) {
+    body_markdown
+    created_at
+    emoji
+    id
+    post_type
+    posts_tags {
+      tag {
+        image
+        keyword
+        name
+      }
+    }
+    published
+    slug
+    title
+    user {
+      image
+      name
+      username
+      bio
+      verified
+    }
+  }
+}
+    `;
+
+export function useGetPostBySlugQuery(options: Omit<Urql.UseQueryArgs<GetPostBySlugQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetPostBySlugQuery>({ query: GetPostBySlugDocument, ...options });
+};
+export const PostsStaticPathsDocument = gql`
+    query PostsStaticPaths {
+  posts(limit: 50, where: {published: {_eq: true}}) {
+    slug
+    user {
+      username
+    }
+  }
+}
+    `;
+
+export function usePostsStaticPathsQuery(options: Omit<Urql.UseQueryArgs<PostsStaticPathsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<PostsStaticPathsQuery>({ query: PostsStaticPathsDocument, ...options });
 };
 export const InsertTagsDocument = gql`
     mutation InsertTags($objects: [tags_insert_input!]!) {
