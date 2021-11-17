@@ -52,6 +52,7 @@ module.exports = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
+            color: theme("colors.tDefault"),
             pre: {
               backgroundColor: "inherit",
               paddingRight: 0,
@@ -65,7 +66,7 @@ module.exports = {
               borderBottom: `1px solid ${theme("colors.border")}`,
             },
             a: {
-              color: theme("colors.primary.500"),
+              color: theme("colors.primary.600"),
               textDecoration: "none",
               "&:hover": {
                 textDecoration: "underline",

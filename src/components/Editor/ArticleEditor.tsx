@@ -132,7 +132,10 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
 
                 // this will redirect to successful
                 await fetch(
-                  `/api/preview?slug=${createdPost.slug}&preview=${hashValue}`
+                  `/api/preview?slug=${createdPost.slug}&preview=${hashValue}`,
+                  {
+                    redirect: "follow",
+                  }
                 );
               } catch (error) {
                 logger.debug(error);

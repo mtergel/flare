@@ -4,7 +4,6 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkToc from "remark-toc";
 import slug from "rehype-slug";
-import sanitize from "rehype-sanitize";
 import autoLink from "rehype-autolink-headings";
 
 interface PreviewProps {
@@ -16,7 +15,6 @@ const Preview: React.FC<PreviewProps> = ({ value }) => {
     <ReactMarkdown
       remarkPlugins={[remarkGfm, remarkToc]}
       rehypePlugins={[
-        sanitize,
         slug,
         [
           autoLink,
@@ -41,11 +39,11 @@ const Preview: React.FC<PreviewProps> = ({ value }) => {
               {String(children).replace(/\n$/, "")}
             </SyntaxHighlighter>
           ) : (
-            <div className="code-block">
+            <span className="code-span">
               <code className={className} {...props}>
                 {children}
               </code>
-            </div>
+            </span>
           );
         },
       }}

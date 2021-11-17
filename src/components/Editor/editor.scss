@@ -34,3 +34,8 @@
   @apply text-4xl font-bold w-full py-2 mt-5 mb-8 bg-transparent resize-none outline-none border-none;
   line-height: 1.5;
 }
+
+.EasyMDEContainer .CodeMirror {
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+}

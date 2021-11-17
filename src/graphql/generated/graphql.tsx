@@ -2022,6 +2022,15 @@ export type GetPostBySlugQueryVariables = Exact<{
 
 export type GetPostBySlugQuery = { __typename?: 'query_root', posts: Array<{ __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, post_type: Post_Type_Enum, published: boolean, slug: string, title: string, posts_tags: Array<{ __typename?: 'posts_tags', tag: { __typename?: 'tags', image: string, keyword: string, name?: string | null | undefined } }>, user: { __typename?: 'users', image?: string | null | undefined, name: string, username?: string | null | undefined, bio?: string | null | undefined, verified: boolean } }> };
 
+export type ListUsersPostsQueryVariables = Exact<{
+  _eq: Scalars['String'];
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type ListUsersPostsQuery = { __typename?: 'query_root', posts: Array<{ __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, published: boolean, slug: string, title: string, updated_at?: any | null | undefined, post_type: Post_Type_Enum, posts_tags: Array<{ __typename?: 'posts_tags', tag_keyword: string }> }>, posts_aggregate: { __typename?: 'posts_aggregate', aggregate?: { __typename?: 'posts_aggregate_fields', count: number } | null | undefined } };
+
 export type PostsStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -2131,6 +2140,33 @@ export const GetPostBySlugDocument = gql`
 
 export function useGetPostBySlugQuery(options: Omit<Urql.UseQueryArgs<GetPostBySlugQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<GetPostBySlugQuery>({ query: GetPostBySlugDocument, ...options });
+};
+export const ListUsersPostsDocument = gql`
+    query ListUsersPosts($_eq: String!, $limit: Int, $offset: Int) {
+  posts(where: {user_id: {_eq: $_eq}}, limit: $limit, offset: $offset) {
+    body_markdown
+    created_at
+    emoji
+    id
+    published
+    slug
+    title
+    updated_at
+    post_type
+    posts_tags {
+      tag_keyword
+    }
+  }
+  posts_aggregate(where: {user_id: {_eq: $_eq}}) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+export function useListUsersPostsQuery(options: Omit<Urql.UseQueryArgs<ListUsersPostsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ListUsersPostsQuery>({ query: ListUsersPostsDocument, ...options });
 };
 export const PostsStaticPathsDocument = gql`
     query PostsStaticPaths {

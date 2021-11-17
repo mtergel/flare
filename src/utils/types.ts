@@ -1,11 +1,12 @@
 import { NextComponentType, NextPage } from "next";
 import { NextUrqlContext, WithUrqlProps } from "next-urql";
 import { ReactElement, ReactNode } from "react";
+import { IconType } from "@react-icons/all-files";
 
 /**
  * NextPage extended with getLayout function
  */
-export type NextPageWithLayout = NextPage & {
+export type NextPageWithLayout<P = {}> = NextPage<P> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
@@ -22,3 +23,17 @@ export type EditTag = {
   label: string;
   __isNew__?: boolean;
 };
+
+export type MDHeading = {
+  content: string;
+  slug: string;
+  lvl: 1 | 2 | 3 | 4 | 5 | 6;
+  i: number;
+  seen: number;
+};
+
+export interface SideMenuItem {
+  link: string;
+  title: string;
+  icon: ReactNode;
+}

@@ -14,6 +14,7 @@ import {
 } from "@/components/Dropdown/Dropdown";
 import Skeleton from "@/components/Skeleton/Skeleton";
 import { FiLogOut } from "@react-icons/all-files/fi/FiLogOut";
+import { FiFolder } from "@react-icons/all-files/fi/FiFolder";
 import { FiSettings } from "@react-icons/all-files/fi/FiSettings";
 import { useAuth } from "context/auth";
 import { useGetUserQuery } from "graphql/generated/graphql";
@@ -114,6 +115,16 @@ const UserDD: React.FC<UserDDProps> = ({ id }) => {
             </DropdownMenuItem>
           </Link>
 
+          <Link href={`/dashboard`} passHref>
+            <DropdownMenuItem asChild>
+              <a onClick={onClose}>
+                <DropdownMenuLeftSlot>
+                  <FiFolder />
+                </DropdownMenuLeftSlot>
+                Dashboard
+              </a>
+            </DropdownMenuItem>
+          </Link>
           <Link href={`/settings`} passHref>
             <DropdownMenuItem asChild>
               <a onClick={onClose}>
