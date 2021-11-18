@@ -2020,7 +2020,7 @@ export type GetPostBySlugQueryVariables = Exact<{
 }>;
 
 
-export type GetPostBySlugQuery = { __typename?: 'query_root', posts: Array<{ __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, post_type: Post_Type_Enum, published: boolean, slug: string, title: string, posts_tags: Array<{ __typename?: 'posts_tags', tag: { __typename?: 'tags', image: string, keyword: string, name?: string | null | undefined } }>, user: { __typename?: 'users', image?: string | null | undefined, name: string, username?: string | null | undefined, bio?: string | null | undefined, verified: boolean } }> };
+export type GetPostBySlugQuery = { __typename?: 'query_root', posts: Array<{ __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, updated_at?: any | null | undefined, emoji?: string | null | undefined, id: any, post_type: Post_Type_Enum, published: boolean, slug: string, title: string, posts_tags: Array<{ __typename?: 'posts_tags', tag: { __typename?: 'tags', image: string, keyword: string, name?: string | null | undefined } }>, user: { __typename?: 'users', image?: string | null | undefined, name: string, username?: string | null | undefined, bio?: string | null | undefined, verified: boolean } }> };
 
 export type ListUsersPostsQueryVariables = Exact<{
   _eq: Scalars['String'];
@@ -2114,6 +2114,7 @@ export const GetPostBySlugDocument = gql`
   posts(where: {slug: {_eq: $_eq}}, limit: 1) {
     body_markdown
     created_at
+    updated_at
     emoji
     id
     post_type

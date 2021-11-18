@@ -1,5 +1,5 @@
 .light {
-  --color-bg: #f6f8fa;
+  --color-bg: #edf2f7;
   --color-paper: #fff;
   --color-text-primary: #3c4043;
   --color-border: #5c93bb2b;
@@ -185,6 +185,7 @@ div#__next {
 @import "../components/Switch/switch.scss";
 @import "../components/Skeleton/skeleton.scss";
 @import "../components/Tabs/tabs.scss";
+@import "../components/Toc/toc.scss";
 
 .r-icon {
   @apply h-6 w-6;

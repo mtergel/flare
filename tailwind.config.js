@@ -85,5 +85,9 @@ module.exports = {
       typography: ["dark"],
     },
   },
-  plugins: [require("nightwind"), require("@tailwindcss/typography")],
+  plugins: [
+    require("nightwind"),
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/line-clamp"),
+  ],
 };
