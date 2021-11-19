@@ -79,14 +79,14 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
                       <a className="font-semibold text-lg">{post.title}</a>
                     </Link>
                   ) : (
-                    <Link
+                    <a
                       href={`/api/preview?slug=${post.slug}&preview=${md5(
                         post.slug + process.env.NEXT_PUBLIC_SALT
                       )}`}
-                      passHref
+                      className="font-semibold text-lg"
                     >
-                      <a className="font-semibold text-lg">{post.title}</a>
-                    </Link>
+                      {post.title}
+                    </a>
                   )}
                 </div>
                 <footer className="text-xs flex items-center flex-wrap gap-2 text-gray-500">

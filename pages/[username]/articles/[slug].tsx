@@ -94,10 +94,14 @@ export const getStaticProps: GetStaticProps<ArticlePageProps> = async (
         maxdepth: 2,
       });
 
+      let isPreview =
+        !res.data.posts[0].published ||
+        (context.preview && context.previewData === params!.slug);
+
       return {
         props: {
           urqlState: ssrCache.extractData(),
-          isPreview: context.preview ?? false,
+          isPreview: isPreview ?? false,
           headings: headings.json,
         },
 

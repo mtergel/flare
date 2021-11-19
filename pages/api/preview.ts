@@ -41,7 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (hashValue === req.query.preview) {
       // enable preview mode
-      res.setPreviewData({});
+      res.setPreviewData(postObj.slug);
 
       res.writeHead(307, {
         Location: `/${postObj.user.username}/articles/${postObj.slug}`,
