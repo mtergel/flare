@@ -68,7 +68,7 @@ div#__next {
   h4,
   h5,
   h6 {
-    scroll-margin-top: 70px;
+    scroll-margin-top: 72px; // 56px (sticky header + 16 )
 
     &:hover,
     &:focus {

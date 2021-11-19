@@ -37,3 +37,8 @@ export interface SideMenuItem {
   title: string;
   icon: ReactNode;
 }
+
+export interface TocProps {
+  headings: MDHeading[];
+  activeId?: string;
+}

@@ -15,7 +15,7 @@
     padding-left: 21px;
     margin-top: 5px;
     position: relative;
-    @apply relative font-medium text-sm text-gray-500;
+    @apply relative font-semibold text-sm text-gray-500;
 
     &::before {
       content: "";
@@ -28,6 +28,32 @@
 
     & a {
       @apply relative my-2 line-clamp-2;
+    }
+
+    &.active {
+      &::before {
+        @apply bg-primary-600 border-primary-200;
+      }
+      & a {
+        @apply text-tDefault font-bold;
+      }
+
+      &.depth-2 {
+        &::before {
+          content: "";
+          left: 0;
+          @apply w-3 h-3;
+        }
+      }
+    }
+
+    &.depth-2 {
+      @apply font-normal;
+      &::before {
+        content: "";
+        left: 2px;
+        @apply w-2 h-2;
+      }
     }
   }
 }

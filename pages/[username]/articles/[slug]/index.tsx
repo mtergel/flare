@@ -1,8 +1,10 @@
 import Avatar from "@/components/Avatar/Avatar";
 import Container from "@/components/Container/Container";
 import Preview from "@/components/Editor/Preview";
+import MobileToc from "@/components/Toc/MobileToc";
 import ToCDD from "@/components/Toc/Toc";
 import { MDHeading } from "@/utils/types";
+import useIntersectionObserver from "@/utils/useIntersectionObserver";
 import { FiCalendar } from "@react-icons/all-files/fi/FiCalendar";
 import { FiClock } from "@react-icons/all-files/fi/FiClock";
 import { FiPlay } from "@react-icons/all-files/fi/FiPlay";
@@ -120,6 +122,14 @@ const Profile: NextPageWithLayout<
     },
   });
 
+  const [activeId, setActiveId] = useState("");
+
+  const callbackHandler = (id: string) => {
+    setActiveId(id);
+  };
+
+  useIntersectionObserver(callbackHandler);
+
   if (res.data && res.data.posts.length > 0) {
     const post = res.data.posts[0];
     const stats = readingTime(post.body_markdown ?? "");
@@ -147,9 +157,9 @@ const Profile: NextPageWithLayout<
                   </span>
                 </a>
               </Link>
-              {/* <div>
-                <ToCDD headings={headings} />
-              </div> */}
+              {headings.length > 0 && (
+                <MobileToc activeId={activeId} headings={headings} />
+              )}
             </div>
           </Container>
         </aside>
@@ -189,7 +199,7 @@ const Profile: NextPageWithLayout<
             <section className="w-full lg:w-[calc(100%-330px)]">
               <div className="py-8 rounded-none bg-paper sm:rounded-xl sm:shadow-md">
                 <Container>
-                  <div className="flex flex-none items-center overflow-x-auto mb-4">
+                  <div className="flex flex-none items-center overflow-x-auto mb-4 gap-2">
                     {post.posts_tags.map((i) => (
                       <Link
                         key={i.tag.keyword}
@@ -263,10 +273,15 @@ const Profile: NextPageWithLayout<
                     </div>
                     <p className="mt-4 text-sm">{post.user.bio}</p>
                   </div>
-                  <div className="h-6" />
-                  <div className="p-5 bg-paper rounded-xl overflow-auto shadow-md">
-                    <ToCDD headings={headings} />
-                  </div>
+                  {headings.length > 0 && (
+                    <>
+                      <div className="h-6" />
+                      <div className="p-5 bg-paper rounded-xl overflow-auto shadow-md">
+                        <div className="font-semibold">Table of Content</div>
+                        <ToCDD headings={headings} activeId={activeId} />
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </aside>
