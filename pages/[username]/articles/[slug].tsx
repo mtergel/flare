@@ -4,7 +4,7 @@ import Preview from "@/components/Editor/Preview";
 import MobileToc from "@/components/Toc/MobileToc";
 import ToCDD from "@/components/Toc/Toc";
 import { MDHeading } from "@/utils/types";
-import useIntersectionObserver from "@/utils/useIntersectionObserver";
+import useIntersectionObserver from "hooks/useIntersectionObserver";
 import { FiCalendar } from "@react-icons/all-files/fi/FiCalendar";
 import { FiClock } from "@react-icons/all-files/fi/FiClock";
 import { FiPlay } from "@react-icons/all-files/fi/FiPlay";
@@ -140,10 +140,12 @@ const Profile: NextPageWithLayout<
     return (
       <article className="bg-base pb-16">
         {isPreview && (
-          <div className="flex items-center justify-center bg-gray-600 text-paper text-sm py-4">
-            <FiPlay className="mr-2 h-5 w-5" />
-            <span>Preview Mode</span>
-          </div>
+          <Link href={`/articles/${post.id}/edit`} passHref>
+            <a className="flex items-center justify-center bg-gray-600 text-paper text-sm py-4">
+              <FiPlay className="mr-2 h-5 w-5" />
+              <span>Preview Mode</span>
+            </a>
+          </Link>
         )}
         <aside className="block sticky top-0 bg-paper border-t border-b z-50 lg:hidden">
           <Container size="wide">

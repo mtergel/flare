@@ -1,8 +1,6 @@
 import { NextComponentType, NextPage } from "next";
 import { NextUrqlContext, WithUrqlProps } from "next-urql";
 import { ReactElement, ReactNode } from "react";
-import { IconType } from "@react-icons/all-files";
-
 /**
  * NextPage extended with getLayout function
  */

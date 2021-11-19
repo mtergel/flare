@@ -2015,6 +2015,13 @@ export type CreatePostMutationVariables = Exact<{
 
 export type CreatePostMutation = { __typename?: 'mutation_root', insert_posts_one?: { __typename?: 'posts', slug: string, user: { __typename?: 'users', username?: string | null | undefined } } | null | undefined };
 
+export type GetPostByIdQueryVariables = Exact<{
+  id: Scalars['bigint'];
+}>;
+
+
+export type GetPostByIdQuery = { __typename?: 'query_root', posts_by_pk?: { __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, post_type: Post_Type_Enum, published: boolean, slug: string, title: string, updated_at?: any | null | undefined, user_id: string, posts_tags: Array<{ __typename?: 'posts_tags', tag_keyword: string }> } | null | undefined };
+
 export type GetPostBySlugQueryVariables = Exact<{
   _eq: Scalars['String'];
 }>;
@@ -2108,6 +2115,29 @@ export const CreatePostDocument = gql`
 
 export function useCreatePostMutation() {
   return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
+};
+export const GetPostByIdDocument = gql`
+    query GetPostById($id: bigint!) {
+  posts_by_pk(id: $id) {
+    body_markdown
+    created_at
+    emoji
+    id
+    post_type
+    posts_tags {
+      tag_keyword
+    }
+    published
+    slug
+    title
+    updated_at
+    user_id
+  }
+}
+    `;
+
+export function useGetPostByIdQuery(options: Omit<Urql.UseQueryArgs<GetPostByIdQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetPostByIdQuery>({ query: GetPostByIdDocument, ...options });
 };
 export const GetPostBySlugDocument = gql`
     query GetPostBySlug($_eq: String!) {

@@ -1,0 +1,17 @@
+query GetPostById($id: bigint!) {
+  posts_by_pk(id: $id) {
+    body_markdown
+    created_at
+    emoji
+    id
+    post_type
+    posts_tags {
+      tag_keyword
+    }
+    published
+    slug
+    title
+    updated_at
+    user_id
+  }
+}
