@@ -1,19 +1,19 @@
+import Container from "@/components/Container/Container";
 import Fallback from "@/components/Fallback/Fallback";
-import { NextPageWithLayout, SideMenuItem } from "@/utils/types";
+import { NextPageWithLayout } from "@/utils/types";
 import { useAuth } from "context/auth";
-import { useRouter } from "next/dist/client/router";
-import { useEffect } from "react";
-import Layout from "ui/Layout/Layout";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import {
   useGetUserQuery,
   useListUsersPostsQuery,
 } from "graphql/generated/graphql";
-import ErrorMessage from "ui/misc/ErrorMessage";
-import Link from "next/link";
 import md5 from "md5";
-import Container from "@/components/Container/Container";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
+import { useRouter } from "next/dist/client/router";
+import Link from "next/link";
+import { useEffect } from "react";
+import Layout from "ui/Layout/Layout";
+import ErrorMessage from "ui/misc/ErrorMessage";
 
 dayjs.extend(relativeTime);
 

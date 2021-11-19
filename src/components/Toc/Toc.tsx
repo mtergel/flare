@@ -17,6 +17,7 @@ const Toc: React.FC<TocProps> = ({ headings, activeId }) => {
               activeId === i.slug && "active",
               i.lvl >= 3 && "depth-2"
             )}
+            data-testid="toc-item"
           >
             <Link href={`#${i.slug}`} passHref>
               <a>{i.content}</a>

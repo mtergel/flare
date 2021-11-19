@@ -40,5 +40,8 @@ export interface SideMenuItem {
 
 export interface TocProps {
   headings: MDHeading[];
+  /**
+   * MDHeading.slug
+   */
   activeId?: string;
 }

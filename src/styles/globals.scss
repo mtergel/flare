@@ -31,147 +31,13 @@ div#__next {
   height: 100%;
 }
 
-.editor-container {
-  & .EasyMDEContainer .CodeMirror {
-    border: unset;
-
-    @apply border border-border border-solid;
-    @apply mx-0 my-4 p-2 md:mx-2;
-    @apply rounded resize-y;
-    @apply min-h-[300px];
-    @apply bg-base text-tDefault;
-
-    &:focus-within {
-      @apply bg-paper ring-2 ring-primary;
-    }
-  }
-
-  & .CodeMirror-selected {
-    background: highlight !important;
-  }
-
-  & .CodeMirror-cursor {
-    @apply border-tDefault;
-  }
-
-  & .editor-preview-tw {
-    @apply mx-0 my-4 p-2 md:mx-2;
-    @apply min-h-[300px];
-    @apply max-w-full;
-  }
-}
-
-.prose {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    scroll-margin-top: 72px; // 56px (sticky header + 16 )
-
-    &:hover,
-    &:focus {
-      & .anchor {
-        &::before {
-          @apply opacity-100 visible;
-        }
-      }
-    }
-
-    & .anchor {
-      @apply hidden sm:inline sm:relative;
-
-      &::before {
-        content: "";
-        @apply absolute block opacity-0;
-        left: -25px;
-        top: 0.1em;
-        background: url(https://firebasestorage.googleapis.com/v0/b/flare-ef66d.appspot.com/o/misc%2Flink.svg?alt=media&token=27fb6799-3a39-411b-9dda-f4791b1cadd9)
-          no-repeat 50%;
-        background-size: auto;
-        background-size: 20px 20px;
-        padding-right: 5px;
-        height: 1em;
-        width: 24px;
-      }
-    }
-  }
-  & .code-span {
-    & code {
-      padding: 0.2em 0.4em;
-      font-size: 85%;
-      @apply bg-gray-400 bg-opacity-20 m-0 rounded-md;
-
-      &::before {
-        content: none;
-      }
-      &::after {
-        content: none;
-      }
-    }
-  }
-}
-
-.tag-field {
-  @apply h-52;
-
-  & .rs__control {
-    @apply bg-base border-0 shadow-none text-sm text-tMuted;
-
-    & .rs__input {
-      color: var(--color-text-default) !important;
-      &::placeholder {
-        @apply text-tMuted;
-      }
-    }
-
-    & .rs__value-container {
-      padding: 6px 8px;
-
-      & .rs__multi-value {
-        @apply bg-paper text-sm shadow-sm rounded;
-        margin: 4px 7px 4px 0;
-
-        & .rs__multi-value__label {
-          @apply text-tDefault text-sm;
-        }
-
-        & .rs__multi-value__remove {
-          @apply text-tMuted;
-        }
-      }
-    }
-
-    & .rs__clear-indicator {
-      @apply text-tMuted;
-    }
-
-    & .rs__indicator-separator {
-      @apply bg-tMuted;
-    }
-
-    & .rs__dropdown-indicator {
-      @apply text-tMuted;
-    }
-  }
-
-  & .rs__menu {
-    @apply shadow rounded-none bg-paper;
-  }
-
-  & .rs__menu-list {
-    @apply bg-paper text-sm max-h-32;
-
-    & .rs__option--is-focused {
-      @apply text-primary bg-primary bg-opacity-20;
-    }
-  }
-}
-
 @tailwind components;
 
-// components
+// ui specific styles
+
+@import "./editor.scss";
+
+// components styles
 @import "../components/Button/button.scss";
 @import "../components/Container/container.scss";
 @import "../components/Dialog/dialog.scss";
@@ -187,23 +53,6 @@ div#__next {
 @import "../components/Tabs/tabs.scss";
 @import "../components/Toc/toc.scss";
 
-.r-icon {
-  @apply h-6 w-6;
-}
-
-.gray-bg {
-  @apply bg-gray-100 dark:bg-gray-100 dark:bg-opacity-5;
-}
-
-.emoji-mart-anchor-bar {
-  width: 56% !important;
-}
-
-.toastOverride {
-  @apply text-sm dark:border dark:border-gray-500 dark:border-opacity-20;
-  background: var(--color-paper) !important;
-  color: var(--color-text-primary) !important;
-  z-index: 10000;
-}
+@import "./misc.scss";
 
 @tailwind utilities;
