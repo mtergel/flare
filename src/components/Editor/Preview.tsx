@@ -5,6 +5,7 @@ import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkToc from "remark-toc";
 import slug from "rehype-slug";
 import autoLink from "rehype-autolink-headings";
+import remarkEmoji from "remark-emoji";
 
 interface PreviewProps {
   value: string;
@@ -13,7 +14,7 @@ interface PreviewProps {
 const Preview: React.FC<PreviewProps> = ({ value }) => {
   return (
     <ReactMarkdown
-      remarkPlugins={[remarkGfm, remarkToc]}
+      remarkPlugins={[remarkGfm, remarkToc, remarkEmoji]}
       rehypePlugins={[
         slug,
         [
