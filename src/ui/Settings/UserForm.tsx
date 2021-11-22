@@ -7,6 +7,7 @@ import {
   GetUserByUsernameQueryVariables,
   useUpdateUserMutation,
 } from "graphql/generated/graphql";
+import { useRouter } from "next/dist/client/router";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useClient } from "urql";
@@ -33,6 +34,7 @@ const UserForm: React.FC<UserFormProps> = ({ uid, name, username, bio }) => {
     },
   });
 
+  const router = useRouter();
   const client = useClient();
   const [_, updateUser] = useUpdateUserMutation();
   const onSubmit = async (data: UserFormProps) => {
@@ -58,7 +60,7 @@ const UserForm: React.FC<UserFormProps> = ({ uid, name, username, bio }) => {
           message: "This username is already taken",
         });
       } else {
-        await updateUser({
+        const updatedUser = await updateUser({
           user_id: uid,
           _set: {
             bio: data.bio,
@@ -67,6 +69,9 @@ const UserForm: React.FC<UserFormProps> = ({ uid, name, username, bio }) => {
           },
         });
         toast.success("Profile updated.");
+        if (updatedUser.data && updatedUser.data.update_users_by_pk) {
+          router.push(`/${updatedUser.data.update_users_by_pk.username}`);
+        }
       }
     } catch (error) {
       toast.error(error?.message || "Unexpected error occured");

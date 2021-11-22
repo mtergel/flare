@@ -10,6 +10,7 @@ query ListUsersPosts($_eq: String!, $limit: Int, $offset: Int) {
     updated_at
     post_type
     posts_tags {
+      id
       tag_keyword
     }
   }

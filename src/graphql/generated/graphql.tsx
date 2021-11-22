@@ -2015,6 +2015,13 @@ export type CreatePostMutationVariables = Exact<{
 
 export type CreatePostMutation = { __typename?: 'mutation_root', insert_posts_one?: { __typename?: 'posts', slug: string, user: { __typename?: 'users', username?: string | null | undefined } } | null | undefined };
 
+export type DeletePostMutationVariables = Exact<{
+  id: Scalars['bigint'];
+}>;
+
+
+export type DeletePostMutation = { __typename?: 'mutation_root', delete_posts_by_pk?: { __typename?: 'posts', id: any } | null | undefined };
+
 export type UpdatePostMutationVariables = Exact<{
   id: Scalars['bigint'];
   _set: Posts_Set_Input;
@@ -2044,7 +2051,7 @@ export type ListUsersPostsQueryVariables = Exact<{
 }>;
 
 
-export type ListUsersPostsQuery = { __typename?: 'query_root', posts: Array<{ __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, published: boolean, slug: string, title: string, updated_at?: any | null | undefined, post_type: Post_Type_Enum, posts_tags: Array<{ __typename?: 'posts_tags', tag_keyword: string }> }>, posts_aggregate: { __typename?: 'posts_aggregate', aggregate?: { __typename?: 'posts_aggregate_fields', count: number } | null | undefined } };
+export type ListUsersPostsQuery = { __typename?: 'query_root', posts: Array<{ __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, published: boolean, slug: string, title: string, updated_at?: any | null | undefined, post_type: Post_Type_Enum, posts_tags: Array<{ __typename?: 'posts_tags', id: any, tag_keyword: string }> }>, posts_aggregate: { __typename?: 'posts_aggregate', aggregate?: { __typename?: 'posts_aggregate_fields', count: number } | null | undefined } };
 
 export type PostsStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2139,6 +2146,17 @@ export const CreatePostDocument = gql`
 export function useCreatePostMutation() {
   return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
 };
+export const DeletePostDocument = gql`
+    mutation DeletePost($id: bigint!) {
+  delete_posts_by_pk(id: $id) {
+    id
+  }
+}
+    `;
+
+export function useDeletePostMutation() {
+  return Urql.useMutation<DeletePostMutation, DeletePostMutationVariables>(DeletePostDocument);
+};
 export const UpdatePostDocument = gql`
     mutation UpdatePost($id: bigint!, $_set: posts_set_input!) {
   update_posts_by_pk(pk_columns: {id: $id}, _set: $_set) {
@@ -2232,6 +2250,7 @@ export const ListUsersPostsDocument = gql`
     updated_at
     post_type
     posts_tags {
+      id
       tag_keyword
     }
   }

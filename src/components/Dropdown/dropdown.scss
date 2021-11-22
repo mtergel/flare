@@ -28,7 +28,7 @@
     @apply text-red-500;
     &:focus,
     &:hover {
-      @apply bg-opacity-30 bg-red-400;
+      @apply bg-opacity-20 bg-red-400;
     }
 
     & .dropdown-item-left-slot {
@@ -40,7 +40,7 @@
     @apply text-primary-500;
     &:focus,
     &:hover {
-      @apply bg-opacity-30 bg-primary-400;
+      @apply bg-opacity-20 bg-primary-400;
     }
 
     & .dropdown-item-left-slot {
