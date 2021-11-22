@@ -23,6 +23,30 @@
       @apply h-4 w-4;
     }
   }
+
+  &.dropdown-item-danger {
+    @apply text-red-500;
+    &:focus,
+    &:hover {
+      @apply bg-opacity-30 bg-red-400;
+    }
+
+    & .dropdown-item-left-slot {
+      @apply text-red-500;
+    }
+  }
+
+  &.dropdown-item-primary {
+    @apply text-primary-500;
+    &:focus,
+    &:hover {
+      @apply bg-opacity-30 bg-primary-400;
+    }
+
+    & .dropdown-item-left-slot {
+      @apply text-primary-500;
+    }
+  }
 }
 
 .dropdown-separator {
