@@ -1,11 +1,15 @@
+import Button from "@/components/Button/Button";
 import Container from "@/components/Container/Container";
 import Fallback from "@/components/Fallback/Fallback";
+import { themeColor } from "@/utils/const";
 import { NextPageWithLayout } from "@/utils/types";
 import {
   useGetUserQuery,
   useListUsersPostsQuery,
 } from "graphql/generated/graphql";
 import useProtected from "hooks/useProtected";
+import Link from "next/link";
+import { Folder } from "react-kawaii";
 import ArticleRow from "ui/Dashboard/ArticleRow";
 import Layout from "ui/Layout/Layout";
 import ErrorMessage from "ui/misc/ErrorMessage";
@@ -51,18 +55,33 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
           <div className="mb-4">
             <h1 className="font-bold text-4xl">Articles</h1>
           </div>
-          <div className="space-y-4 divide-y">
-            {user.fetching && <Fallback />}
-            {user.data &&
-              user.data.users_by_pk &&
-              data.posts.map((post) => (
-                <ArticleRow
-                  key={post.id}
-                  post={post}
-                  username={user.data?.users_by_pk?.username!}
-                />
-              ))}
-          </div>
+          {data.posts.length === 0 ? (
+            <div className="flex flex-col items-center justify-center space-y-8 pt-4">
+              <div className="font-semibold text-lg text-gray-500 text-center">
+                <p>You dont have articles</p>
+                <p>Let&apos;s create one!</p>
+              </div>
+              <Folder mood="excited" color={themeColor} />
+              <Link href="/new" passHref>
+                <Button as="a" color="primary">
+                  Create
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="space-y-4 divide-y">
+              {user.fetching && <Fallback />}
+              {user.data &&
+                user.data.users_by_pk &&
+                data.posts.map((post) => (
+                  <ArticleRow
+                    key={post.id}
+                    post={post}
+                    username={user.data?.users_by_pk?.username!}
+                  />
+                ))}
+            </div>
+          )}
         </Container>
       </div>
     );
