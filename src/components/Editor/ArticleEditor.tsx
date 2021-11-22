@@ -247,7 +247,9 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     }
   };
 
-  const { ref, ...rest } = register("title");
+  const { ref, ...rest } = register("title", {
+    disabled: isSubmitting,
+  });
   const watchedTextArea = watch("title");
 
   // don't know if this is performant?
@@ -260,7 +262,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="pb-20">
-      <Container size="small">
+      <Container size="common">
         <textarea
           placeholder="Title"
           maxLength={70}
@@ -275,6 +277,22 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             textAreaRef.current = e;
           }}
         />
+        <div className="pb-6 space-y-2">
+          <Controller
+            control={control}
+            name="emoji"
+            render={({ field }) => (
+              <EmojiPicker value={field.value} onChange={field.onChange} />
+            )}
+          />
+          <Controller
+            control={control}
+            name="tag_keyword"
+            render={({ field }) => (
+              <TagSelector value={field.value} onChange={field.onChange} />
+            )}
+          />
+        </div>
         <div className="md:border md:rounded-md md:overflow-hidden">
           <Controller
             control={control}
@@ -283,22 +301,6 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
               <Editor markdown={field.value} onChange={field.onChange} />
             )}
           />
-          <div className="m-2 space-y-2">
-            <Controller
-              control={control}
-              name="emoji"
-              render={({ field }) => (
-                <EmojiPicker value={field.value} onChange={field.onChange} />
-              )}
-            />
-            <Controller
-              control={control}
-              name="tag_keyword"
-              render={({ field }) => (
-                <TagSelector value={field.value} onChange={field.onChange} />
-              )}
-            />
-          </div>
           <div className="flex items-center space-x-6 justify-end mx-2 mb-2">
             <div className="flex items-center space-x-2">
               <label
@@ -317,6 +319,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
                     ref={field.ref}
                     checked={field.value || false}
                     onCheckedChange={field.onChange}
+                    disabled={isSubmitting}
                   />
                 )}
               />

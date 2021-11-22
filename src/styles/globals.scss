@@ -34,8 +34,8 @@ div#__next {
 @tailwind components;
 
 // ui specific styles
-
 @import "./editor.scss";
+@import "./preview.scss";
 
 // components styles
 @import "../components/Button/button.scss";
@@ -47,7 +47,6 @@ div#__next {
 @import "../components/Avatar/avatar.scss";
 @import "../components/Dropdown/dropdown.scss";
 @import "../components/Slider/slider.scss";
-@import "../components/Editor/editor.scss";
 @import "../components/Switch/switch.scss";
 @import "../components/Skeleton/skeleton.scss";
 @import "../components/Tabs/tabs.scss";

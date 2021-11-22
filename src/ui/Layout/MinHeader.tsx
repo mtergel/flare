@@ -12,6 +12,7 @@ import { FiSun } from "@react-icons/all-files/fi/FiSun";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 
+// Mainly used in editors
 const MinHeader: React.FC<{}> = () => {
   const { theme, setTheme } = useTheme();
 
@@ -19,7 +20,7 @@ const MinHeader: React.FC<{}> = () => {
     <header className="h-16 flex-shrink-0 shadow-md dark:border-b">
       <Container className="h-full">
         <div className="flex items-center justify-between h-full">
-          <Link href="/" passHref>
+          <Link href="/dashboard" passHref>
             <IconButton
               variant="ghost"
               aria-label="dashboard"

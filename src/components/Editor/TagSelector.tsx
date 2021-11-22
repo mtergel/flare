@@ -1,7 +1,6 @@
 import { EditTag } from "@/utils/types";
 import dayjs from "dayjs";
 import debounce from "debounce-promise";
-import "emoji-mart/css/emoji-mart.css";
 import {
   SearchTagsByKeywordDocument,
   SearchTagsByKeywordQuery,

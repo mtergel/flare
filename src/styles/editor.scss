@@ -1,53 +1,43 @@
-.prose {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    scroll-margin-top: 72px; // 56px (sticky header + 16 )
+.editor {
+  @apply p-2 relative bg-paper border rounded-lg;
 
-    &:hover,
-    &:focus {
-      & .anchor {
-        &::before {
-          @apply opacity-100 visible;
+  & .menu {
+    @apply pb-2 border-b;
+
+    & .is-active {
+      @apply text-primary;
+    }
+  }
+
+  & .content {
+    @apply relative rounded-lg;
+
+    & .prose {
+      @apply w-full max-w-full;
+    }
+
+    & .code-block {
+      @apply relative;
+
+      select {
+        @apply text-white dark:text-white bg-gray-400 bg-opacity-20 text-sm rounded py-1 px-1 absolute right-2 top-2;
+
+        & option {
+          @apply bg-gray-600 dark:bg-gray-600;
         }
       }
     }
-
-    & .anchor {
-      @apply hidden sm:inline sm:relative;
-
-      &::before {
-        content: "";
-        @apply absolute block opacity-0;
-        left: -25px;
-        top: 0.1em;
-        background: url(https://firebasestorage.googleapis.com/v0/b/flare-ef66d.appspot.com/o/misc%2Flink.svg?alt=media&token=27fb6799-3a39-411b-9dda-f4791b1cadd9)
-          no-repeat 50%;
-        background-size: auto;
-        background-size: 20px 20px;
-        padding-right: 5px;
-        height: 1em;
-        width: 24px;
-      }
-    }
   }
-  & .code-span {
-    & code {
-      padding: 0.2em 0.4em;
-      font-size: 85%;
-      @apply bg-gray-400 bg-opacity-20 m-0 rounded-md;
+}
 
-      &::before {
-        content: none;
-      }
-      &::after {
-        content: none;
-      }
-    }
-  }
+.editor-title {
+  @apply text-4xl font-bold w-full py-2 mt-5 mb-8 bg-transparent resize-none outline-none border-none;
+  line-height: 1.5;
+}
+
+.EasyMDEContainer .CodeMirror {
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
 }
 
 .editor-container {
@@ -81,8 +71,6 @@
 }
 
 .tag-field {
-  @apply h-52;
-
   & .rs__control {
     @apply bg-base border-0 shadow-none text-sm text-tMuted;
 
