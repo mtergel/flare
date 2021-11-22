@@ -7,18 +7,26 @@ import postid from "@/utils/postid";
 import { EditTag } from "@/utils/types";
 import "emoji-mart/css/emoji-mart.css";
 import {
+  Posts_Tags_Constraint,
+  Posts_Tags_Insert_Input,
   Post_Type_Enum,
   useCreatePostMutation,
+  useDeletePostsTagsMutation,
+  useInsertPostsTagsMutation,
   useInsertTagsMutation,
+  useUpdatePostMutation,
 } from "graphql/generated/graphql";
+import compact from "lodash/compact";
+import keyBy from "lodash/keyBy";
 import md5 from "md5";
 import { useRouter } from "next/dist/client/router";
+import dynamic from "next/dynamic";
+import { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import slugify from "slugify";
 import logger from "utils/logger";
 import EmojiPicker from "./EmojiPicker";
-import dynamic from "next/dynamic";
 
 const TagSelector = dynamic(() => import("./TagSelector"), {
   ssr: false,
@@ -41,12 +49,24 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
   emoji,
   tag_keyword,
 }) => {
+  // textarea hooks
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  const router = useRouter();
+  const [_tags, insertTags] = useInsertTagsMutation();
+  const [_post, createPost] = useCreatePostMutation();
+  const [_updateRes, updatePost] = useUpdatePostMutation();
+  const [_insertRes, insertPostsTags] = useInsertPostsTagsMutation();
+  const [_deleteRes, deletePostsTags] = useDeletePostsTagsMutation();
+
   const {
     register,
     handleSubmit,
     control,
     formState: { isSubmitting, isDirty },
     setError,
+    reset,
+    watch,
   } = useForm({
     defaultValues: {
       id,
@@ -58,9 +78,6 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     },
   });
 
-  const router = useRouter();
-  const [_tags, insertTags] = useInsertTagsMutation();
-  const [_post, createPost] = useCreatePostMutation();
   const onSubmit = async (data: {
     id?: string | null;
     title: string;
@@ -86,7 +103,72 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
       }
 
       if (data.id) {
-        // TODO Update
+        try {
+          const postTags = keyBy(tag_keyword, "value");
+          let toAdd: Posts_Tags_Insert_Input[] = [];
+          data.tag_keyword.forEach((tag) => {
+            // check if postTags have been added
+            if (!postTags.hasOwnProperty(tag.value)) {
+              // not in initial values
+              // so must be added
+              toAdd.push({
+                post_id: data.id,
+                tag_keyword: tag.value,
+              });
+            } else {
+              // already exists
+              delete postTags[tag.value];
+            }
+          });
+
+          // check if tags have been removed
+          const toRemovePostTags = compact(
+            Object.values(postTags).map((i) => i.id)
+          );
+
+          await insertPostsTags({
+            objects: toAdd,
+            on_conflict: {
+              constraint: Posts_Tags_Constraint.PostsTablePkey,
+              update_columns: [],
+            },
+          });
+          await deletePostsTags({
+            where: {
+              id: {
+                _in: toRemovePostTags,
+              },
+            },
+          });
+
+          const updatePostRes = await updatePost({
+            id: data.id,
+            _set: {
+              title: data.title,
+              emoji: data.emoji,
+              body_markdown: data.body_markdown,
+              published: data.published,
+            },
+          });
+          if (updatePostRes.data && updatePostRes.data.update_posts_by_pk) {
+            const updatedPost = updatePostRes.data.update_posts_by_pk;
+            reset({
+              id: updatedPost.id,
+              title: updatedPost.title,
+              body_markdown: updatedPost.body_markdown ?? "",
+              emoji: updatedPost.emoji ?? getRandomEmoji(),
+              published: updatedPost.published,
+              tag_keyword: updatedPost.posts_tags.map((tag) => ({
+                id: tag.id,
+                label: tag.tag_keyword,
+                value: tag.tag_keyword,
+              })),
+            });
+            toast.success("Saved!");
+          }
+        } catch (error) {
+          logger.debug(error);
+        }
       } else {
         try {
           // create post
@@ -165,6 +247,17 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     }
   };
 
+  const { ref, ...rest } = register("title");
+  const watchedTextArea = watch("title");
+
+  // don't know if this is performant?
+  useEffect(() => {
+    if (textAreaRef.current) {
+      textAreaRef.current.style.height = "0px";
+      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+    }
+  }, [watchedTextArea]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="pb-20">
       <Container size="small">
@@ -173,9 +266,14 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
           maxLength={70}
           spellCheck={false}
           autoFocus
-          rows={2}
-          className="editor-title"
-          {...register("title")}
+          rows={1}
+          className="editor-title overflow-y-hidden"
+          {...rest}
+          ref={(e) => {
+            ref(e);
+            // @ts-ignore
+            textAreaRef.current = e;
+          }}
         />
         <div className="md:border md:rounded-md md:overflow-hidden">
           <Controller

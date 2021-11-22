@@ -16,6 +16,8 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ value, onChange }) => {
   const { isOpen, setIsOpen, onClose } = useDisclosure();
   const { resolvedTheme } = useTheme();
 
+  let theme = resolvedTheme === "system" ? "auto" : resolvedTheme;
+
   return (
     <section className="relative">
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
@@ -31,7 +33,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ value, onChange }) => {
           <Picker
             color={"#3EA8FF"}
             recent={defaultEmojis}
-            theme={resolvedTheme as any}
+            theme={theme as any}
             showPreview={false}
             showSkinTones={false}
             exclude={["flags", "symbols"]}

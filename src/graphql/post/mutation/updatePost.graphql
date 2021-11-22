@@ -1,10 +1,9 @@
-query GetPostById($id: bigint!) {
-  posts_by_pk(id: $id) {
+mutation UpdatePost($id: bigint!, $_set: posts_set_input!) {
+  update_posts_by_pk(pk_columns: { id: $id }, _set: $_set) {
     body_markdown
     created_at
     emoji
     id
-    post_type
     posts_tags {
       id
       tag_keyword

@@ -5892,7 +5892,7 @@
       {
         "kind": "OBJECT",
         "name": "posts_tags",
-        "description": "junction table\n\n\ncolumns and relationships of \"posts_tags\"\n",
+        "description": "junction table for posts and tags\n\n\ncolumns and relationships of \"posts_tags\"\n",
         "fields": [
           {
             "name": "id",

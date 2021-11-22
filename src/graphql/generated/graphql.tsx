@@ -844,7 +844,7 @@ export type Posts_Sum_Order_By = {
 };
 
 /**
- * junction table
+ * junction table for posts and tags
  *
  *
  * columns and relationships of "posts_tags"
@@ -2015,12 +2015,20 @@ export type CreatePostMutationVariables = Exact<{
 
 export type CreatePostMutation = { __typename?: 'mutation_root', insert_posts_one?: { __typename?: 'posts', slug: string, user: { __typename?: 'users', username?: string | null | undefined } } | null | undefined };
 
+export type UpdatePostMutationVariables = Exact<{
+  id: Scalars['bigint'];
+  _set: Posts_Set_Input;
+}>;
+
+
+export type UpdatePostMutation = { __typename?: 'mutation_root', update_posts_by_pk?: { __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, published: boolean, slug: string, title: string, updated_at?: any | null | undefined, user_id: string, posts_tags: Array<{ __typename?: 'posts_tags', id: any, tag_keyword: string }> } | null | undefined };
+
 export type GetPostByIdQueryVariables = Exact<{
   id: Scalars['bigint'];
 }>;
 
 
-export type GetPostByIdQuery = { __typename?: 'query_root', posts_by_pk?: { __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, post_type: Post_Type_Enum, published: boolean, slug: string, title: string, updated_at?: any | null | undefined, user_id: string, posts_tags: Array<{ __typename?: 'posts_tags', tag_keyword: string }> } | null | undefined };
+export type GetPostByIdQuery = { __typename?: 'query_root', posts_by_pk?: { __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, post_type: Post_Type_Enum, published: boolean, slug: string, title: string, updated_at?: any | null | undefined, user_id: string, posts_tags: Array<{ __typename?: 'posts_tags', id: any, tag_keyword: string }> } | null | undefined };
 
 export type GetPostBySlugQueryVariables = Exact<{
   _eq: Scalars['String'];
@@ -2042,6 +2050,21 @@ export type PostsStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type PostsStaticPathsQuery = { __typename?: 'query_root', posts: Array<{ __typename?: 'posts', slug: string, user: { __typename?: 'users', username?: string | null | undefined } }> };
+
+export type DeletePostsTagsMutationVariables = Exact<{
+  where?: Maybe<Posts_Tags_Bool_Exp>;
+}>;
+
+
+export type DeletePostsTagsMutation = { __typename?: 'mutation_root', delete_posts_tags?: { __typename?: 'posts_tags_mutation_response', affected_rows: number } | null | undefined };
+
+export type InsertPostsTagsMutationVariables = Exact<{
+  objects?: Maybe<Array<Posts_Tags_Insert_Input> | Posts_Tags_Insert_Input>;
+  on_conflict?: Maybe<Posts_Tags_On_Conflict>;
+}>;
+
+
+export type InsertPostsTagsMutation = { __typename?: 'mutation_root', insert_posts_tags?: { __typename?: 'posts_tags_mutation_response', affected_rows: number } | null | undefined };
 
 export type InsertTagsMutationVariables = Exact<{
   objects: Array<Tags_Insert_Input> | Tags_Insert_Input;
@@ -2116,6 +2139,29 @@ export const CreatePostDocument = gql`
 export function useCreatePostMutation() {
   return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
 };
+export const UpdatePostDocument = gql`
+    mutation UpdatePost($id: bigint!, $_set: posts_set_input!) {
+  update_posts_by_pk(pk_columns: {id: $id}, _set: $_set) {
+    body_markdown
+    created_at
+    emoji
+    id
+    posts_tags {
+      id
+      tag_keyword
+    }
+    published
+    slug
+    title
+    updated_at
+    user_id
+  }
+}
+    `;
+
+export function useUpdatePostMutation() {
+  return Urql.useMutation<UpdatePostMutation, UpdatePostMutationVariables>(UpdatePostDocument);
+};
 export const GetPostByIdDocument = gql`
     query GetPostById($id: bigint!) {
   posts_by_pk(id: $id) {
@@ -2125,6 +2171,7 @@ export const GetPostByIdDocument = gql`
     id
     post_type
     posts_tags {
+      id
       tag_keyword
     }
     published
@@ -2212,6 +2259,28 @@ export const PostsStaticPathsDocument = gql`
 
 export function usePostsStaticPathsQuery(options: Omit<Urql.UseQueryArgs<PostsStaticPathsQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<PostsStaticPathsQuery>({ query: PostsStaticPathsDocument, ...options });
+};
+export const DeletePostsTagsDocument = gql`
+    mutation DeletePostsTags($where: posts_tags_bool_exp = {}) {
+  delete_posts_tags(where: $where) {
+    affected_rows
+  }
+}
+    `;
+
+export function useDeletePostsTagsMutation() {
+  return Urql.useMutation<DeletePostsTagsMutation, DeletePostsTagsMutationVariables>(DeletePostsTagsDocument);
+};
+export const InsertPostsTagsDocument = gql`
+    mutation InsertPostsTags($objects: [posts_tags_insert_input!] = {}, $on_conflict: posts_tags_on_conflict = {constraint: posts_table_pkey}) {
+  insert_posts_tags(objects: $objects, on_conflict: $on_conflict) {
+    affected_rows
+  }
+}
+    `;
+
+export function useInsertPostsTagsMutation() {
+  return Urql.useMutation<InsertPostsTagsMutation, InsertPostsTagsMutationVariables>(InsertPostsTagsDocument);
 };
 export const InsertTagsDocument = gql`
     mutation InsertTags($objects: [tags_insert_input!]!) {

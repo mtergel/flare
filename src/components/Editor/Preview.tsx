@@ -1,7 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { tomorrow } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkToc from "remark-toc";
 import slug from "rehype-slug";
 import autoLink from "rehype-autolink-headings";
@@ -32,7 +32,7 @@ const Preview: React.FC<PreviewProps> = ({ value }) => {
           return !inline && match ? (
             // @ts-ignore
             <SyntaxHighlighter
-              style={dracula}
+              style={tomorrow}
               language={match[1]}
               PreTag="div"
               {...props}

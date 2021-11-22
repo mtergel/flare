@@ -1,0 +1,5 @@
+mutation DeletePostsTags($where: posts_tags_bool_exp = {}) {
+  delete_posts_tags(where: $where) {
+    affected_rows
+  }
+}

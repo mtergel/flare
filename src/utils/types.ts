@@ -17,6 +17,7 @@ export type NextComponentTypeWithLayout = NextComponentType<
 };
 
 export type EditTag = {
+  id?: string;
   value: string;
   label: string;
   __isNew__?: boolean;

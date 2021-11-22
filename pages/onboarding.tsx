@@ -1,23 +1,16 @@
 import Fallback from "@/components/Fallback/Fallback";
 import { useAuth } from "context/auth";
 import { useGetUserQuery } from "graphql/generated/graphql";
+import useProtected from "hooks/useProtected";
 import { nanoid } from "nanoid";
 import { useRouter } from "next/dist/client/router";
-import { useEffect } from "react";
 import ErrorMessage from "ui/misc/ErrorMessage";
 import OnboardinForm from "ui/Onboarding/OnboardingForm";
 import { usernameReg } from "utils/regex";
 import { NextPageWithLayout } from "utils/types";
 
 const Onboarding: NextPageWithLayout = () => {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  useEffect(() => {
-    if (!user && !loading) {
-      router.replace("/");
-    }
-    // eslint-disable-next-line
-  }, [user, loading]);
+  const { user } = useProtected();
   if (user) {
     return <OnboardinContainer />;
   } else {
