@@ -19,6 +19,7 @@ import {
 } from "graphql/generated/graphql";
 import compact from "lodash/compact";
 import keyBy from "lodash/keyBy";
+import md5 from "md5";
 import { useRouter } from "next/dist/client/router";
 import dynamic from "next/dynamic";
 import { useEffect, useRef } from "react";
@@ -26,6 +27,7 @@ import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import slugify from "slugify";
 import EmojiPicker from "ui/ArticleEditor/EmojiPicker";
+import SavedToast from "./SavedToast";
 
 const TagSelector = dynamic(() => import("ui/ArticleEditor/TagSelector"), {
   ssr: false,
@@ -169,7 +171,17 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
                   value: tag.tag_keyword,
                 })),
               });
-              toast.success("Saved!");
+              toast.custom((t) => (
+                <SavedToast
+                  visible={t.visible}
+                  onClose={() => toast.dismiss(t.id)}
+                  viewLink={`/api/preview?slug=${
+                    updatedPost.slug
+                  }&preview=${md5(
+                    updatedPost.slug + process.env.NEXT_PUBLIC_SALT
+                  )}`}
+                />
+              ));
             }
           }
         } catch (error) {
@@ -220,7 +232,17 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
                   value: tag.tag_keyword,
                 })),
               });
-              toast.success("Saved!");
+              toast.custom((t) => (
+                <SavedToast
+                  visible={t.visible}
+                  onClose={() => toast.dismiss(t.id)}
+                  viewLink={`/api/preview?slug=${
+                    createdPost.slug
+                  }&preview=${md5(
+                    createdPost.slug + process.env.NEXT_PUBLIC_SALT
+                  )}`}
+                />
+              ));
             }
           }
         } catch (error) {
