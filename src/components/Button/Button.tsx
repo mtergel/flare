@@ -156,6 +156,7 @@ const ButtonIcon: React.FC<{ className?: string }> = (props) => {
         "aria-hidden": true,
         focusable: false,
         "data-testid": "buttonIcon",
+        className: "h-5 w-5",
       })
     : children;
 
