@@ -7,6 +7,7 @@ import {
 import "easymde/dist/easymde.min.css";
 import dynamic from "next/dynamic";
 import { useCallback, useState } from "react";
+import { GetCodemirrorInstance } from "react-simplemde-editor";
 import Preview from "./Preview";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
@@ -26,8 +27,13 @@ const options = {
 interface EditorProps {
   markdown: string;
   onChange: (value: string) => void;
+  getCodemirrorInstance?: GetCodemirrorInstance | undefined;
 }
-const Editor: React.FC<EditorProps> = ({ markdown, onChange }) => {
+const Editor: React.FC<EditorProps> = ({
+  markdown,
+  onChange,
+  getCodemirrorInstance,
+}) => {
   const [value, setValue] = useState(markdown);
 
   const handleChange = useCallback((value: string) => {
@@ -53,6 +59,7 @@ const Editor: React.FC<EditorProps> = ({ markdown, onChange }) => {
             options={options}
             value={value}
             onChange={handleChange}
+            getCodemirrorInstance={getCodemirrorInstance}
           />
         </TabsContent>
         <TabsContent value="preview">

@@ -1,11 +1,14 @@
 import Button from "@/components/Button/Button";
 import Container from "@/components/Container/Container";
 import Editor from "@/components/Editor/Editor";
+import Input from "@/components/Input/Input";
 import Switch from "@/components/Switch/Switch";
 import { getRandomEmoji } from "@/utils/const";
+import copyToClipboard from "@/utils/copyToClipboard";
 import logger from "@/utils/logger";
 import postid from "@/utils/postid";
 import { EditTag } from "@/utils/types";
+import { FiCopy } from "@react-icons/all-files/fi/FiCopy";
 import "emoji-mart/css/emoji-mart.css";
 import {
   Posts_Tags_Constraint,
@@ -22,13 +25,13 @@ import keyBy from "lodash/keyBy";
 import md5 from "md5";
 import { useRouter } from "next/dist/client/router";
 import dynamic from "next/dynamic";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import slugify from "slugify";
 import EmojiPicker from "ui/ArticleEditor/EmojiPicker";
+import ArticleImageUpload from "./ArticleImageUpload";
 import SavedToast from "./SavedToast";
-import { FiImage } from "@react-icons/all-files/fi/FiImage";
 
 const TagSelector = dynamic(() => import("ui/ArticleEditor/TagSelector"), {
   ssr: false,
@@ -69,6 +72,8 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     setError,
     reset,
     watch,
+    setValue,
+    getValues,
   } = useForm({
     defaultValues: {
       id,
@@ -275,6 +280,13 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     }
   }, [watchedTextArea]);
 
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    copyToClipboard(`![Image description](${uploadedImageUrl})`);
+    setCopied(true);
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="pb-20">
       <Container size="common">
@@ -292,9 +304,30 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             textAreaRef.current = e;
           }}
         />
-        <Button leftIcon={<FiImage />} className="mb-4" variant="ghost">
-          Upload image
-        </Button>
+
+        <div className="flex items-center space-x-2 mb-4">
+          <div className="flex-shrink-0">
+            <ArticleImageUpload
+              onUpload={(url) => {
+                setUploadedImageUrl(url);
+              }}
+            />
+          </div>
+          {uploadedImageUrl && (
+            <div className="flex-grow flex items-center space-x-2">
+              <Input
+                readOnly
+                value={`![Image description](${uploadedImageUrl})`}
+                onClick={handleCopy}
+                className="cursor-pointer"
+              />
+              <Button leftIcon={<FiCopy />} onClick={handleCopy}>
+                {copied ? "Copied" : "Copy"}
+              </Button>
+            </div>
+          )}
+        </div>
+
         <div className="md:border md:rounded-md md:overflow-hidden">
           <Controller
             control={control}
