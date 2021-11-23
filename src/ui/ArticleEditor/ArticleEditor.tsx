@@ -28,6 +28,7 @@ import toast from "react-hot-toast";
 import slugify from "slugify";
 import EmojiPicker from "ui/ArticleEditor/EmojiPicker";
 import SavedToast from "./SavedToast";
+import { FiImage } from "@react-icons/all-files/fi/FiImage";
 
 const TagSelector = dynamic(() => import("ui/ArticleEditor/TagSelector"), {
   ssr: false,
@@ -171,17 +172,22 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
                   value: tag.tag_keyword,
                 })),
               });
-              toast.custom((t) => (
-                <SavedToast
-                  visible={t.visible}
-                  onClose={() => toast.dismiss(t.id)}
-                  viewLink={`/api/preview?slug=${
-                    updatedPost.slug
-                  }&preview=${md5(
-                    updatedPost.slug + process.env.NEXT_PUBLIC_SALT
-                  )}`}
-                />
-              ));
+              toast.custom(
+                (t) => (
+                  <SavedToast
+                    visible={t.visible}
+                    onClose={() => toast.dismiss(t.id)}
+                    viewLink={`/api/preview?slug=${
+                      updatedPost.slug
+                    }&preview=${md5(
+                      updatedPost.slug + process.env.NEXT_PUBLIC_SALT
+                    )}`}
+                  />
+                ),
+                {
+                  duration: 10000,
+                }
+              );
             }
           }
         } catch (error) {
@@ -220,29 +226,18 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
                 `${createdPost.user.username}/articles/${createdPost.slug}`
               );
             } else {
-              reset({
-                id: createdPost.id,
-                title: createdPost.title,
-                body_markdown: createdPost.body_markdown ?? "",
-                emoji: createdPost.emoji ?? getRandomEmoji(),
-                published: createdPost.published,
-                tag_keyword: createdPost.posts_tags.map((tag) => ({
-                  id: tag.id,
-                  label: tag.tag_keyword,
-                  value: tag.tag_keyword,
-                })),
-              });
-              toast.custom((t) => (
-                <SavedToast
-                  visible={t.visible}
-                  onClose={() => toast.dismiss(t.id)}
-                  viewLink={`/api/preview?slug=${
-                    createdPost.slug
-                  }&preview=${md5(
-                    createdPost.slug + process.env.NEXT_PUBLIC_SALT
-                  )}`}
-                />
-              ));
+              // if we are on new
+              // should push to the newly created post
+              const res = await fetch(
+                `/api/preview?slug=${createdPost.slug}&preview=${md5(
+                  createdPost.slug + process.env.NEXT_PUBLIC_SALT
+                )}`,
+                {
+                  method: "GET",
+                  redirect: "follow",
+                }
+              );
+              await router.push(res.url);
             }
           }
         } catch (error) {
@@ -297,6 +292,9 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             textAreaRef.current = e;
           }}
         />
+        <Button leftIcon={<FiImage />} className="mb-4" variant="ghost">
+          Upload image
+        </Button>
         <div className="md:border md:rounded-md md:overflow-hidden">
           <Controller
             control={control}

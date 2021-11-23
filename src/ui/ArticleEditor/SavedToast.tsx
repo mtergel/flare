@@ -16,7 +16,7 @@ const SavedToast: React.FC<SavedToastProps> = ({
     <div
       className={`${
         visible ? "animate-enter" : "animate-leave"
-      } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+      } border-l-4 border-green-500 max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
     >
       <div className="flex-1 w-0 p-4">
         <div className="flex items-start">
@@ -27,12 +27,12 @@ const SavedToast: React.FC<SavedToastProps> = ({
             <p className="text-sm font-medium text-gray-900">Article saved!</p>
             {published ? (
               <Link href={viewLink} passHref>
-                <a className="mt-1 text-sm text-gray-500">
+                <a className="mt-1 text-sm text-gray-500 cursor-pointer">
                   Check out your article here.
                 </a>
               </Link>
             ) : (
-              <a className="mt-1 text-sm text-gray-500">
+              <a className="mt-1 text-sm text-gray-500 cursor-pointer">
                 See your preview here.
               </a>
             )}

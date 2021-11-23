@@ -66,19 +66,25 @@ const ArticleRow: React.FC<ArticleRowProps> = ({ post, username }) => {
   const { isOpen, onOpen, setIsOpen } = useDisclosure();
   const [_deleteRes, deletePost] = useDeletePostMutation();
   const [_deletePostTags, deletePostTags] = useDeletePostsTagsMutation();
-  const [toastText, setToastText] = useState<string>("");
+  const [toastText, setToastText] = useState(false);
 
   const handleDelete = () => {
-    toast.promise(deletingPost(), {
-      loading: toastText,
-      success: <b>Deleted!</b>,
-      error: <p>Could not delete.</p>,
-    });
+    toast.promise(
+      deletingPost(),
+      {
+        loading: <b>Deleting...</b>,
+        success: <b>Deleted!</b>,
+        error: <p>Could not delete.</p>,
+      },
+      {
+        position: "top-center",
+      }
+    );
   };
 
   const deletingPost = async () => {
     try {
-      setToastText("Deleting tags...");
+      setToastText(true);
       const toDeletePostTags = post.posts_tags.map((i) => i.id);
       logger.debug("Deleting tags...: ", toDeletePostTags);
 
@@ -90,15 +96,15 @@ const ArticleRow: React.FC<ArticleRowProps> = ({ post, username }) => {
         },
       });
 
-      setToastText("Deleting post...");
       logger.debug("Deleting post...: ", post.id);
 
       await deletePost({
         id: post.id,
       });
 
-      setToastText("");
+      setToastText(false);
     } catch (error) {
+      setToastText(false);
       logger.debug(error);
     }
   };
@@ -114,9 +120,7 @@ const ArticleRow: React.FC<ArticleRowProps> = ({ post, username }) => {
         <div className="space-x-3 flex-shrink-0">
           {post.published ? (
             <Link
-              href={
-                toastText !== "" ? "#" : `/${username}/articles/${post.slug}`
-              }
+              href={toastText ? "#" : `/${username}/articles/${post.slug}`}
               passHref
             >
               <IconButton
@@ -138,10 +142,7 @@ const ArticleRow: React.FC<ArticleRowProps> = ({ post, username }) => {
               variant="outline"
             />
           )}
-          <Link
-            href={toastText !== "" ? "#" : `/articles/${post.id}/edit`}
-            passHref
-          >
+          <Link href={toastText ? "#" : `/articles/${post.id}/edit`} passHref>
             <IconButton
               as="a"
               aria-label="edit"
@@ -155,7 +156,7 @@ const ArticleRow: React.FC<ArticleRowProps> = ({ post, username }) => {
                 aria-label="more options"
                 icon={<FiChevronDown />}
                 variant="ghost"
-                disabled={toastText !== ""}
+                disabled={toastText}
               />
             </DropdownMenuTrigger>
             <DropdownMenuContent sideOffset={4}>

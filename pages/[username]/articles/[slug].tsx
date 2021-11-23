@@ -4,7 +4,6 @@ import Preview from "@/components/Editor/Preview";
 import MobileToc from "@/components/Toc/MobileToc";
 import ToCDD from "@/components/Toc/Toc";
 import { MDHeading } from "@/utils/types";
-import useIntersectionObserver from "hooks/useIntersectionObserver";
 import { FiCalendar } from "@react-icons/all-files/fi/FiCalendar";
 import { FiClock } from "@react-icons/all-files/fi/FiClock";
 import { FiPlay } from "@react-icons/all-files/fi/FiPlay";
@@ -18,6 +17,7 @@ import {
   PostsStaticPathsQueryVariables,
   useGetPostBySlugQuery,
 } from "graphql/generated/graphql";
+import useIntersectionObserver from "hooks/useIntersectionObserver";
 // @ts-ignore
 import toc from "markdown-toc";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
@@ -143,7 +143,7 @@ const Profile: NextPageWithLayout<
           <Link href={`/articles/${post.id}/edit`} passHref>
             <a className="flex items-center justify-center bg-gray-600 text-paper text-sm py-4">
               <FiPlay className="mr-2 h-5 w-5" />
-              <span>Preview Mode</span>
+              <span>Preview Mode (Edit)</span>
             </a>
           </Link>
         )}
@@ -234,29 +234,34 @@ const Profile: NextPageWithLayout<
             </section>
             <aside className="hidden lg:block lg:w-[300px]">
               <div className="h-full">
-                <div className="bg-paper rounded-xl pt-4 px-5 pb-6 shadow-md">
-                  <div className="font-semibold">Tags</div>
-                  <div className="flex flex-wrap justify-between">
-                    {post.posts_tags.map((i) => (
-                      <Link
-                        key={i.tag.keyword}
-                        passHref
-                        href={`/tags/${i.tag.keyword}`}
-                      >
-                        <a className="flex space-x-1 items-center mt-3 flex-1 min-w-[49%]">
-                          <Image
-                            alt=""
-                            src={i.tag.image}
-                            width={24}
-                            height={24}
-                          />
-                          <span>{i.tag.name}</span>
-                        </a>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-                <div className="h-6" />
+                {post.posts_tags.length > 0 && (
+                  <>
+                    <div className="bg-paper rounded-xl pt-4 px-5 pb-6 shadow-md">
+                      <div className="font-semibold">Tags</div>
+                      <div className="flex flex-wrap justify-between">
+                        {post.posts_tags.map((i) => (
+                          <Link
+                            key={i.tag.keyword}
+                            passHref
+                            href={`/tags/${i.tag.keyword}`}
+                          >
+                            <a className="flex space-x-1 items-center mt-3 flex-1 min-w-[49%]">
+                              <Image
+                                alt=""
+                                src={i.tag.image}
+                                width={24}
+                                height={24}
+                              />
+                              <span>{i.tag.name}</span>
+                            </a>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="h-6" />
+                  </>
+                )}
+
                 <div className="sticky top-8 max-h-[calc(100vh-50px)] flex flex-col">
                   <div className="p-5 bg-paper rounded-xl shadow-md">
                     <div className="flex items-center justify-between">
