@@ -41,6 +41,12 @@ module.exports = {
         slideLeftAndFade:
           "slideLeftAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)",
 
+        // general/overlay
+        opacityFadeIn: "opacityFadeIn 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+
+        // dialog
+        contentShow: "contentShow 200ms cubic-bezier(0.16, 1, 0.3, 1)",
+
         // enter: "enter 200ms ease-out",
         // leave: "leave 150ms ease-in forwards",
       },
@@ -64,6 +70,14 @@ module.exports = {
         slideLeftAndFade: {
           "0%": { opacity: 0, transform: "translateX(2px)" },
           "100%": { opacity: 1, transform: "translateY(0)" },
+        },
+        opacityFadeIn: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+        contentShow: {
+          "0%": { opacity: 0, transform: "translate(-50%, -48%)" },
+          "100%": { opacity: 1, transform: "translate(-50%, -50%)" },
         },
         // leave: {
         //   "0%": { transform: "scale(1)", opacity: 1 },

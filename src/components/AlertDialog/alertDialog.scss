@@ -1,6 +1,11 @@
 .alert-content {
   @apply flex flex-col inset-0 transform-none rounded-none bg-paper fixed overflow-y-auto;
   @apply sm:rounded-2xl sm:max-w-sm sm:top-1/2 sm:left-1/2 sm:bottom-auto sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2;
+
+  @media (prefers-reduced-motion: no-preference) {
+    will-change: transform, opacity;
+    @apply animate-contentShow;
+  }
 }
 
 .alert-title {
