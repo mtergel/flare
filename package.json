@@ -10,6 +10,7 @@
     "generate": "graphql-codegen --config codegen.js"
   },
   "dependencies": {
+    "@radix-ui/react-alert-dialog": "^0.1.1",
     "@radix-ui/react-avatar": "^0.1.1",
     "@radix-ui/react-dialog": "^0.1.1",
     "@radix-ui/react-dropdown-menu": "^0.1.1",

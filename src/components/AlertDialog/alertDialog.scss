@@ -1,0 +1,34 @@
+.alert-content {
+  @apply flex flex-col inset-0 transform-none rounded-none bg-paper fixed overflow-y-auto;
+  @apply sm:rounded-2xl sm:max-w-sm sm:top-1/2 sm:left-1/2 sm:bottom-auto sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2;
+}
+
+.alert-title {
+  @apply text-lg font-semibold pt-6 px-8 text-center;
+}
+
+.alert-description {
+  @apply text-sm text-center px-8 pt-1 pb-8;
+}
+
+.alert-button-container {
+  @apply flex flex-col border-t border-b divide-y;
+  @apply sm:flex-row sm:divide-y-0 sm:divide-x sm:border-b-0;
+}
+
+.alert-button {
+  @apply py-4 w-full transition-colors text-gray-500;
+
+  &:hover,
+  &:focus {
+    @apply bg-gray-500 bg-opacity-10 outline-none;
+  }
+
+  &.alert-danger {
+    @apply text-red-500;
+    &:hover,
+    &:focus {
+      @apply bg-red-400 bg-opacity-20 outline-none;
+    }
+  }
+}
