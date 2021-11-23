@@ -57,7 +57,11 @@ const Editor: React.FC<EditorProps> = ({ markdown, onChange }) => {
         </TabsContent>
         <TabsContent value="preview">
           <div className="prose prose-sm editor-preview-tw border-b-2">
-            {value ? <Preview value={value} /> : <p>Nothing to preview.</p>}
+            {value ? (
+              <Preview value={value} disableAutoLink />
+            ) : (
+              <p>Nothing to preview.</p>
+            )}
           </div>
         </TabsContent>
       </Tabs>
