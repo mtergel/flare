@@ -47,8 +47,9 @@ module.exports = {
         // dialog
         contentShow: "contentShow 200ms cubic-bezier(0.16, 1, 0.3, 1)",
 
-        // enter: "enter 200ms ease-out",
-        // leave: "leave 150ms ease-in forwards",
+        // custom toast
+        enter: "enter 200ms ease-out",
+        leave: "leave 150ms ease-in forwards",
       },
       keyframes: {
         spinner: {
@@ -79,10 +80,14 @@ module.exports = {
           "0%": { opacity: 0, transform: "translate(-50%, -48%)" },
           "100%": { opacity: 1, transform: "translate(-50%, -50%)" },
         },
-        // leave: {
-        //   "0%": { transform: "scale(1)", opacity: 1 },
-        //   "100%": { transform: "scale(0.9)", opacity: 0 },
-        // },
+        enter: {
+          "0%": { transform: "scale(0.9)", opacity: 0 },
+          "100%": { transform: "scale(1)", opacity: 1 },
+        },
+        leave: {
+          "0%": { transform: "scale(1)", opacity: 1 },
+          "100%": { transform: "scale(0.9)", opacity: 0 },
+        },
       },
       ringWidth: {
         DEFAULT: "2px",
