@@ -45,7 +45,11 @@ const UserLogin: React.FC<{}> = () => {
       description="Where programmers share ideas and help each other grow."
       open={isOpen}
       onOpenChange={setIsOpen}
-      content={<LoginForm />}
+      content={
+        <div className="h-full sm:h-96">
+          <LoginForm />
+        </div>
+      }
     >
       <Button size="sm" color="primary" onClick={onOpen}>
         Log in

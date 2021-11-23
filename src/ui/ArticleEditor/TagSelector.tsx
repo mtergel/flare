@@ -90,6 +90,8 @@ const TagSelector: React.FC<TagSelectorProps> = ({ value, onChange }) => {
         cacheOptions
         defaultOptions={_options}
         loadOptions={debouncedSearch}
+        closeMenuOnSelect={false}
+        menuPortalTarget={document.body}
         onChange={(newValue) => {
           onChange(newValue as []);
         }}

@@ -1,4 +1,9 @@
 import {
+  AlertDialog,
+  AlertCancelButton,
+  AlertActionButton,
+} from "@/components/AlertDialog/AlertDialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -6,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/Dropdown/Dropdown";
 import IconButton from "@/components/IconButton/IconButton";
+import logger from "@/utils/logger";
 import { FiChevronDown } from "@react-icons/all-files/fi/FiChevronDown";
 import { FiEdit2 } from "@react-icons/all-files/fi/FiEdit2";
 import { FiPlay } from "@react-icons/all-files/fi/FiPlay";
@@ -18,11 +24,11 @@ import {
   useDeletePostMutation,
   useDeletePostsTagsMutation,
 } from "graphql/generated/graphql";
+import useDisclosure from "hooks/useDisclosure";
 import md5 from "md5";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import logger from "@/utils/logger";
 
 dayjs.extend(relativeTime);
 
@@ -57,6 +63,7 @@ const ArticleRow: React.FC<ArticleRowProps> = ({ post, username }) => {
     }
   };
 
+  const { isOpen, onOpen, setIsOpen } = useDisclosure();
   const [_deleteRes, deletePost] = useDeletePostMutation();
   const [_deletePostTags, deletePostTags] = useDeletePostsTagsMutation();
   const [toastText, setToastText] = useState<string>("");
@@ -160,8 +167,8 @@ const ArticleRow: React.FC<ArticleRowProps> = ({ post, username }) => {
                   Get raw markdown
                 </div>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild color="danger">
-                <div onClick={handleDelete}>
+              <DropdownMenuItem color="danger" asChild onClick={onOpen}>
+                <div>
                   <DropdownMenuLeftSlot>
                     <FiTrash2 />
                   </DropdownMenuLeftSlot>
@@ -178,6 +185,20 @@ const ArticleRow: React.FC<ArticleRowProps> = ({ post, username }) => {
         </div>
         <time>{dayjs(post.updated_at).fromNow()}</time>
       </footer>
+      <AlertDialog
+        title="Delete article"
+        description="Do you really want to delete?"
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        actions={
+          <div className="alert-button-container">
+            <AlertActionButton className="alert-danger" onClick={handleDelete}>
+              Delete
+            </AlertActionButton>
+            <AlertCancelButton>Cancel</AlertCancelButton>
+          </div>
+        }
+      />
     </article>
   );
 };
