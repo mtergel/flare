@@ -1,13 +1,13 @@
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/Dropdown/Dropdown";
 import { defaultEmojis } from "@/utils/const";
 import { Picker } from "emoji-mart";
 import "emoji-mart/css/emoji-mart.css";
 import useDisclosure from "hooks/useDisclosure";
 import { useTheme } from "next-themes";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../Dropdown/Dropdown";
 interface EmojiPickerProps {
   value: string;
   onChange: (emoji: string) => void;

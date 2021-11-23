@@ -22,7 +22,7 @@ import md5 from "md5";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import logger from "utils/logger";
+import logger from "@/utils/logger";
 
 dayjs.extend(relativeTime);
 

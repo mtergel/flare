@@ -1,4 +1,4 @@
-import ArticleEditor from "@/components/Editor/ArticleEditor";
+import ArticleEditor from "ui/ArticleEditor/ArticleEditor";
 import Fallback from "@/components/Fallback/Fallback";
 import { NextPageWithLayout } from "@/utils/types";
 import useProtected from "hooks/useProtected";

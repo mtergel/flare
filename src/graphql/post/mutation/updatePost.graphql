@@ -13,5 +13,8 @@ mutation UpdatePost($id: bigint!, $_set: posts_set_input!) {
     title
     updated_at
     user_id
+    user {
+      username
+    }
   }
 }

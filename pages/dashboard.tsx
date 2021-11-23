@@ -58,7 +58,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
           {data.posts.length === 0 ? (
             <div className="flex flex-col items-center justify-center space-y-8 pt-4">
               <div className="font-semibold text-lg text-gray-500 text-center">
-                <p>You dont have articles</p>
+                <p>You don&apos;t have any articles</p>
                 <p>Let&apos;s create one!</p>
               </div>
               <Folder mood="excited" color={themeColor} />

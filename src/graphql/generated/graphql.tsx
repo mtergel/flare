@@ -2013,7 +2013,7 @@ export type CreatePostMutationVariables = Exact<{
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'mutation_root', insert_posts_one?: { __typename?: 'posts', slug: string, user: { __typename?: 'users', username?: string | null | undefined } } | null | undefined };
+export type CreatePostMutation = { __typename?: 'mutation_root', insert_posts_one?: { __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, published: boolean, slug: string, title: string, updated_at?: any | null | undefined, user_id: string, posts_tags: Array<{ __typename?: 'posts_tags', id: any, tag_keyword: string }>, user: { __typename?: 'users', username?: string | null | undefined } } | null | undefined };
 
 export type DeletePostMutationVariables = Exact<{
   id: Scalars['bigint'];
@@ -2028,7 +2028,7 @@ export type UpdatePostMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePostMutation = { __typename?: 'mutation_root', update_posts_by_pk?: { __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, published: boolean, slug: string, title: string, updated_at?: any | null | undefined, user_id: string, posts_tags: Array<{ __typename?: 'posts_tags', id: any, tag_keyword: string }> } | null | undefined };
+export type UpdatePostMutation = { __typename?: 'mutation_root', update_posts_by_pk?: { __typename?: 'posts', body_markdown?: string | null | undefined, created_at?: any | null | undefined, emoji?: string | null | undefined, id: any, published: boolean, slug: string, title: string, updated_at?: any | null | undefined, user_id: string, posts_tags: Array<{ __typename?: 'posts_tags', id: any, tag_keyword: string }>, user: { __typename?: 'users', username?: string | null | undefined } } | null | undefined };
 
 export type GetPostByIdQueryVariables = Exact<{
   id: Scalars['bigint'];
@@ -2135,7 +2135,19 @@ export type GetUserByUsernamePostsQuery = { __typename?: 'query_root', users: Ar
 export const CreatePostDocument = gql`
     mutation CreatePost($object: posts_insert_input!) {
   insert_posts_one(object: $object) {
+    body_markdown
+    created_at
+    emoji
+    id
+    posts_tags {
+      id
+      tag_keyword
+    }
+    published
     slug
+    title
+    updated_at
+    user_id
     user {
       username
     }
@@ -2173,6 +2185,9 @@ export const UpdatePostDocument = gql`
     title
     updated_at
     user_id
+    user {
+      username
+    }
   }
 }
     `;

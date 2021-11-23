@@ -1,9 +1,9 @@
-import ArticleEditor from "@/components/Editor/ArticleEditor";
 import Fallback from "@/components/Fallback/Fallback";
 import { useGetPostByIdQuery } from "graphql/generated/graphql";
 import useProtected from "hooks/useProtected";
 import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
+import ArticleEditor from "ui/ArticleEditor/ArticleEditor";
 import MinHeader from "ui/Layout/MinHeader";
 import ErrorMessage from "ui/misc/ErrorMessage";
 

@@ -1,6 +1,18 @@
 mutation CreatePost($object: posts_insert_input!) {
   insert_posts_one(object: $object) {
+    body_markdown
+    created_at
+    emoji
+    id
+    posts_tags {
+      id
+      tag_keyword
+    }
+    published
     slug
+    title
+    updated_at
+    user_id
     user {
       username
     }

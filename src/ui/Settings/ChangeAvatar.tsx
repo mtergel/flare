@@ -13,7 +13,7 @@ import useDisclosure from "hooks/useDisclosure";
 import { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
 import ImageCrop from "ui/Settings/ImageCrop";
-import logger from "utils/logger";
+import logger from "@/utils/logger";
 
 interface ChangeAvatarProps {
   uid: string;

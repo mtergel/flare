@@ -3,6 +3,7 @@ import Container from "@/components/Container/Container";
 import Editor from "@/components/Editor/Editor";
 import Switch from "@/components/Switch/Switch";
 import { getRandomEmoji } from "@/utils/const";
+import logger from "@/utils/logger";
 import postid from "@/utils/postid";
 import { EditTag } from "@/utils/types";
 import "emoji-mart/css/emoji-mart.css";
@@ -18,17 +19,15 @@ import {
 } from "graphql/generated/graphql";
 import compact from "lodash/compact";
 import keyBy from "lodash/keyBy";
-import md5 from "md5";
 import { useRouter } from "next/dist/client/router";
 import dynamic from "next/dynamic";
 import { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import slugify from "slugify";
-import logger from "utils/logger";
-import EmojiPicker from "./EmojiPicker";
+import EmojiPicker from "ui/ArticleEditor/EmojiPicker";
 
-const TagSelector = dynamic(() => import("./TagSelector"), {
+const TagSelector = dynamic(() => import("ui/ArticleEditor/TagSelector"), {
   ssr: false,
 });
 
@@ -103,6 +102,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
       }
 
       if (data.id) {
+        // update method
         try {
           const postTags = keyBy(tag_keyword, "value");
           let toAdd: Posts_Tags_Insert_Input[] = [];
@@ -152,19 +152,25 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
           });
           if (updatePostRes.data && updatePostRes.data.update_posts_by_pk) {
             const updatedPost = updatePostRes.data.update_posts_by_pk;
-            reset({
-              id: updatedPost.id,
-              title: updatedPost.title,
-              body_markdown: updatedPost.body_markdown ?? "",
-              emoji: updatedPost.emoji ?? getRandomEmoji(),
-              published: updatedPost.published,
-              tag_keyword: updatedPost.posts_tags.map((tag) => ({
-                id: tag.id,
-                label: tag.tag_keyword,
-                value: tag.tag_keyword,
-              })),
-            });
-            toast.success("Saved!");
+            if (data.published) {
+              await router.push(
+                `${updatedPost.user.username}/articles/${updatedPost.slug}`
+              );
+            } else {
+              reset({
+                id: updatedPost.id,
+                title: updatedPost.title,
+                body_markdown: updatedPost.body_markdown ?? "",
+                emoji: updatedPost.emoji ?? getRandomEmoji(),
+                published: updatedPost.published,
+                tag_keyword: updatedPost.posts_tags.map((tag) => ({
+                  id: tag.id,
+                  label: tag.tag_keyword,
+                  value: tag.tag_keyword,
+                })),
+              });
+              toast.success("Saved!");
+            }
           }
         } catch (error) {
           logger.debug(error);
@@ -198,35 +204,27 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             const createdPost = postRes.data.insert_posts_one;
             if (data.published) {
               // just redirect to new created post
-              router.push(
+              await router.push(
                 `${createdPost.user.username}/articles/${createdPost.slug}`
               );
             } else {
-              // try creating preview
-              try {
-                const hashValue = md5(
-                  createdPost.slug + process.env.NEXT_PUBLIC_SALT
-                );
-
-                // this will redirect to successful
-                await fetch(
-                  `/api/preview?slug=${createdPost.slug}&preview=${hashValue}`,
-                  {
-                    redirect: "follow",
-                  }
-                );
-              } catch (error) {
-                logger.debug(error);
-                toast.error(
-                  "Error occured when trying to generate preview url."
-                );
-                router.push("/dashboard");
-              }
+              reset({
+                id: createdPost.id,
+                title: createdPost.title,
+                body_markdown: createdPost.body_markdown ?? "",
+                emoji: createdPost.emoji ?? getRandomEmoji(),
+                published: createdPost.published,
+                tag_keyword: createdPost.posts_tags.map((tag) => ({
+                  id: tag.id,
+                  label: tag.tag_keyword,
+                  value: tag.tag_keyword,
+                })),
+              });
+              toast.success("Saved!");
             }
-          } else {
-            router.push("/dashboard");
           }
         } catch (error) {
+          logger.debug(error);
           toast.error(error.message);
         }
       }
