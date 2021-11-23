@@ -110,16 +110,21 @@
       @apply text-tMuted;
     }
   }
+}
 
-  & .rs__menu {
-    @apply shadow rounded-none bg-paper;
+// moved to portal
+.rs__menu {
+  @apply shadow rounded-none bg-paper;
+}
+
+.rs__menu-list {
+  @apply bg-paper text-sm max-h-32;
+
+  .rs__option {
+    @apply cursor-pointer;
   }
 
-  & .rs__menu-list {
-    @apply bg-paper text-sm max-h-32;
-
-    & .rs__option--is-focused {
-      @apply text-primary bg-primary bg-opacity-20;
-    }
+  .rs__option--is-focused {
+    @apply text-primary bg-primary bg-opacity-20;
   }
 }

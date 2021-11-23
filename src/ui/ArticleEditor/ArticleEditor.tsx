@@ -297,22 +297,6 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             textAreaRef.current = e;
           }}
         />
-        <div className="pb-6 space-y-2">
-          <Controller
-            control={control}
-            name="emoji"
-            render={({ field }) => (
-              <EmojiPicker value={field.value} onChange={field.onChange} />
-            )}
-          />
-          <Controller
-            control={control}
-            name="tag_keyword"
-            render={({ field }) => (
-              <TagSelector value={field.value} onChange={field.onChange} />
-            )}
-          />
-        </div>
         <div className="md:border md:rounded-md md:overflow-hidden">
           <Controller
             control={control}
@@ -321,6 +305,22 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
               <Editor markdown={field.value} onChange={field.onChange} />
             )}
           />
+          <div className="pb-6 space-y-2 p-2">
+            <Controller
+              control={control}
+              name="emoji"
+              render={({ field }) => (
+                <EmojiPicker value={field.value} onChange={field.onChange} />
+              )}
+            />
+            <Controller
+              control={control}
+              name="tag_keyword"
+              render={({ field }) => (
+                <TagSelector value={field.value} onChange={field.onChange} />
+              )}
+            />
+          </div>
           <div className="flex items-center space-x-6 justify-end mx-2 mb-2">
             <div className="flex items-center space-x-2">
               <label
