@@ -116,13 +116,13 @@ const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
   const Element = rest.as || "button";
 
   const merged = clsx(
-    className,
     "btn",
     getSize(size),
     getVariant(variant),
     getColor(color),
     isLoading && (loadingText ? "btn-loading" : "btn-loading-no-text"),
-    isFullWidth && "btn-full"
+    isFullWidth && "btn-full",
+    className
   );
 
   return (
@@ -133,6 +133,7 @@ const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
       className={merged}
       data-loading={isLoading}
       data-testid="button"
+      type={type}
     >
       {leftIcon && !isLoading && (
         <ButtonIcon className="-ml-2 mr-3 h-5 w-5">{leftIcon}</ButtonIcon>
@@ -155,6 +156,7 @@ const ButtonIcon: React.FC<{ className?: string }> = (props) => {
         "aria-hidden": true,
         focusable: false,
         "data-testid": "buttonIcon",
+        className: "h-5 w-5",
       })
     : children;
 

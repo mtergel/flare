@@ -76,7 +76,7 @@
   }
 
   &.ibtn-sm {
-    @apply p-1;
+    @apply p-1 h-8 w-8;
 
     & svg {
       @apply h-4 w-4;
@@ -87,16 +87,20 @@
     @apply p-2 h-10 w-10;
 
     & svg {
-      @apply h-5 w-5;
+      @apply h-4 w-4;
     }
   }
 
   &.ibtn-lg {
-    @apply p-2;
+    @apply p-2 h-12 w-12;
 
     & svg {
       @apply h-6 w-6;
     }
+  }
+
+  &.ibtn-round {
+    @apply rounded-full;
   }
 
   // colors
@@ -155,7 +159,7 @@
     @apply border-border bg-opacity-0;
     &:hover,
     &:focus {
-      @apply bg-opacity-10;
+      @apply bg-opacity-10 text-primary;
     }
   }
 
@@ -164,7 +168,7 @@
     @apply bg-opacity-0;
     &:hover,
     &:focus {
-      @apply bg-opacity-10;
+      @apply bg-opacity-10 text-primary;
     }
   }
 }

@@ -1,0 +1,39 @@
+query GetUserByUsernamePosts(
+  $_eq: String!
+  $offset: Int!
+  $limit: Int!
+  $created_at: order_by!
+) {
+  users(where: { username: { _eq: $_eq } }) {
+    username
+    created_at
+    image
+    name
+    user_id
+    bio
+    verified
+    posts_aggregate {
+      aggregate {
+        count
+      }
+    }
+    posts(
+      offset: $offset
+      limit: $limit
+      order_by: { created_at: $created_at }
+    ) {
+      body_markdown
+      created_at
+      emoji
+      id
+      post_type
+      published
+      slug
+      title
+      updated_at
+      posts_tags {
+        tag_keyword
+      }
+    }
+  }
+}

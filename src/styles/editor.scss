@@ -1,0 +1,130 @@
+.editor {
+  @apply p-2 relative bg-paper border rounded-lg;
+
+  & .menu {
+    @apply pb-2 border-b;
+
+    & .is-active {
+      @apply text-primary;
+    }
+  }
+
+  & .content {
+    @apply relative rounded-lg;
+
+    & .prose {
+      @apply w-full max-w-full;
+    }
+
+    & .code-block {
+      @apply relative;
+
+      select {
+        @apply text-white dark:text-white bg-gray-400 bg-opacity-20 text-sm rounded py-1 px-1 absolute right-2 top-2;
+
+        & option {
+          @apply bg-gray-600 dark:bg-gray-600;
+        }
+      }
+    }
+  }
+}
+
+.editor-title {
+  @apply text-4xl font-bold w-full py-2 mt-5 mb-8 bg-transparent resize-none outline-none border-none;
+  line-height: 1.5;
+}
+
+.EasyMDEContainer .CodeMirror {
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+}
+
+.editor-container {
+  & .EasyMDEContainer .CodeMirror {
+    border: unset;
+
+    @apply border border-border border-solid;
+    @apply mx-0 my-4 p-2 md:mx-2;
+    @apply rounded resize-y;
+    @apply min-h-[300px];
+    @apply bg-base text-tDefault;
+
+    &:focus-within {
+      @apply bg-paper ring-2 ring-primary;
+    }
+  }
+
+  & .CodeMirror-selected {
+    background: highlight !important;
+  }
+
+  & .CodeMirror-cursor {
+    @apply border-tDefault;
+  }
+
+  & .editor-preview-tw {
+    @apply mx-0 my-4 p-2 md:mx-2;
+    @apply min-h-[300px];
+    @apply max-w-full;
+  }
+}
+
+.tag-field {
+  & .rs__control {
+    @apply bg-base border-0 shadow-none text-sm text-tMuted;
+
+    & .rs__input {
+      color: var(--color-text-default) !important;
+      &::placeholder {
+        @apply text-tMuted;
+      }
+    }
+
+    & .rs__value-container {
+      padding: 6px 8px;
+
+      & .rs__multi-value {
+        @apply bg-paper text-sm shadow-sm rounded;
+        margin: 4px 7px 4px 0;
+
+        & .rs__multi-value__label {
+          @apply text-tDefault text-sm;
+        }
+
+        & .rs__multi-value__remove {
+          @apply text-tMuted;
+        }
+      }
+    }
+
+    & .rs__clear-indicator {
+      @apply text-tMuted;
+    }
+
+    & .rs__indicator-separator {
+      @apply bg-tMuted;
+    }
+
+    & .rs__dropdown-indicator {
+      @apply text-tMuted;
+    }
+  }
+}
+
+// moved to portal
+.rs__menu {
+  @apply shadow rounded-none bg-paper;
+}
+
+.rs__menu-list {
+  @apply bg-paper text-sm max-h-32;
+
+  .rs__option {
+    @apply cursor-pointer;
+  }
+
+  .rs__option--is-focused {
+    @apply text-primary bg-primary bg-opacity-20;
+  }
+}

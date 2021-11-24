@@ -30,6 +30,11 @@ export interface IconButtonProps extends BaseButtonProps {
    * A11y: A label that describes the button
    */
   "aria-label": string;
+  /**
+   * Make the border radius round
+   * @type Boolean
+   */
+  isRound?: boolean;
 }
 
 type Ref = HTMLButtonElement;
@@ -40,6 +45,7 @@ const IconButton = forwardRef<Ref, IconButtonProps>((props, ref) => {
     size = "md",
     "aria-label": ariaLabel,
     children,
+    isRound,
     className,
     ...rest
   } = props;
@@ -55,7 +61,12 @@ const IconButton = forwardRef<Ref, IconButtonProps>((props, ref) => {
       })
     : null;
 
-  const merged = clsx(className, getSize(size), "text-gray-500");
+  const merged = clsx(
+    className,
+    getSize(size),
+    isRound && "ibtn-round",
+    "text-gray-500"
+  );
 
   return (
     <Button

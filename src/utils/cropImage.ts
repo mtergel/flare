@@ -1,5 +1,3 @@
-import imageCompression from "browser-image-compression";
-
 const createImage = (url: string) =>
   new Promise((resolve, reject) => {
     const image = new Image();

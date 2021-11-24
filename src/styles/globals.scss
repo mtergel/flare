@@ -1,9 +1,10 @@
 .light {
-  --color-bg: #f0f2f5;
+  --color-bg: #edf2f7;
   --color-paper: #fff;
   --color-text-primary: #3c4043;
-  --color-border: #dadce0;
-  --color-text: #0f0f0f;
+  --color-border: #5c93bb2b;
+  --color-text-default: #0f0f0f;
+  --color-text-muted: #57606a;
 }
 
 .dark {
@@ -11,7 +12,8 @@
   --color-paper: #202124;
   --color-text-primary: #e8eaed;
   --color-border: #5f6368;
-  --color-text: #e3e3e3;
+  --color-text-default: #e3e3e3;
+  --color-text-muted: #768390;
 }
 
 @tailwind base;
@@ -22,7 +24,7 @@ html {
 
 body {
   @apply bg-base ring-offset-paper h-full;
-  color: var(--color-text);
+  color: var(--color-text-default);
 }
 
 div#__next {
@@ -31,7 +33,11 @@ div#__next {
 
 @tailwind components;
 
-// components
+// ui specific styles
+@import "./editor.scss";
+@import "./preview.scss";
+
+// components styles
 @import "../components/Button/button.scss";
 @import "../components/Container/container.scss";
 @import "../components/Dialog/dialog.scss";
@@ -41,16 +47,12 @@ div#__next {
 @import "../components/Avatar/avatar.scss";
 @import "../components/Dropdown/dropdown.scss";
 @import "../components/Slider/slider.scss";
+@import "../components/Switch/switch.scss";
+@import "../components/Skeleton/skeleton.scss";
+@import "../components/Tabs/tabs.scss";
+@import "../components/Toc/toc.scss";
+@import "../components/AlertDialog/alertDialog.scss";
 
-.r-icon {
-  @apply h-6 w-6;
-}
-
-.toastOverride {
-  @apply text-sm dark:border dark:border-gray-500 dark:border-opacity-20;
-  background: var(--color-paper) !important;
-  color: var(--color-text-primary) !important;
-  z-index: 10000;
-}
+@import "./misc.scss";
 
 @tailwind utilities;

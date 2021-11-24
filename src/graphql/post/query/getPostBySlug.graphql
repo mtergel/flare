@@ -1,0 +1,27 @@
+query GetPostBySlug($_eq: String!) {
+  posts(where: { slug: { _eq: $_eq } }, limit: 1) {
+    body_markdown
+    created_at
+    updated_at
+    emoji
+    id
+    post_type
+    posts_tags {
+      tag {
+        image
+        keyword
+        name
+      }
+    }
+    published
+    slug
+    title
+    user {
+      image
+      name
+      username
+      bio
+      verified
+    }
+  }
+}

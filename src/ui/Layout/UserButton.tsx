@@ -12,24 +12,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/Dropdown/Dropdown";
-import {
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "@firebase/auth";
-import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
-import { FaGoogle } from "@react-icons/all-files/fa/FaGoogle";
+import Skeleton from "@/components/Skeleton/Skeleton";
 import { FiLogOut } from "@react-icons/all-files/fi/FiLogOut";
+import { FiFolder } from "@react-icons/all-files/fi/FiFolder";
 import { FiSettings } from "@react-icons/all-files/fi/FiSettings";
-import { MdFlare } from "@react-icons/all-files/md/MdFlare";
 import { useAuth } from "context/auth";
 import { useGetUserQuery } from "graphql/generated/graphql";
 import useDisclosure from "hooks/useDisclosure";
-import { auth } from "initApp";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/dist/client/router";
-import { useState } from "react";
-import toast from "react-hot-toast";
+import Link from "next/link";
+import LoginForm from "ui/Auth/LoginForm";
 
 const UserButton: React.FC<{}> = () => {
   const { user, loading, error } = useAuth();
@@ -44,64 +37,7 @@ const UserButton: React.FC<{}> = () => {
 };
 
 const UserLogin: React.FC<{}> = () => {
-  const [loadingState, setLoadingState] = useState({
-    google: false,
-    github: false,
-    facebook: false,
-  });
   const { isOpen, setIsOpen, onOpen } = useDisclosure();
-  const handleGoogle = async () => {
-    try {
-      setLoadingState({
-        ...loadingState,
-        google: true,
-      });
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      if (error.code === "auth/popup-blocked") {
-        toast.error("Enable popups on this website");
-      } else if (
-        error.code === "auth/account-exists-with-different-credential"
-      ) {
-        toast.error("Email is used in an other provider");
-      }
-      if (error.code !== "auth/popup-closed-by-user") {
-        toast.error(error.message);
-      }
-
-      setLoadingState({
-        ...loadingState,
-        google: false,
-      });
-    }
-  };
-
-  const handleGithub = async () => {
-    try {
-      setLoadingState({
-        ...loadingState,
-        github: true,
-      });
-      const provider = new GithubAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      if (error.code === "auth/popup-blocked") {
-        toast.error("Enable popups on this website");
-      } else if (
-        error.code === "auth/account-exists-with-different-credential"
-      ) {
-        toast.error("Email is used in an other provider");
-      }
-      if (error.code !== "auth/popup-closed-by-user") {
-        toast.error(error.message);
-      }
-      setLoadingState({
-        ...loadingState,
-        github: false,
-      });
-    }
-  };
 
   return (
     <Dialog
@@ -110,41 +46,9 @@ const UserLogin: React.FC<{}> = () => {
       open={isOpen}
       onOpenChange={setIsOpen}
       content={
-        <>
-          <header>
-            <h1>
-              <div className="text-lg font-bold flex-grow flex space-x-1 items-center">
-                <span>
-                  <MdFlare className="text-primary-500" />
-                </span>
-                <span className="text-2xl tracking-wider">Flare</span>
-              </div>
-            </h1>
-            <p className="text-secondary text-sm pt-4">
-              Where programmers share ideas and help each other grow.
-            </p>
-          </header>
-          <div className="space-y-2 mt-8">
-            <Button
-              isLoading={loadingState.google}
-              loadingText="Please wait"
-              isFullWidth
-              onClick={handleGoogle}
-              leftIcon={<FaGoogle />}
-            >
-              Continue with Google
-            </Button>
-            <Button
-              isLoading={loadingState.github}
-              loadingText="Please wait"
-              isFullWidth
-              onClick={handleGithub}
-              leftIcon={<FaGithub />}
-            >
-              Continue with Github
-            </Button>
-          </div>
-        </>
+        <div className="h-full sm:h-96">
+          <LoginForm />
+        </div>
       }
     >
       <Button size="sm" color="primary" onClick={onOpen}>
@@ -155,7 +59,7 @@ const UserLogin: React.FC<{}> = () => {
 };
 
 /**
- * User DropDown component
+ * User Dropdown component
  */
 interface UserDDProps {
   id: string;
@@ -163,7 +67,7 @@ interface UserDDProps {
 const UserDD: React.FC<UserDDProps> = ({ id }) => {
   const { logout } = useAuth();
   const { theme, setTheme } = useTheme();
-
+  const { isOpen, setIsOpen, onClose } = useDisclosure();
   const router = useRouter();
   const [{ data, error, fetching }] = useGetUserQuery({
     variables: {
@@ -184,13 +88,17 @@ const UserDD: React.FC<UserDDProps> = ({ id }) => {
     }
   }
 
+  if (fetching) {
+    return <Skeleton className="rounded-full w-10 h-10" />;
+  }
+
   if (data && data.users_by_pk) {
     // redirect to onboarding
     if (data.users_by_pk.username === null) {
       router.replace("/onboarding");
     }
     return (
-      <DropdownMenu>
+      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger className="rounded-full focus:outline-none focus:ring-2 focus:ring-primary">
           <Avatar
             src={data.users_by_pk.image || undefined}
@@ -198,23 +106,39 @@ const UserDD: React.FC<UserDDProps> = ({ id }) => {
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent sideOffset={4}>
-          <DropdownMenuItem
-            onClick={() => router.push(`/${data.users_by_pk!.username!}`)}
-          >
-            <div>
-              <h1 className="font-semibold text-sm">{data.users_by_pk.name}</h1>
-              <h2 className="text-gray-400 text-xs">
-                {`@${data.users_by_pk.username}`}
-              </h2>
-            </div>
-          </DropdownMenuItem>
+          <Link href={`/${data.users_by_pk!.username!}`} passHref>
+            <DropdownMenuItem asChild>
+              <a className="block" onClick={onClose}>
+                <h1 className="font-semibold text-sm">
+                  {data.users_by_pk.name}
+                </h1>
+                <h2 className="text-gray-400 text-xs">
+                  {`@${data.users_by_pk.username}`}
+                </h2>
+              </a>
+            </DropdownMenuItem>
+          </Link>
 
-          <DropdownMenuItem onClick={() => router.push("/settings")}>
-            <DropdownMenuLeftSlot>
-              <FiSettings />
-            </DropdownMenuLeftSlot>
-            Settings
-          </DropdownMenuItem>
+          <Link href={`/dashboard`} passHref>
+            <DropdownMenuItem asChild>
+              <a onClick={onClose}>
+                <DropdownMenuLeftSlot>
+                  <FiFolder />
+                </DropdownMenuLeftSlot>
+                Dashboard
+              </a>
+            </DropdownMenuItem>
+          </Link>
+          <Link href={`/settings`} passHref>
+            <DropdownMenuItem asChild>
+              <a onClick={onClose}>
+                <DropdownMenuLeftSlot>
+                  <FiSettings />
+                </DropdownMenuLeftSlot>
+                Settings
+              </a>
+            </DropdownMenuItem>
+          </Link>
 
           <DropdownMenuSeparator />
           <div className="py-1">

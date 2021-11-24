@@ -87,7 +87,8 @@ const didAuthError = ({ error }: any) => {
     (e: any) =>
       e.extensions?.code === "invalid-jwt" ||
       e.extensions?.code === "invalid-headers" ||
-      e.extensions?.code === "jwt-invalid-claims"
+      e.extensions?.code === "jwt-invalid-claims" ||
+      e.extensions?.code === "validation-failed"
   );
 };
 

@@ -1,0 +1,22 @@
+query ListUsersPosts($_eq: String!, $limit: Int, $offset: Int) {
+  posts(where: { user_id: { _eq: $_eq } }, limit: $limit, offset: $offset) {
+    body_markdown
+    created_at
+    emoji
+    id
+    published
+    slug
+    title
+    updated_at
+    post_type
+    posts_tags {
+      id
+      tag_keyword
+    }
+  }
+  posts_aggregate(where: { user_id: { _eq: $_eq } }) {
+    aggregate {
+      count
+    }
+  }
+}

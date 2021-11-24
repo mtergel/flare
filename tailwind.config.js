@@ -24,17 +24,69 @@ module.exports = {
         paper: "var(--color-paper)",
         base: "var(--color-bg)",
         border: "var(--color-border)",
+        tDefault: "var(--color-text-default)",
+        tMuted: "var(--color-text-muted)",
       },
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       animation: {
         spinner: "spinner 1.5s linear infinite",
+        // dropdown
+        slideUpAndFade: "slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)",
+        slideDownAndFade:
+          "slideDownAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)",
+        slideRightAndFade:
+          "slideRightAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)",
+        slideLeftAndFade:
+          "slideLeftAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1)",
+
+        // general/overlay
+        opacityFadeIn: "opacityFadeIn 150ms cubic-bezier(0.16, 1, 0.3, 1)",
+
+        // dialog
+        contentShow: "contentShow 200ms cubic-bezier(0.16, 1, 0.3, 1)",
+
+        // custom toast
+        enter: "enter 200ms ease-out",
+        leave: "leave 150ms ease-in forwards",
       },
       keyframes: {
         spinner: {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(360deg)" },
+        },
+        slideUpAndFade: {
+          "0%": { opacity: 0, transform: "translateY(2px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
+        slideDownAndFade: {
+          "0%": { opacity: 0, transform: "translateY(-2px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
+        slideRightAndFade: {
+          "0%": { opacity: 0, transform: "translateX(-2px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
+        slideLeftAndFade: {
+          "0%": { opacity: 0, transform: "translateX(2px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
+        opacityFadeIn: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+        contentShow: {
+          "0%": { opacity: 0, transform: "translate(-50%, -48%)" },
+          "100%": { opacity: 1, transform: "translate(-50%, -50%)" },
+        },
+        enter: {
+          "0%": { transform: "scale(0.9)", opacity: 0 },
+          "100%": { transform: "scale(1)", opacity: 1 },
+        },
+        leave: {
+          "0%": { transform: "scale(1)", opacity: 1 },
+          "100%": { transform: "scale(0.9)", opacity: 0 },
         },
       },
       ringWidth: {
@@ -47,10 +99,45 @@ module.exports = {
       fill: {
         paper: "var(--color-paper)",
       },
+      typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            color: theme("colors.tDefault"),
+            pre: {
+              backgroundColor: "inherit",
+              paddingRight: 0,
+              paddingLeft: 0,
+              marginLeft: 0,
+              marginRight: 0,
+            },
+            h1: {
+              paddingBottom: ".2em",
+              marginBottom: "1.1rem",
+              borderBottom: `1px solid ${theme("colors.border")}`,
+            },
+            a: {
+              color: theme("colors.primary.600"),
+              textDecoration: "none",
+              "&:hover": {
+                textDecoration: "underline",
+              },
+            },
+          },
+        },
+      }),
+    },
+    nightwind: {
+      typography: true,
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      typography: ["dark"],
+    },
   },
-  plugins: [require("nightwind")],
+  plugins: [
+    require("nightwind"),
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/line-clamp"),
+  ],
 };

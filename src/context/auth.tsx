@@ -22,6 +22,8 @@ const AuthProvider: React.FC<{}> = ({ children }) => {
 
   const handleLogout = async () => {
     setLoading(true);
+    // remove preview tokens
+    fetch("/api/clearPreviewData");
     await auth.signOut();
     setUser(null);
     cookie.remove("token");

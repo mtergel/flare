@@ -1,6 +1,6 @@
 .container-base {
   @apply my-0 mx-auto max-w-full;
-  @apply px-5 md:px-6 lg:px-10;
+  @apply px-5 sm:px-10;
 
   &.wide {
     @apply max-w-7xl;

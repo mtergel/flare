@@ -39,9 +39,16 @@ export const DropdownMenuLabel = forwardRef<
 });
 export const DropdownMenuItem = forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Item>,
-  React.ComponentProps<typeof DropdownMenuPrimitive.Item>
->(({ children, className, ...props }, forwardedRef) => {
-  const merged = clsx("dropdown-item", className);
+  React.ComponentProps<typeof DropdownMenuPrimitive.Item> & {
+    color?: "danger" | "primary";
+  }
+>(({ children, className, color, ...props }, forwardedRef) => {
+  const merged = clsx(
+    "dropdown-item",
+    color === "danger" && "dropdown-item-danger",
+    color === "primary" && "dropdown-item-primary",
+    className
+  );
   return (
     <DropdownMenuPrimitive.Item
       {...props}

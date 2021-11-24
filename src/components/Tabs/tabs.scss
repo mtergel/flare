@@ -1,0 +1,29 @@
+.tabs-list {
+  @apply flex whitespace-nowrap mx-0 mt-0 flex-auto border border-b-0;
+  margin-bottom: -1px;
+  @apply md:justify-start md:flex-row md:border-b md:border-0 md:px-2;
+}
+
+.tabs-trigger {
+  @apply text-sm bg-base border-r border-b rounded-none text-tMuted;
+  @apply flex-1 inline-flex items-center justify-center py-2 px-4 leading-6 transition-colors;
+  @apply cursor-pointer whitespace-nowrap select-none;
+  @apply last:border-r-0;
+  margin-bottom: -1px;
+
+  @apply md:bg-transparent md:border-0 md:flex-initial;
+
+  &[data-state="active"] {
+    @apply border-b-0 bg-paper text-tDefault;
+
+    @apply md:border md:rounded-t-md md:border-b;
+
+    @media (min-width: 768px) {
+      border-bottom-color: var(--color-paper);
+    }
+  }
+}
+
+.tabs-content {
+  @apply outline-none;
+}
