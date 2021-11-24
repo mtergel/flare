@@ -16,3 +16,7 @@
   color: var(--color-text-primary) !important;
   z-index: 10000;
 }
+
+.shadow-main {
+  @apply shadow-flare dark:shadow-none;
+}

@@ -1,5 +1,0 @@
-mutation DeletePost($id: bigint!) {
-  delete_posts_by_pk(id: $id) {
-    id
-  }
-}

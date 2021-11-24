@@ -5,8 +5,6 @@ import { ThemeProvider } from "next-themes";
 import { IconContext } from "@react-icons/all-files/lib";
 import { IdProvider } from "@radix-ui/react-id";
 import AuthProvider from "context/auth";
-import { Provider } from "urql";
-import client from "urqlClient";
 import { Toaster } from "react-hot-toast";
 
 type AppPropsWithLayout = AppProps & {
@@ -24,11 +22,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     >
       <IconContext.Provider value={{ className: "r-icon" }}>
         <IdProvider>
-          <Provider value={client}>
-            <AuthProvider>
-              {getLayout(<Component {...pageProps} />)}
-            </AuthProvider>
-          </Provider>
+          <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
         </IdProvider>
       </IconContext.Provider>
       <Toaster

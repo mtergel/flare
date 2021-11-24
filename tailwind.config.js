@@ -30,6 +30,9 @@ module.exports = {
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
       },
+      boxShadow: {
+        flare: "0 2px 4px #4385bb12",
+      },
       animation: {
         spinner: "spinner 1.5s linear infinite",
         // dropdown
@@ -46,6 +49,7 @@ module.exports = {
 
         // dialog
         contentShow: "contentShow 200ms cubic-bezier(0.16, 1, 0.3, 1)",
+        slideUp: "slideUp 400ms cubic-bezier(0.16, 1, 0.3, 1)",
 
         // custom toast
         enter: "enter 200ms ease-out",
@@ -79,6 +83,10 @@ module.exports = {
         contentShow: {
           "0%": { opacity: 0, transform: "translate(-50%, -48%)" },
           "100%": { opacity: 1, transform: "translate(-50%, -50%)" },
+        },
+        slideUp: {
+          "0%": { transform: "translateY(4px)" },
+          "100%": { transform: "translateY(0)" },
         },
         enter: {
           "0%": { transform: "scale(0.9)", opacity: 0 },

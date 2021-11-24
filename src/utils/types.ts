@@ -1,18 +1,9 @@
-import { NextComponentType, NextPage } from "next";
-import { NextUrqlContext, WithUrqlProps } from "next-urql";
+import { NextPage } from "next";
 import { ReactElement, ReactNode } from "react";
 /**
  * NextPage extended with getLayout function
  */
 export type NextPageWithLayout<P = {}> = NextPage<P> & {
-  getLayout?: (page: ReactElement) => ReactNode;
-};
-
-export type NextComponentTypeWithLayout = NextComponentType<
-  NextUrqlContext,
-  {},
-  WithUrqlProps
-> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
@@ -45,4 +36,4 @@ export interface TocProps {
   activeId?: string;
 }
 
-export type Profile = {};
+export type ErrorCode = "NoProfile" | "NoUsername";

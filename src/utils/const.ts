@@ -4,3 +4,13 @@ export const getRandomEmoji = () => {
 };
 
 export const themeColor = "#67BAFF";
+
+// TODO
+// MOVE THIS THIS BACKEND CONSTRAINT
+export const blacklistedUsernames = [
+  "dashboard",
+  "enter",
+  "new",
+  "onboarding",
+  "settings",
+];

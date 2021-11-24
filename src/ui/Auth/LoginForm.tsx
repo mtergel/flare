@@ -1,39 +1,34 @@
 import Button from "@/components/Button/Button";
-import {
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "@firebase/auth";
-import { FirebaseError } from "@firebase/util";
+import { supabase } from "@/utils/supabaseClient";
+
 import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
 import { FaGoogle } from "@react-icons/all-files/fa/FaGoogle";
 import { MdFlare } from "@react-icons/all-files/md/MdFlare";
-import { auth } from "initApp";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const handleError = (error: FirebaseError) => {
-  switch (error.code) {
-    case "auth/popup-blocked": {
-      toast.error("Enable popups on this website");
-      break;
-    }
-    case "auth/popup-blockedauth/account-exists-with-different-credential": {
-      toast.error("Email is used in an other provider");
-      break;
-    }
+// const handleError = (error: FirebaseError) => {
+//   switch (error.code) {
+//     case "auth/popup-blocked": {
+//       toast.error("Enable popups on this website");
+//       break;
+//     }
+//     case "auth/popup-blockedauth/account-exists-with-different-credential": {
+//       toast.error("Email is used in an other provider");
+//       break;
+//     }
 
-    case "auth/popup-closed-by-user": {
-      toast.error(error.message);
-      break;
-    }
+//     case "auth/popup-closed-by-user": {
+//       toast.error(error.message);
+//       break;
+//     }
 
-    default: {
-      toast.error(error.message);
-      break;
-    }
-  }
-};
+//     default: {
+//       toast.error(error.message);
+//       break;
+//     }
+//   }
+// };
 
 const LoginForm: React.FC<{}> = () => {
   const [loadingState, setLoadingState] = useState({
@@ -42,20 +37,15 @@ const LoginForm: React.FC<{}> = () => {
     facebook: false,
   });
   const handleGoogle = async () => {
-    try {
-      setLoadingState({
-        ...loadingState,
-        google: true,
-      });
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      handleError(error);
-      setLoadingState({
-        ...loadingState,
-        google: false,
-      });
-    }
+    setLoadingState({
+      ...loadingState,
+      google: true,
+    });
+
+    // redirect
+    await supabase.auth.signIn({
+      provider: "google",
+    });
   };
 
   const handleGithub = async () => {
@@ -64,15 +54,7 @@ const LoginForm: React.FC<{}> = () => {
         ...loadingState,
         github: true,
       });
-      const provider = new GithubAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      handleError(error);
-      setLoadingState({
-        ...loadingState,
-        github: false,
-      });
-    }
+    } catch (error) {}
   };
 
   return (

@@ -1,8 +1,0 @@
-mutation InsertPostsTags(
-  $objects: [posts_tags_insert_input!] = {}
-  $on_conflict: posts_tags_on_conflict = { constraint: posts_table_pkey }
-) {
-  insert_posts_tags(objects: $objects, on_conflict: $on_conflict) {
-    affected_rows
-  }
-}
