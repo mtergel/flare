@@ -29,7 +29,11 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ value, onChange }) => {
             </div>
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent sideOffset={4} align="start" alignOffset={24}>
+        <DropdownMenuContent
+          sideOffset={4}
+          align="start"
+          className="dark:border-0"
+        >
           <Picker
             color={"#3EA8FF"}
             recent={defaultEmojis}
