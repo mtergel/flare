@@ -44,3 +44,5 @@ export interface TocProps {
    */
   activeId?: string;
 }
+
+export type Profile = {};
