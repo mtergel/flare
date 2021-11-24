@@ -7,7 +7,6 @@ import autoLink from "rehype-autolink-headings";
 import slug from "rehype-slug";
 import remarkEmoji from "remark-emoji";
 import remarkGfm from "remark-gfm";
-import remarkToc from "remark-toc";
 
 interface PreviewProps {
   value: string;
@@ -35,7 +34,7 @@ const Preview: React.FC<PreviewProps> = ({ value, disableAutoLink }) => {
 
   return (
     <ReactMarkdown
-      remarkPlugins={[remarkGfm, remarkToc, remarkEmoji]}
+      remarkPlugins={[remarkGfm, remarkEmoji]}
       rehypePlugins={rehypePlugins}
       components={{
         code({ node, inline, className, children, ...props }) {

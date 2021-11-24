@@ -18,7 +18,7 @@ describe("Container", () => {
 
   it("renders wide container", () => {
     render(
-      <Container isWide>
+      <Container size="wide">
         <p>Hello</p>
       </Container>
     );
