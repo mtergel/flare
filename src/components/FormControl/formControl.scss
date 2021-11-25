@@ -1,9 +1,9 @@
-.formControl {
+.form-control {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
 
-  &.formError {
+  &.form-error {
     & input,
     select {
       @apply ring-2 ring-red-500;
@@ -11,20 +11,14 @@
   }
 
   & label {
-    @apply text-sm flex items-center justify-between py-2 pr-1 select-none;
+    @apply text-sm flex items-center justify-between py-2 pr-1 select-none font-bold;
   }
 
   & .error {
     @apply text-sm text-red-500 mt-2;
   }
 
-  &.formDisabled {
-    & label {
-      @apply text-gray-300;
-    }
-    & input,
-    select {
-      @apply cursor-not-allowed bg-opacity-5 text-opacity-50 placeholder-opacity-50 placeholder-gray-400 text-gray-400;
-    }
+  & .form-label-required {
+    @apply ml-1 text-red-400;
   }
 }

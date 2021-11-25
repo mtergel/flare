@@ -47,7 +47,7 @@ const AuthProvider: React.FC<{}> = ({ children }) => {
         if (currentUser) {
           const { data, error, status } = await supabase
             .from<definitions["profiles"]>("profiles")
-            .select(`id, username, avatar_url, display_name`)
+            .select(`id, username, avatar_url, display_name, bio`)
             .eq("id", currentUser.id)
             .single();
 

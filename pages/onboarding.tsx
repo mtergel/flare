@@ -240,18 +240,36 @@ const OnboardingMiscForm: React.FC<OnboardingMiscFormProps> = () => {
         let currentURL = data.avatarUrl;
 
         if (data.avatarFile) {
+          const fileName = data.avatarFile.name;
           const uploadResult = await supabase.storage
             .from("avatar")
-            .upload(`${currentUser.id}/avatar.jpeg`, data.avatarFile, {
+            .upload(`${currentUser.id}/${fileName}`, data.avatarFile, {
               upsert: true,
             });
           if (uploadResult.error) {
             throw uploadResult.error;
           }
 
+          if (
+            data.avatarUrl.includes(
+              "https://anyqfjvtgmdymcwdoeac.supabase.co/storage/v1/object/public/avatar/"
+            )
+          ) {
+            // try deleting the old file
+            try {
+              const path = data.avatarUrl.replace(
+                "https://anyqfjvtgmdymcwdoeac.supabase.co/storage/v1/object/public/avatar/",
+                ""
+              );
+              await supabase.storage.from("avatar").remove([path]);
+            } catch (error) {
+              logger.debug("cant delete: ", data.avatarUrl);
+            }
+          }
+
           const { publicURL, error } = supabase.storage
             .from("avatar")
-            .getPublicUrl(`${currentUser.id}/avatar.jpeg`);
+            .getPublicUrl(`${currentUser.id}/${fileName}`);
           if (publicURL) {
             currentURL = publicURL;
           } else if (error) {
