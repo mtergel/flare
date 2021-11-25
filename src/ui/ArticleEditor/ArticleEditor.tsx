@@ -6,20 +6,9 @@ import Switch from "@/components/Switch/Switch";
 import { getRandomEmoji } from "@/utils/const";
 import copyToClipboard from "@/utils/copyToClipboard";
 import logger from "@/utils/logger";
-import postid from "@/utils/postid";
 import { EditTag } from "@/utils/types";
 import { FiCopy } from "@react-icons/all-files/fi/FiCopy";
 import "emoji-mart/css/emoji-mart.css";
-import {
-  Posts_Tags_Constraint,
-  Posts_Tags_Insert_Input,
-  Post_Type_Enum,
-  useCreatePostMutation,
-  useDeletePostsTagsMutation,
-  useInsertPostsTagsMutation,
-  useInsertTagsMutation,
-  useUpdatePostMutation,
-} from "graphql/generated/graphql";
 import compact from "lodash/compact";
 import keyBy from "lodash/keyBy";
 import md5 from "md5";
@@ -58,11 +47,6 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   const router = useRouter();
-  const [_tags, insertTags] = useInsertTagsMutation();
-  const [_post, createPost] = useCreatePostMutation();
-  const [_updateRes, updatePost] = useUpdatePostMutation();
-  const [_insertRes, insertPostsTags] = useInsertPostsTagsMutation();
-  const [_deleteRes, deletePostsTags] = useDeletePostsTagsMutation();
 
   const {
     register,
@@ -104,152 +88,152 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
         }));
       // create new tags
       if (newTags.length > 0) {
-        await insertTags({
-          objects: newTags,
-        });
+        // await insertTags({
+        //   objects: newTags,
+        // });
       }
 
-      if (data.id) {
-        // update method
-        try {
-          const postTags = keyBy(tag_keyword, "value");
-          let toAdd: Posts_Tags_Insert_Input[] = [];
-          data.tag_keyword.forEach((tag) => {
-            // check if postTags have been added
-            if (!postTags.hasOwnProperty(tag.value)) {
-              // not in initial values
-              // so must be added
-              toAdd.push({
-                post_id: data.id,
-                tag_keyword: tag.value,
-              });
-            } else {
-              // already exists
-              delete postTags[tag.value];
-            }
-          });
+      // if (data.id) {
+      //   // update method
+      //   try {
+      //     const postTags = keyBy(tag_keyword, "value");
+      //     let toAdd: Posts_Tags_Insert_Input[] = [];
+      //     data.tag_keyword.forEach((tag) => {
+      //       // check if postTags have been added
+      //       if (!postTags.hasOwnProperty(tag.value)) {
+      //         // not in initial values
+      //         // so must be added
+      //         toAdd.push({
+      //           post_id: data.id,
+      //           tag_keyword: tag.value,
+      //         });
+      //       } else {
+      //         // already exists
+      //         delete postTags[tag.value];
+      //       }
+      //     });
 
-          // check if tags have been removed
-          const toRemovePostTags = compact(
-            Object.values(postTags).map((i) => i.id)
-          );
+      //     // check if tags have been removed
+      //     const toRemovePostTags = compact(
+      //       Object.values(postTags).map((i) => i.id)
+      //     );
 
-          await insertPostsTags({
-            objects: toAdd,
-            on_conflict: {
-              constraint: Posts_Tags_Constraint.PostsTablePkey,
-              update_columns: [],
-            },
-          });
-          await deletePostsTags({
-            where: {
-              id: {
-                _in: toRemovePostTags,
-              },
-            },
-          });
+      //     await insertPostsTags({
+      //       objects: toAdd,
+      //       on_conflict: {
+      //         constraint: Posts_Tags_Constraint.PostsTablePkey,
+      //         update_columns: [],
+      //       },
+      //     });
+      //     await deletePostsTags({
+      //       where: {
+      //         id: {
+      //           _in: toRemovePostTags,
+      //         },
+      //       },
+      //     });
 
-          const updatePostRes = await updatePost({
-            id: data.id,
-            _set: {
-              title: data.title,
-              emoji: data.emoji,
-              body_markdown: data.body_markdown,
-              published: data.published,
-            },
-          });
-          if (updatePostRes.data && updatePostRes.data.update_posts_by_pk) {
-            const updatedPost = updatePostRes.data.update_posts_by_pk;
-            if (data.published) {
-              await router.push(
-                `${updatedPost.user.username}/articles/${updatedPost.slug}`
-              );
-            } else {
-              reset({
-                id: updatedPost.id,
-                title: updatedPost.title,
-                body_markdown: updatedPost.body_markdown ?? "",
-                emoji: updatedPost.emoji ?? getRandomEmoji(),
-                published: updatedPost.published,
-                tag_keyword: updatedPost.posts_tags.map((tag) => ({
-                  id: tag.id,
-                  label: tag.tag_keyword,
-                  value: tag.tag_keyword,
-                })),
-              });
-              toast.custom(
-                (t) => (
-                  <SavedToast
-                    visible={t.visible}
-                    onClose={() => toast.dismiss(t.id)}
-                    viewLink={`/api/preview?slug=${
-                      updatedPost.slug
-                    }&preview=${md5(
-                      updatedPost.slug + process.env.NEXT_PUBLIC_SALT
-                    )}`}
-                  />
-                ),
-                {
-                  duration: 10000,
-                }
-              );
-            }
-          }
-        } catch (error) {
-          logger.debug(error);
-        }
-      } else {
-        try {
-          // create post
-          const slug =
-            slugify(data.title, {
-              lower: true,
-              strict: true,
-            }) + `-${postid()}`;
+      //     const updatePostRes = await updatePost({
+      //       id: data.id,
+      //       _set: {
+      //         title: data.title,
+      //         emoji: data.emoji,
+      //         body_markdown: data.body_markdown,
+      //         published: data.published,
+      //       },
+      //     });
+      //     if (updatePostRes.data && updatePostRes.data.update_posts_by_pk) {
+      //       const updatedPost = updatePostRes.data.update_posts_by_pk;
+      //       if (data.published) {
+      //         await router.push(
+      //           `${updatedPost.user.username}/articles/${updatedPost.slug}`
+      //         );
+      //       } else {
+      //         reset({
+      //           id: updatedPost.id,
+      //           title: updatedPost.title,
+      //           body_markdown: updatedPost.body_markdown ?? "",
+      //           emoji: updatedPost.emoji ?? getRandomEmoji(),
+      //           published: updatedPost.published,
+      //           tag_keyword: updatedPost.posts_tags.map((tag) => ({
+      //             id: tag.id,
+      //             label: tag.tag_keyword,
+      //             value: tag.tag_keyword,
+      //           })),
+      //         });
+      //         toast.custom(
+      //           (t) => (
+      //             <SavedToast
+      //               visible={t.visible}
+      //               onClose={() => toast.dismiss(t.id)}
+      //               viewLink={`/api/preview?slug=${
+      //                 updatedPost.slug
+      //               }&preview=${md5(
+      //                 updatedPost.slug + process.env.NEXT_PUBLIC_SALT
+      //               )}`}
+      //             />
+      //           ),
+      //           {
+      //             duration: 10000,
+      //           }
+      //         );
+      //       }
+      //     }
+      //   } catch (error) {
+      //     logger.debug(error);
+      //   }
+      // } else {
+      //   try {
+      //     // create post
+      //     const slug =
+      //       slugify(data.title, {
+      //         lower: true,
+      //         strict: true,
+      //       }) + `-${postid()}`;
 
-          const postRes = await createPost({
-            object: {
-              body_markdown: data.body_markdown,
-              emoji: data.emoji,
-              published: data.published,
-              post_type: Post_Type_Enum.Article,
-              title: data.title,
-              slug: slug,
-              posts_tags: {
-                data: data.tag_keyword.map((j) => ({
-                  tag_keyword: j.label,
-                })),
-              },
-            },
-          });
+      //     const postRes = await createPost({
+      //       object: {
+      //         body_markdown: data.body_markdown,
+      //         emoji: data.emoji,
+      //         published: data.published,
+      //         post_type: Post_Type_Enum.Article,
+      //         title: data.title,
+      //         slug: slug,
+      //         posts_tags: {
+      //           data: data.tag_keyword.map((j) => ({
+      //             tag_keyword: j.label,
+      //           })),
+      //         },
+      //       },
+      //     });
 
-          if (postRes.data && postRes.data.insert_posts_one) {
-            const createdPost = postRes.data.insert_posts_one;
-            if (data.published) {
-              // just redirect to new created post
-              await router.push(
-                `${createdPost.user.username}/articles/${createdPost.slug}`
-              );
-            } else {
-              // if we are on new
-              // should push to the newly created post
-              const res = await fetch(
-                `/api/preview?slug=${createdPost.slug}&preview=${md5(
-                  createdPost.slug + process.env.NEXT_PUBLIC_SALT
-                )}`,
-                {
-                  method: "GET",
-                  redirect: "follow",
-                }
-              );
-              await router.push(res.url);
-            }
-          }
-        } catch (error) {
-          logger.debug(error);
-          toast.error(error.message);
-        }
-      }
+      //     if (postRes.data && postRes.data.insert_posts_one) {
+      //       const createdPost = postRes.data.insert_posts_one;
+      //       if (data.published) {
+      //         // just redirect to new created post
+      //         await router.push(
+      //           `${createdPost.user.username}/articles/${createdPost.slug}`
+      //         );
+      //       } else {
+      //         // if we are on new
+      //         // should push to the newly created post
+      //         const res = await fetch(
+      //           `/api/preview?slug=${createdPost.slug}&preview=${md5(
+      //             createdPost.slug + process.env.NEXT_PUBLIC_SALT
+      //           )}`,
+      //           {
+      //             method: "GET",
+      //             redirect: "follow",
+      //           }
+      //         );
+      //         await router.push(res.url);
+      //       }
+      //     }
+      //   } catch (error) {
+      //     logger.debug(error);
+      //     toast.error(error.message);
+      //   }
+      // }
     } else {
       if (!data.title) {
         toast.error("An title is required.");
@@ -288,7 +272,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="pb-20">
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Container size="common">
         <textarea
           placeholder="Title"
@@ -314,16 +298,22 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             />
           </div>
           {uploadedImageUrl && (
-            <div className="flex-grow flex items-center space-x-2">
-              <Input
-                readOnly
-                value={`![Image description](${uploadedImageUrl})`}
-                onClick={handleCopy}
-                className="cursor-pointer"
-              />
-              <Button leftIcon={<FiCopy />} onClick={handleCopy}>
-                {copied ? "Copied" : "Copy"}
-              </Button>
+            <div className="flex-grow">
+              <div className="flex items-center space-x-2">
+                <Input
+                  readOnly
+                  value={`![Image description](${uploadedImageUrl})`}
+                  onClick={handleCopy}
+                  className="cursor-pointer flex-shrink min-w-0 w-full"
+                />
+                <Button
+                  leftIcon={<FiCopy />}
+                  onClick={handleCopy}
+                  className="flex-shrink-0"
+                >
+                  {copied ? "Copied" : "Copy"}
+                </Button>
+              </div>
             </div>
           )}
         </div>
@@ -333,7 +323,11 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             control={control}
             name="body_markdown"
             render={({ field }) => (
-              <Editor markdown={field.value} onChange={field.onChange} />
+              <Editor
+                title={watchedTextArea}
+                markdown={field.value}
+                onChange={field.onChange}
+              />
             )}
           />
           <div className="pb-6 space-y-2 p-2">

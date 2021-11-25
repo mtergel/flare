@@ -1,38 +1,78 @@
+import { definitions } from "@/utils/generated";
+import { supabase } from "@/utils/supabaseClient";
 import { EditTag } from "@/utils/types";
 import dayjs from "dayjs";
 import debounce from "debounce-promise";
-import {
-  SearchTagsByKeywordDocument,
-  SearchTagsByKeywordQuery,
-  useListTagsForSelectQuery,
-} from "graphql/generated/graphql";
-import useLocalStorage from "hooks/useLocalForage";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AsyncCreatable from "react-select/async-creatable";
-import { useClient } from "urql";
+import logger from "@/utils/logger";
+import useLocalStorage from "hooks/useLocalStorage";
+
+const today = dayjs();
 
 interface TagSelectorProps {
   value: EditTag[];
   onChange: (value: EditTag[]) => void;
 }
 const TagSelector: React.FC<TagSelectorProps> = ({ value, onChange }) => {
-  const client = useClient();
+  const [fetching, setFetching] = useState(false);
+  const [options, setOptions] = useLocalStorage("AUTOCOMPLETE", {
+    items: [] as string[],
+    timestamp: Date.now(),
+  });
+
+  const savedTime = dayjs(options.timestamp);
+  const fetchTags = async () => {
+    console.log("RUNNING EFFECT");
+    setFetching(true);
+
+    const res = await supabase
+      .from<definitions["tags"]>("tags")
+      .select(`id`)
+      .eq("featured", true);
+
+    if (res.data) {
+      setOptions({
+        items: res.data.map((i) => i.id),
+        timestamp: Date.now(),
+      });
+    }
+
+    if (res.error) {
+      logger.debug(res.error);
+    }
+
+    setFetching(false);
+  };
+
+  useEffect(() => {
+    if (options.items.length === 0) {
+      fetchTags();
+    } else if (today.subtract(3, "day") > savedTime) {
+      fetchTags();
+    }
+
+    // eslint-disable-next-line
+  }, []);
+
   const handleSearch = async (inputValue: string | undefined) => {
     if (inputValue) {
-      try {
-        const res = await client
-          .query(SearchTagsByKeywordDocument, {
-            search: inputValue,
-          })
-          .toPromise();
-        return (
-          res.data as SearchTagsByKeywordQuery
-        ).search_tags_by_keyword.map((i) => ({
-          value: i.keyword,
-          label: i.keyword,
+      console.log("RUNNING SEARCH");
+
+      const res = await supabase
+        .from<definitions["tags"]>("tags")
+        .select("id")
+        .textSearch("id", `${inputValue}`, {
+          config: "english",
+        });
+
+      if (res.data) {
+        return res.data.map((i) => ({
+          value: i.id,
+          label: i.id,
         }));
-      } catch (error) {
-        console.log(error);
+      } else {
+        return [];
       }
     }
   };
@@ -40,40 +80,7 @@ const TagSelector: React.FC<TagSelectorProps> = ({ value, onChange }) => {
   // eslint-disable-next-line
   const debouncedSearch = useCallback(debounce(handleSearch, 300), []);
 
-  const [options, setOptions] = useLocalStorage("AUTOCOMPLETE", {
-    items: [],
-    timestamp: Date.now(),
-  });
-
-  const [res] = useListTagsForSelectQuery({
-    pause: options.items.length !== 0,
-  });
-
-  const d1 = dayjs(options.timestamp);
-  const today = dayjs();
-
-  useEffect(() => {
-    if (today.subtract(3, "day") > d1) {
-      setOptions({
-        items: [],
-      });
-    }
-
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    if (res.data) {
-      setOptions({
-        items: res.data.tags.map((i) => i.keyword),
-        timestamp: Date.now(),
-      });
-    }
-
-    // eslint-disable-next-line
-  }, [res.data]);
-
-  const _options = options.items.map((i: string) => ({
+  const _options = options.items.map((i) => ({
     value: i,
     label: i,
   }));
@@ -83,8 +90,8 @@ const TagSelector: React.FC<TagSelectorProps> = ({ value, onChange }) => {
       <AsyncCreatable
         value={value}
         isMulti
-        placeholder="Select tags"
-        isDisabled={res.fetching || !!res.error}
+        placeholder="Add up to 4 tags..."
+        isDisabled={fetching}
         classNamePrefix="rs"
         formatCreateLabel={(inputValue) => inputValue}
         cacheOptions

@@ -64,7 +64,7 @@ const UserDD: React.FC<UserDDProps> = () => {
 
   if (user) {
     return (
-      <div>
+      <div className="flex items-center space-x-6">
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenuTrigger className="rounded-full">
             <Avatar src={user.avatar_url} fallback={user.display_name} />
@@ -124,6 +124,20 @@ const UserDD: React.FC<UserDDProps> = () => {
               </DropdownMenuLeftSlot>
               Logout
             </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size="sm" color="primary">
+              Add
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent sideOffset={4}>
+            <Link href={`/new`} passHref>
+              <DropdownMenuItem asChild>
+                <a onClick={onClose}>Articles</a>
+              </DropdownMenuItem>
+            </Link>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

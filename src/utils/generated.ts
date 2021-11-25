@@ -114,6 +114,102 @@ export interface paths {
       };
     };
   };
+  "/tags": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.tags.id"];
+          name?: parameters["rowFilter.tags.name"];
+          image_url?: parameters["rowFilter.tags.image_url"];
+          featured?: parameters["rowFilter.tags.featured"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["tags"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** tags */
+          tags?: definitions["tags"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.tags.id"];
+          name?: parameters["rowFilter.tags.name"];
+          image_url?: parameters["rowFilter.tags.image_url"];
+          featured?: parameters["rowFilter.tags.featured"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.tags.id"];
+          name?: parameters["rowFilter.tags.name"];
+          image_url?: parameters["rowFilter.tags.image_url"];
+          featured?: parameters["rowFilter.tags.featured"];
+        };
+        body: {
+          /** tags */
+          tags?: definitions["tags"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/rpc/create_profile_for_new_user": {
     post: {
       parameters: {
@@ -146,6 +242,16 @@ export interface definitions {
     avatar_url?: string;
     bio?: string;
   };
+  tags: {
+    /**
+     * Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: string;
+    name?: string;
+    image_url?: string;
+    featured?: boolean;
+  };
 }
 
 export interface parameters {
@@ -177,6 +283,12 @@ export interface parameters {
   "rowFilter.profiles.username": string;
   "rowFilter.profiles.avatar_url": string;
   "rowFilter.profiles.bio": string;
+  /** tags */
+  "body.tags": definitions["tags"];
+  "rowFilter.tags.id": string;
+  "rowFilter.tags.name": string;
+  "rowFilter.tags.image_url": string;
+  "rowFilter.tags.featured": string;
 }
 
 export interface operations {}

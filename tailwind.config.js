@@ -117,6 +117,9 @@ module.exports = {
               paddingLeft: 0,
               marginLeft: 0,
               marginRight: 0,
+              "& div": {
+                borderRadius: "3px",
+              },
             },
             h1: {
               paddingBottom: ".2em",

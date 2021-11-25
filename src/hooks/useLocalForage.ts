@@ -8,14 +8,14 @@ function useLocalForage<T>(
   const [storedValue, setStoredValue] = useState<T>(initialValue);
 
   useEffect(() => {
-    const getUser = async () => {
+    const getData = async () => {
       const value = await localforage.getItem<T>(key);
       if (value) {
         setStoredValue(value);
       }
     };
 
-    getUser();
+    getData();
   }, [initialValue, key]);
 
   const setValue = async (value: T) => {

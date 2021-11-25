@@ -45,7 +45,7 @@ const Avatar = forwardRef<
         className="fallback"
         data-testid="afallback"
       >
-        {fallback}
+        {fallback ? fallback[0] : fallback}
       </AvatarPrimitive.Fallback>
     </AvatarPrimitive.Root>
   );
