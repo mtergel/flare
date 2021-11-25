@@ -9,7 +9,7 @@ import ImageAvatarCrop from "./ImageAvatarCrop";
 interface UploadAvatarProps {
   /**
    * @param file File
-   * randomly named, minified image 480x480
+   * randomly named jpeg, minified image 480x480
    */
   handleUpload: (file: File) => void;
   /**

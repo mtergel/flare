@@ -3,7 +3,7 @@ import logger from "@/utils/logger";
 import { supabase } from "@/utils/supabaseClient";
 import { ErrorCode } from "@/utils/types";
 import { Session } from "@supabase/gotrue-js";
-import useLocalStorage from "hooks/useLocalStorage";
+import useLocalStorage from "hooks/useLocalForage";
 import { useRouter } from "next/dist/client/router";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -22,10 +22,9 @@ const AuthContext = createContext<{
 
 const AuthProvider: React.FC<{}> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useLocalStorage<definitions["profiles"] | null>(
-    "currentUser",
-    null
-  );
+  const [user, setUser, removeUser] = useLocalStorage<
+    definitions["profiles"] | null
+  >("currentUser", null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ErrorCode | null>(null);
   const router = useRouter();
@@ -45,7 +44,6 @@ const AuthProvider: React.FC<{}> = ({ children }) => {
       try {
         setLoading(true);
         const currentUser = supabase.auth.user();
-        logger.debug("Current user from auth: ", currentUser);
         if (currentUser) {
           const { data, error, status } = await supabase
             .from<definitions["profiles"]>("profiles")
@@ -77,20 +75,21 @@ const AuthProvider: React.FC<{}> = ({ children }) => {
   useEffect(() => {
     if (user && user.username === null) {
       setError("NoUsername");
-      // username not setup
-      router.push("/onboarding");
+      console.log(router);
+      if (router.route !== "/onboarding") {
+        router.push("/onboarding");
+      }
     }
 
     // eslint-disable-next-line
   }, [user]);
 
   const handleLogout = async () => {
-    logger.debug("Clearing out state");
     setLoading(true);
     // remove preview tokens
     fetch("/api/clearPreviewData");
     await supabase.auth.signOut();
-    setUser(null);
+    removeUser();
     setError(null);
   };
   return (

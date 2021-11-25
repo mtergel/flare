@@ -6,7 +6,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "typegen": "npx openapi-typescript https://anyqfjvtgmdymcwdoeac.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzNzc1MDk1NCwiZXhwIjoxOTUzMzI2OTU0fQ.18BG8aWj3D-0V_HS0yERpkagoae_KJSYUyAagZyEbGI --output src/utils/generated.ts"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^0.1.1",
@@ -26,6 +27,7 @@
     "debounce-promise": "^3.1.2",
     "easymde": "^2.15.0",
     "emoji-mart": "^3.0.1",
+    "localforage": "^1.10.0",
     "loglevel": "^1.7.1",
     "markdown-toc": "^1.2.0",
     "md5": "^2.3.0",

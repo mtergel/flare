@@ -6,7 +6,7 @@ import {
   SearchTagsByKeywordQuery,
   useListTagsForSelectQuery,
 } from "graphql/generated/graphql";
-import useLocalStorage from "hooks/useLocalStorage";
+import useLocalStorage from "hooks/useLocalForage";
 import { useCallback, useEffect } from "react";
 import AsyncCreatable from "react-select/async-creatable";
 import { useClient } from "urql";

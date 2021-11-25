@@ -1,5 +1,4 @@
 import Button from "@/components/Button/Button";
-import Fallback from "@/components/Fallback/Fallback";
 import FormControl from "@/components/FormControl/FormControl";
 import IconButton from "@/components/IconButton/IconButton";
 import Input from "@/components/Input/Input";
@@ -7,6 +6,7 @@ import TextArea from "@/components/TextArea/TextArea";
 import UploadAvatar from "@/components/UploadAvatar/UploadAvatar";
 import { blacklistedUsernames } from "@/utils/const";
 import { definitions } from "@/utils/generated";
+import logger from "@/utils/logger";
 import { usernameReg } from "@/utils/regex";
 import { supabase } from "@/utils/supabaseClient";
 import { FiX } from "@react-icons/all-files/fi/FiX";
@@ -14,10 +14,10 @@ import { useAuth } from "context/auth";
 import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import logger from "@/utils/logger";
 
 const Onboarding: NextPage = () => {
   const { user, error, loading } = useAuth();
@@ -34,19 +34,19 @@ const Onboarding: NextPage = () => {
     // eslint-disable-next-line
   }, [loading, error]);
 
-  if (error === "NoUsername" && currentUser) {
+  if (currentUser) {
     return (
       <div className="h-full sm:flex sm:flex-col sm:items-center sm:justify-center">
         {profileId === "handle" ? (
           <OnboardingHandleForm onFinish={() => setProfileId("misc")} />
         ) : (
-          <OnboardingMiscForm id={profileId} />
+          <OnboardingMiscForm />
         )}
       </div>
     );
+  } else {
+    return null;
   }
-
-  return <Fallback />;
 };
 
 interface OnboardingHandleFormProps {
@@ -74,32 +74,32 @@ const OnboardingHandleForm: React.FC<OnboardingHandleFormProps> = ({
     try {
       if (blacklistedUsernames.includes(data.username)) {
         setError("username", {
-          message: "Cant use that username",
+          message: "Username exists",
           type: "validate",
         });
-      }
-
-      const updateProfile = await supabase
-        .from<definitions["profiles"]>("profiles")
-        .update({
-          username: data.username,
-          display_name: data.displayName,
-        })
-        .match({
-          id: currentUser!.id,
-        });
-
-      if (updateProfile.data && user && setUser) {
-        setUser({
-          ...user,
-          username: updateProfile.data[0].username,
-          display_name: updateProfile.data[0].display_name,
-        });
       } else {
-        throw updateProfile.error;
-      }
+        const updateProfile = await supabase
+          .from<definitions["profiles"]>("profiles")
+          .update({
+            username: data.username,
+            display_name: data.displayName,
+          })
+          .match({
+            id: currentUser!.id,
+          });
 
-      onFinish();
+        if (updateProfile.data && user && setUser) {
+          setUser({
+            ...user,
+            username: updateProfile.data[0].username,
+            display_name: updateProfile.data[0].display_name,
+          });
+        } else {
+          throw updateProfile.error;
+        }
+
+        onFinish();
+      }
     } catch (error) {
       logger.debug("Error occured: ", error);
       toast.error("Error occured.");
@@ -209,14 +209,13 @@ const OnboardingHandleForm: React.FC<OnboardingHandleFormProps> = ({
   );
 };
 
-interface OnboardingMiscFormProps {
-  id: string;
-}
-const OnboardingMiscForm: React.FC<OnboardingMiscFormProps> = ({ id }) => {
+interface OnboardingMiscFormProps {}
+const OnboardingMiscForm: React.FC<OnboardingMiscFormProps> = () => {
   const currentUser = supabase.auth.user();
   const router = useRouter();
   const [finished, setFinished] = useState(false);
   const [tempPath, setTempPath] = useState<string | undefined>();
+  const { setUser, user } = useAuth();
 
   const {
     register,
@@ -237,14 +236,65 @@ const OnboardingMiscForm: React.FC<OnboardingMiscFormProps> = ({ id }) => {
     avatarFile: File | null;
   }) => {
     try {
-      console.log(data);
+      if (currentUser) {
+        let currentURL = data.avatarUrl;
 
-      setFinished(true);
-    } catch (error) {}
+        if (data.avatarFile) {
+          const uploadResult = await supabase.storage
+            .from("avatar")
+            .upload(`${currentUser.id}/avatar.jpeg`, data.avatarFile, {
+              upsert: true,
+            });
+          if (uploadResult.error) {
+            throw uploadResult.error;
+          }
+
+          const { publicURL, error } = supabase.storage
+            .from("avatar")
+            .getPublicUrl(`${currentUser.id}/avatar.jpeg`);
+          if (publicURL) {
+            currentURL = publicURL;
+          } else if (error) {
+            throw error;
+          }
+        }
+
+        const updateProfile = await supabase
+          .from<definitions["profiles"]>("profiles")
+          .update({
+            bio: data.bio,
+            avatar_url: currentURL,
+          })
+          .match({
+            id: currentUser.id,
+          });
+
+        if (updateProfile.data && user && setUser) {
+          setUser({
+            ...user,
+            bio: updateProfile.data[0].bio,
+            avatar_url: updateProfile.data[0].avatar_url,
+          });
+        } else {
+          throw updateProfile.error;
+        }
+
+        setFinished(true);
+      }
+    } catch (error) {
+      logger.debug(error);
+    }
   };
 
   if (finished) {
-    return <div>You&apos;re profile is all set up!</div>;
+    return (
+      <div>
+        You&apos;re profile is all set up!
+        <Link href="/" passHref>
+          <a>Home</a>
+        </Link>
+      </div>
+    );
   }
 
   const handleCrop = (file: File) => {

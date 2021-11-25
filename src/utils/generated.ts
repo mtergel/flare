@@ -18,9 +18,10 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.profiles.id"];
           updated_at?: parameters["rowFilter.profiles.updated_at"];
+          display_name?: parameters["rowFilter.profiles.display_name"];
           username?: parameters["rowFilter.profiles.username"];
           avatar_url?: parameters["rowFilter.profiles.avatar_url"];
-          display_name?: parameters["rowFilter.profiles.display_name"];
+          bio?: parameters["rowFilter.profiles.bio"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -73,9 +74,10 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.profiles.id"];
           updated_at?: parameters["rowFilter.profiles.updated_at"];
+          display_name?: parameters["rowFilter.profiles.display_name"];
           username?: parameters["rowFilter.profiles.username"];
           avatar_url?: parameters["rowFilter.profiles.avatar_url"];
-          display_name?: parameters["rowFilter.profiles.display_name"];
+          bio?: parameters["rowFilter.profiles.bio"];
         };
         header: {
           /** Preference */
@@ -92,9 +94,10 @@ export interface paths {
         query: {
           id?: parameters["rowFilter.profiles.id"];
           updated_at?: parameters["rowFilter.profiles.updated_at"];
+          display_name?: parameters["rowFilter.profiles.display_name"];
           username?: parameters["rowFilter.profiles.username"];
           avatar_url?: parameters["rowFilter.profiles.avatar_url"];
-          display_name?: parameters["rowFilter.profiles.display_name"];
+          bio?: parameters["rowFilter.profiles.bio"];
         };
         body: {
           /** profiles */
@@ -111,6 +114,23 @@ export interface paths {
       };
     };
   };
+  "/rpc/create_profile_for_new_user": {
+    post: {
+      parameters: {
+        body: {
+          args: { [key: string]: unknown };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
 }
 
 export interface definitions {
@@ -121,9 +141,10 @@ export interface definitions {
      */
     id: string;
     updated_at?: string;
+    display_name?: string;
     username?: string;
     avatar_url?: string;
-    display_name: string;
+    bio?: string;
   };
 }
 
@@ -152,9 +173,10 @@ export interface parameters {
   "body.profiles": definitions["profiles"];
   "rowFilter.profiles.id": string;
   "rowFilter.profiles.updated_at": string;
+  "rowFilter.profiles.display_name": string;
   "rowFilter.profiles.username": string;
   "rowFilter.profiles.avatar_url": string;
-  "rowFilter.profiles.display_name": string;
+  "rowFilter.profiles.bio": string;
 }
 
 export interface operations {}
