@@ -59,9 +59,7 @@ const TagSelector: React.FC<TagSelectorProps> = ({ value, onChange }) => {
       const res = await supabase
         .from<definitions["tags"]>("tags")
         .select("id")
-        .textSearch("id", `${inputValue}`, {
-          config: "english",
-        });
+        .ilike("id", `%${inputValue}%`);
 
       if (res.data) {
         return res.data.map((i) => ({

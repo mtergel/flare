@@ -440,7 +440,6 @@ export interface paths {
 }
 
 export interface definitions {
-  /** junction table */
   post_tag: {
     /**
      * Note:
@@ -451,17 +450,17 @@ export interface definitions {
      * Note:
      * This is a Foreign Key to `posts.id`.<fk table='posts' column='id'/>
      */
-    posts_id: number;
+    posts_id?: number;
     /**
      * Note:
      * This is a Foreign Key to `tags.id`.<fk table='tags' column='id'/>
      */
-    tags_id: string;
+    tags_id?: string;
     /**
      * Note:
      * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
      */
-    user_id: string;
+    user_id?: string;
   };
   posts: {
     /**

@@ -3,11 +3,18 @@ import { supabase } from "@/utils/supabaseClient";
 import { PostgrestError } from "@supabase/postgrest-js";
 import useSWR from "swr";
 import logger from "@/utils/logger";
+import { PostsWithPostTag } from "@/utils/types";
 
 const fetcher = async (userId: string, page: number, itemsPerPage: number) => {
   const res = await supabase
     .from<definitions["posts"]>("posts")
-    .select("*", { count: "estimated" })
+    .select(
+      `
+      *,
+      tags!post_tag(*)
+    `,
+      { count: "estimated" }
+    )
     .range((page - 1) * itemsPerPage, page * itemsPerPage - 1)
     .match({
       user_id: userId,
@@ -22,8 +29,8 @@ const fetcher = async (userId: string, page: number, itemsPerPage: number) => {
   logger.debug(res);
 
   return {
-    articles: res.data,
-    count: res.count,
+    articles: res.data as PostsWithPostTag[],
+    count: res.count ?? 0,
   };
 };
 
@@ -33,7 +40,7 @@ const useFetchArticlesByUser = (
   itemsPerPage?: number
 ) => {
   const { data, isValidating, mutate, error } = useSWR(
-    [userId, page ?? 1, itemsPerPage ?? 24, "useFetchArticles"],
+    [userId, page ?? 1, itemsPerPage ?? 24, "__article"],
     fetcher,
     {
       errorRetryCount: 3,

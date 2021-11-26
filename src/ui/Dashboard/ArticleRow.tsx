@@ -13,6 +13,8 @@ import {
 import IconButton from "@/components/IconButton/IconButton";
 import { definitions } from "@/utils/generated";
 import logger from "@/utils/logger";
+import { supabase } from "@/utils/supabaseClient";
+import { PostsWithPostTag } from "@/utils/types";
 import { FiChevronDown } from "@react-icons/all-files/fi/FiChevronDown";
 import { FiEdit2 } from "@react-icons/all-files/fi/FiEdit2";
 import { FiPlay } from "@react-icons/all-files/fi/FiPlay";
@@ -29,14 +31,23 @@ import toast from "react-hot-toast";
 dayjs.extend(relativeTime);
 
 interface ArticleRowProps {
-  article: definitions["posts"];
+  article: PostsWithPostTag;
   username: string;
+  onDeleteMutation: (id: number) => void;
 }
-const ArticleRow: React.FC<ArticleRowProps> = ({ article, username }) => {
+const ArticleRow: React.FC<ArticleRowProps> = ({
+  article,
+  username,
+  onDeleteMutation,
+}) => {
   const handleGenerateMD = () => {
     const generatedBlob = new Blob(
       [
-        `--- title: "${article.title}" emoji: "${article.emoji}" type: "${article.post_type}" topics: [] published: ${article.published} --- \n`.concat(
+        `--- title: "${article.title}" emoji: "${article.emoji}" type: "${
+          article.post_type
+        }" topics: ${JSON.stringify(
+          article.tags.map((i) => i.id)
+        )} published: ${article.published} --- \n\n`.concat(
           article.body_markdown ?? ""
         ),
       ],
@@ -58,7 +69,7 @@ const ArticleRow: React.FC<ArticleRowProps> = ({ article, username }) => {
       deletingPost(),
       {
         loading: <b>Deleting...</b>,
-        success: <b>Deleted!</b>,
+        success: <b>Deleted article!</b>,
         error: <p>Could not delete.</p>,
       },
       {
@@ -70,22 +81,14 @@ const ArticleRow: React.FC<ArticleRowProps> = ({ article, username }) => {
   const deletingPost = async () => {
     try {
       setLoading(true);
-      // const toDeletePostTags = article.posts_tags.map((i) => i.id);
-      // logger.debug("Deleting tags...: ", toDeletePostTags);
+      logger.debug("Deleting post...: ", article.id);
 
-      // await deletePostTags({
-      //   where: {
-      //     id: {
-      //       _in: toDeletePostTags,
-      //     },
-      //   },
-      // });
+      await supabase
+        .from<definitions["posts"]>("posts")
+        .delete()
+        .match({ id: article.id });
 
-      // logger.debug("Deleting post...: ", post.id);
-
-      // await deletePost({
-      //   id: post.id,
-      // });
+      onDeleteMutation(article.id);
 
       setLoading(false);
     } catch (error) {

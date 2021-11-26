@@ -13,6 +13,7 @@ import { Folder } from "react-kawaii";
 import ArticleRow from "ui/Dashboard/ArticleRow";
 import Layout from "ui/Layout/Layout";
 import ErrorMessage from "ui/misc/ErrorMessage";
+import remove from "lodash/remove";
 
 const DashboardArticle: NextPageWithLayout = () => {
   // try turning this into a HOC
@@ -42,7 +43,7 @@ const itemPerPage = 10;
 const Dashboard: React.FC<DashboardProps> = ({ userId, username }) => {
   const router = useRouter();
   const currentPage = queryParamToNumber(router.query.p, 1);
-  const { data, isLoading, error } = useFetchArticlesByUser(
+  const { data, isLoading, error, mutate } = useFetchArticlesByUser(
     userId,
     currentPage <= 0 ? 1 : currentPage,
     itemPerPage
@@ -50,6 +51,18 @@ const Dashboard: React.FC<DashboardProps> = ({ userId, username }) => {
 
   const handleLinkBuild = (page: number) => {
     return `/dashboard?p=${page}`;
+  };
+
+  const handleDeleteMutation = (id: number) => {
+    if (data) {
+      // const copyOfArr = [...data.articles];
+      remove(data.articles, (article) => article.id === id);
+
+      mutate({
+        articles: data.articles,
+        count: data.count - 1,
+      });
+    }
   };
 
   if (isLoading) {
@@ -88,6 +101,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userId, username }) => {
                     key={article.id}
                     article={article}
                     username={username}
+                    onDeleteMutation={handleDeleteMutation}
                   />
                 ))}
               </div>
