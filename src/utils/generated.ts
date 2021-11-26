@@ -12,6 +12,216 @@ export interface paths {
       };
     };
   };
+  "/post_tag": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.post_tag.id"];
+          posts_id?: parameters["rowFilter.post_tag.posts_id"];
+          tags_id?: parameters["rowFilter.post_tag.tags_id"];
+          user_id?: parameters["rowFilter.post_tag.user_id"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["post_tag"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** post_tag */
+          post_tag?: definitions["post_tag"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.post_tag.id"];
+          posts_id?: parameters["rowFilter.post_tag.posts_id"];
+          tags_id?: parameters["rowFilter.post_tag.tags_id"];
+          user_id?: parameters["rowFilter.post_tag.user_id"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.post_tag.id"];
+          posts_id?: parameters["rowFilter.post_tag.posts_id"];
+          tags_id?: parameters["rowFilter.post_tag.tags_id"];
+          user_id?: parameters["rowFilter.post_tag.user_id"];
+        };
+        body: {
+          /** post_tag */
+          post_tag?: definitions["post_tag"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/posts": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.posts.id"];
+          created_at?: parameters["rowFilter.posts.created_at"];
+          body_markdown?: parameters["rowFilter.posts.body_markdown"];
+          emoji?: parameters["rowFilter.posts.emoji"];
+          published?: parameters["rowFilter.posts.published"];
+          slug?: parameters["rowFilter.posts.slug"];
+          title?: parameters["rowFilter.posts.title"];
+          post_type?: parameters["rowFilter.posts.post_type"];
+          updated_at?: parameters["rowFilter.posts.updated_at"];
+          user_id?: parameters["rowFilter.posts.user_id"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["posts"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** posts */
+          posts?: definitions["posts"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.posts.id"];
+          created_at?: parameters["rowFilter.posts.created_at"];
+          body_markdown?: parameters["rowFilter.posts.body_markdown"];
+          emoji?: parameters["rowFilter.posts.emoji"];
+          published?: parameters["rowFilter.posts.published"];
+          slug?: parameters["rowFilter.posts.slug"];
+          title?: parameters["rowFilter.posts.title"];
+          post_type?: parameters["rowFilter.posts.post_type"];
+          updated_at?: parameters["rowFilter.posts.updated_at"];
+          user_id?: parameters["rowFilter.posts.user_id"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.posts.id"];
+          created_at?: parameters["rowFilter.posts.created_at"];
+          body_markdown?: parameters["rowFilter.posts.body_markdown"];
+          emoji?: parameters["rowFilter.posts.emoji"];
+          published?: parameters["rowFilter.posts.published"];
+          slug?: parameters["rowFilter.posts.slug"];
+          title?: parameters["rowFilter.posts.title"];
+          post_type?: parameters["rowFilter.posts.post_type"];
+          updated_at?: parameters["rowFilter.posts.updated_at"];
+          user_id?: parameters["rowFilter.posts.user_id"];
+        };
+        body: {
+          /** posts */
+          posts?: definitions["posts"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/profiles": {
     get: {
       parameters: {
@@ -230,6 +440,49 @@ export interface paths {
 }
 
 export interface definitions {
+  /** junction table */
+  post_tag: {
+    /**
+     * Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Note:
+     * This is a Foreign Key to `posts.id`.<fk table='posts' column='id'/>
+     */
+    posts_id: number;
+    /**
+     * Note:
+     * This is a Foreign Key to `tags.id`.<fk table='tags' column='id'/>
+     */
+    tags_id: string;
+    /**
+     * Note:
+     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     */
+    user_id: string;
+  };
+  posts: {
+    /**
+     * Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    created_at: string;
+    body_markdown?: string;
+    emoji: string;
+    published: boolean;
+    slug: string;
+    title: string;
+    post_type: "article" | "notebook";
+    updated_at: string;
+    /**
+     * Note:
+     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     */
+    user_id: string;
+  };
   profiles: {
     /**
      * Note:
@@ -275,6 +528,24 @@ export interface parameters {
   offset: string;
   /** Limiting and Pagination */
   limit: string;
+  /** post_tag */
+  "body.post_tag": definitions["post_tag"];
+  "rowFilter.post_tag.id": string;
+  "rowFilter.post_tag.posts_id": string;
+  "rowFilter.post_tag.tags_id": string;
+  "rowFilter.post_tag.user_id": string;
+  /** posts */
+  "body.posts": definitions["posts"];
+  "rowFilter.posts.id": string;
+  "rowFilter.posts.created_at": string;
+  "rowFilter.posts.body_markdown": string;
+  "rowFilter.posts.emoji": string;
+  "rowFilter.posts.published": string;
+  "rowFilter.posts.slug": string;
+  "rowFilter.posts.title": string;
+  "rowFilter.posts.post_type": string;
+  "rowFilter.posts.updated_at": string;
+  "rowFilter.posts.user_id": string;
   /** profiles */
   "body.profiles": definitions["profiles"];
   "rowFilter.profiles.id": string;

@@ -23,7 +23,6 @@ const TagSelector: React.FC<TagSelectorProps> = ({ value, onChange }) => {
 
   const savedTime = dayjs(options.timestamp);
   const fetchTags = async () => {
-    console.log("RUNNING EFFECT");
     setFetching(true);
 
     const res = await supabase
@@ -57,8 +56,6 @@ const TagSelector: React.FC<TagSelectorProps> = ({ value, onChange }) => {
 
   const handleSearch = async (inputValue: string | undefined) => {
     if (inputValue) {
-      console.log("RUNNING SEARCH");
-
       const res = await supabase
         .from<definitions["tags"]>("tags")
         .select("id")

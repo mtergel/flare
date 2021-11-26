@@ -68,7 +68,10 @@ const AuthProvider: React.FC<{}> = ({ children }) => {
       }
     };
 
-    getProfile();
+    if (session) {
+      getProfile();
+    }
+
     // eslint-disable-next-line
   }, [session]);
 

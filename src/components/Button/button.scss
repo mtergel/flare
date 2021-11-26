@@ -61,14 +61,56 @@
   //   sizes
   &.btn-sm {
     @apply py-1 px-3 text-sm;
+
+    & .button-icon-left {
+      @apply -ml-1 mr-2;
+      & svg {
+        @apply h-4 w-4;
+      }
+    }
+
+    & .button-icon-right {
+      @apply -mr-1 ml-2;
+      & svg {
+        @apply h-4 w-4;
+      }
+    }
   }
 
   &.btn-md {
     @apply py-2 px-5;
+
+    & .button-icon-left {
+      @apply -ml-2 mr-3;
+      & svg {
+        @apply h-5 w-5;
+      }
+    }
+
+    & .button-icon-right {
+      @apply -mr-2 ml-3;
+      & svg {
+        @apply h-5 w-5;
+      }
+    }
   }
 
   &.btn-lg {
     @apply py-3 px-7 text-lg;
+
+    & .button-icon-left {
+      @apply -ml-3 mr-4;
+      & svg {
+        @apply h-6 w-6;
+      }
+    }
+
+    & .button-icon-right {
+      @apply -mr-3 ml-4;
+      & svg {
+        @apply h-6 w-6;
+      }
+    }
   }
 
   &.btn-full {
@@ -79,7 +121,7 @@
     @apply p-1 h-8 w-8;
 
     & svg {
-      @apply h-4 w-4;
+      @apply h-3 w-3;
     }
   }
 
@@ -87,7 +129,7 @@
     @apply p-2 h-10 w-10;
 
     & svg {
-      @apply h-5 w-5;
+      @apply h-4 w-4;
     }
   }
 
@@ -95,7 +137,7 @@
     @apply p-2 h-12 w-12;
 
     & svg {
-      @apply h-6 w-6;
+      @apply h-5 w-5;
     }
   }
 
@@ -168,7 +210,7 @@
     @apply bg-opacity-0;
     &:hover,
     &:focus {
-      @apply bg-opacity-10 text-primary;
+      @apply border-border;
     }
   }
 }

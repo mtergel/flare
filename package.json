@@ -51,7 +51,8 @@
     "remark-emoji": "^3.0.2",
     "remark-gfm": "^3.0.1",
     "sass": "^1.43.4",
-    "slugify": "^1.6.2"
+    "slugify": "^1.6.2",
+    "swr": "^1.0.1"
   },
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.2.2",

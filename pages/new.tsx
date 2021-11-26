@@ -15,7 +15,7 @@ const NewArticle: NextPage = () => {
       <div className="h-full flex flex-col">
         <MinHeader />
         <div className="flex-grow bg-paper pb-20">
-          <ArticleEditor />
+          <ArticleEditor user_id={user.id} />
         </div>
       </div>
     );
