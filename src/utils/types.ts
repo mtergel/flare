@@ -41,6 +41,7 @@ export interface TocProps {
 export type ErrorCode = "NoProfile" | "NoUsername";
 
 type Post = definitions["posts"];
-export interface PostsWithPostTag extends Post {
+export interface PostsJoins extends Post {
   tags: definitions["tags"][];
+  user: definitions["profiles"];
 }

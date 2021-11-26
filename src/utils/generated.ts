@@ -500,8 +500,8 @@ export interface definitions {
      * This is a Primary Key.<pk/>
      */
     id: string;
-    name?: string;
-    image_url?: string;
+    name: string;
+    image_url: string;
     featured?: boolean;
   };
 }

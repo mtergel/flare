@@ -14,7 +14,7 @@ import IconButton from "@/components/IconButton/IconButton";
 import { definitions } from "@/utils/generated";
 import logger from "@/utils/logger";
 import { supabase } from "@/utils/supabaseClient";
-import { PostsWithPostTag } from "@/utils/types";
+import { PostsJoins } from "@/utils/types";
 import { FiChevronDown } from "@react-icons/all-files/fi/FiChevronDown";
 import { FiEdit2 } from "@react-icons/all-files/fi/FiEdit2";
 import { FiPlay } from "@react-icons/all-files/fi/FiPlay";
@@ -24,6 +24,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import useDisclosure from "hooks/useDisclosure";
 import md5 from "md5";
+import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -31,7 +32,7 @@ import toast from "react-hot-toast";
 dayjs.extend(relativeTime);
 
 interface ArticleRowProps {
-  article: PostsWithPostTag;
+  article: PostsJoins;
   username: string;
   onDeleteMutation: (id: number) => void;
 }
@@ -40,27 +41,7 @@ const ArticleRow: React.FC<ArticleRowProps> = ({
   username,
   onDeleteMutation,
 }) => {
-  const handleGenerateMD = () => {
-    const generatedBlob = new Blob(
-      [
-        `--- title: "${article.title}" emoji: "${article.emoji}" type: "${
-          article.post_type
-        }" topics: ${JSON.stringify(
-          article.tags.map((i) => i.id)
-        )} published: ${article.published} --- \n\n`.concat(
-          article.body_markdown ?? ""
-        ),
-      ],
-      {
-        type: "text/plain;charset=utf8",
-      }
-    );
-    const generatedUrl = URL.createObjectURL(generatedBlob);
-    if (typeof window !== undefined) {
-      window.open(generatedUrl, "_blank")?.focus();
-    }
-  };
-
+  const router = useRouter();
   const { isOpen, onOpen, setIsOpen } = useDisclosure();
   const [loading, setLoading] = useState(false);
 
@@ -97,6 +78,46 @@ const ArticleRow: React.FC<ArticleRowProps> = ({
     }
   };
 
+  const handleGenerateMD = () => {
+    const generatedBlob = new Blob(
+      [
+        `--- title: "${article.title}" emoji: "${article.emoji}" type: "${
+          article.post_type
+        }" tags: ${JSON.stringify(article.tags.map((i) => i.id))} published: ${
+          article.published
+        } --- \n\n`.concat(article.body_markdown ?? ""),
+      ],
+      {
+        type: "text/plain;charset=utf8",
+      }
+    );
+    const generatedUrl = URL.createObjectURL(generatedBlob);
+    if (typeof window !== undefined) {
+      window.open(generatedUrl, "_blank")?.focus();
+    }
+  };
+
+  const handleGeneratePreviewMode = async () => {
+    try {
+      const session = supabase.auth.session();
+      const res = await fetch(
+        `/api/preview?slug=${article.slug}&preview=${md5(
+          article.slug + process.env.NEXT_PUBLIC_SALT
+        )}`,
+        {
+          headers: {
+            Authorization: `Bearer ${session?.access_token}`,
+          },
+          redirect: "follow",
+        }
+      );
+      router.push(res.url);
+    } catch (error) {
+      toast.error("Error occured when generating preview");
+      logger.debug(error);
+    }
+  };
+
   return (
     <article key={article.id} className="pt-4">
       <div className="flex items-start justify-between">
@@ -120,14 +141,11 @@ const ArticleRow: React.FC<ArticleRowProps> = ({
             </Link>
           ) : (
             <IconButton
-              as="a"
-              // @ts-ignore // how to add this to typescript
-              href={`/api/preview?slug=${article.slug}&preview=${md5(
-                article.slug + process.env.NEXT_PUBLIC_SALT
-              )}`}
-              aria-label="preview"
+              aria-label="generate preview url"
               icon={<FiPlay />}
               variant="outline"
+              isDisabled={loading}
+              onClick={handleGeneratePreviewMode}
             />
           )}
           <Link href={loading ? "#" : `/articles/${article.id}/edit`} passHref>
@@ -136,6 +154,7 @@ const ArticleRow: React.FC<ArticleRowProps> = ({
               aria-label="edit"
               icon={<FiEdit2 />}
               variant="outline"
+              isDisabled={loading}
             />
           </Link>
           <DropdownMenu>
@@ -144,7 +163,7 @@ const ArticleRow: React.FC<ArticleRowProps> = ({
                 aria-label="more options"
                 icon={<FiChevronDown />}
                 variant="ghost"
-                disabled={loading}
+                isDisabled={loading}
               />
             </DropdownMenuTrigger>
             <DropdownMenuContent sideOffset={4}>

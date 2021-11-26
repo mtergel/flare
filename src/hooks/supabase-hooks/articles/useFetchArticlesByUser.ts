@@ -3,7 +3,7 @@ import { supabase } from "@/utils/supabaseClient";
 import { PostgrestError } from "@supabase/postgrest-js";
 import useSWR from "swr";
 import logger from "@/utils/logger";
-import { PostsWithPostTag } from "@/utils/types";
+import { PostsJoins } from "@/utils/types";
 
 const fetcher = async (userId: string, page: number, itemsPerPage: number) => {
   const res = await supabase
@@ -11,8 +11,9 @@ const fetcher = async (userId: string, page: number, itemsPerPage: number) => {
     .select(
       `
       *,
-      tags!post_tag(*)
-    `,
+      tags!post_tag (*),
+      user:user_id (*)
+      `,
       { count: "estimated" }
     )
     .range((page - 1) * itemsPerPage, page * itemsPerPage - 1)
@@ -29,7 +30,7 @@ const fetcher = async (userId: string, page: number, itemsPerPage: number) => {
   logger.debug(res);
 
   return {
-    articles: res.data as PostsWithPostTag[],
+    articles: res.data as PostsJoins[],
     count: res.count ?? 0,
   };
 };
