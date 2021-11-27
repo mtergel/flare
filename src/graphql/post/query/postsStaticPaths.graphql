@@ -1,8 +1,0 @@
-query PostsStaticPaths {
-  posts(limit: 50, where: { published: { _eq: true } }) {
-    slug
-    user {
-      username
-    }
-  }
-}

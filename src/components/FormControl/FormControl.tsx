@@ -19,8 +19,8 @@ const FormControl = forwardRef<Ref, FormControlProps>((props, ref) => {
   const { className, inValid, isFullWidth = true, children, ...rest } = props;
   const merged = clsx(
     className,
-    "formControl",
-    inValid && "formError",
+    "form-control",
+    inValid && "form-error",
     isFullWidth && "w-full"
   );
 

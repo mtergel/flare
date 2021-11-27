@@ -1,28 +1,24 @@
+import { useAuth } from "context/auth";
+import withAuth from "context/withAuth";
+import { NextPage } from "next";
 import ArticleEditor from "ui/ArticleEditor/ArticleEditor";
-import Fallback from "@/components/Fallback/Fallback";
-import { NextPageWithLayout } from "@/utils/types";
-import useProtected from "hooks/useProtected";
 import MinHeader from "ui/Layout/MinHeader";
 
-const NewArticleContainer: NextPageWithLayout = () => {
-  const { user } = useProtected();
+const NewArticle: NextPage = () => {
+  const { user } = useAuth();
 
   if (user) {
-    return <NewArticle />;
-  } else {
-    return <Fallback />;
-  }
-};
-
-const NewArticle: React.FC<{}> = () => {
-  return (
-    <div className="h-full flex flex-col">
-      <MinHeader />
-      <div className="bg-paper flex-grow">
-        <ArticleEditor />
+    return (
+      <div className="h-full flex flex-col">
+        <MinHeader />
+        <div className="flex-grow bg-paper pb-20">
+          <ArticleEditor user_id={user.id} />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  return null;
 };
 
-export default NewArticleContainer;
+export default withAuth(NewArticle);

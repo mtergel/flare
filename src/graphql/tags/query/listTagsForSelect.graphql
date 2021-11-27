@@ -1,5 +1,0 @@
-query ListTagsForSelect {
-  tags(where: { included: { _eq: true } }) {
-    keyword
-  }
-}

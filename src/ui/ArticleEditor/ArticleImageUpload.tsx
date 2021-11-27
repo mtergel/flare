@@ -1,12 +1,7 @@
 import Button from "@/components/Button/Button";
-import imageid from "@/utils/imageid";
-import logger from "@/utils/logger";
-import renameFile from "@/utils/renameFile";
 import { FiImage } from "@react-icons/all-files/fi/FiImage";
 import imageCompression from "browser-image-compression";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { ChangeEvent, useState } from "react";
-import toast from "react-hot-toast";
 
 interface ArticleImageUploadProps {
   onUpload: (url: string) => void;
@@ -14,9 +9,6 @@ interface ArticleImageUploadProps {
 const ArticleImageUpload: React.FC<ArticleImageUploadProps> = ({
   onUpload,
 }) => {
-  // auto deleting bucket
-  const storage = getStorage(undefined, "gs://flare-articles");
-
   const [uploading, setUploading] = useState(false);
   const handleUploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -29,10 +21,6 @@ const ArticleImageUpload: React.FC<ArticleImageUploadProps> = ({
         useWebWorker: true,
         fileType: "image/jpeg", // override to jpeg?
       });
-
-      // rename to random nanoid
-      const newName = `${imageid()}.jpeg`;
-      const renamedFile = renameFile(compressedFile, newName);
 
       // remove this
       onUpload("https://images.unsplash.com/photo-1480796927426-f609979314bd");

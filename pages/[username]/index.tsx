@@ -1,115 +1,82 @@
 import Avatar from "@/components/Avatar/Avatar";
 import Button from "@/components/Button/Button";
 import Container from "@/components/Container/Container";
-import { useAuth } from "context/auth";
-import {
-  PublicGetUserByUsernameDocument,
-  PublicGetUserByUsernameQuery,
-  PublicGetUserByUsernameQueryVariables,
-  usePublicGetUserByUsernameQuery,
-} from "graphql/generated/graphql";
-import { GetServerSideProps } from "next";
-import { initUrqlClient, withUrqlClient } from "next-urql";
-import { useRouter } from "next/dist/client/router";
+import { definitions } from "@/utils/generated";
+import { supabase } from "@/utils/supabaseClient";
+import { NextPageWithLayout } from "@/utils/types";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import Link from "next/link";
 import Layout from "ui/Layout/Layout";
-import ErrorMessage from "ui/misc/ErrorMessage";
-import { cacheExchange, dedupExchange, fetchExchange, ssrExchange } from "urql";
-import { NextComponentTypeWithLayout, NextPageWithLayout } from "utils/types";
 
-const Profile: NextPageWithLayout = () => {
-  const router = useRouter();
-  const { user, loading } = useAuth();
-  const [res] = usePublicGetUserByUsernameQuery({
-    variables: {
-      _eq: router.query.username as string,
-    },
-  });
-
-  if (res.data && res.data.users.length > 0) {
-    const data = res.data.users[0];
-    const handleEdit = () => {
-      router.push("/settings");
-    };
-    return (
-      <>
-        <header className="bg-paper">
-          <Container size="common">
-            <div className="py-12">
-              <div className="flex items-start justify-between">
-                <div className="flex flex-col gap-2 md:flex-row md:gap-6">
-                  <Avatar
-                    size="profile"
-                    src={data.image || undefined}
-                    fallback={data.name[0]}
-                  />
-                  <div>
-                    <h1 className="font-medium">{data.name}</h1>
-                    <h2 className="text-gray-400 text-sm">@{data.username}</h2>
-                    <p className="mt-2">{data.bio}</p>
-                  </div>
-                </div>
-                {!loading &&
-                  (data.user_id === user?.uid ? (
-                    <Button onClick={handleEdit} variant="outline">
-                      Edit profile
-                    </Button>
-                  ) : (
-                    <Button color="primary">Follow</Button>
-                  ))}
-              </div>
-            </div>
-          </Container>
-        </header>
-      </>
-    );
-  } else {
-    return (
-      <div className="py-6">
-        <ErrorMessage text={res.error?.message} />
-      </div>
-    );
-  }
+type UserPageProps = {
+  profile: definitions["profiles"];
 };
-
 // maybe change this to ISR later.
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const params = context.params;
-  const ssrCache = ssrExchange({ isClient: false });
-  const client = initUrqlClient(
-    {
-      url: "https://flare.hasura.app/v1/graphql",
-      exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
-      suspense: false,
-    },
-    false
-  );
+export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
+  context
+) => {
+  const params = context.params; // params.username
 
-  await client!
-    .query<PublicGetUserByUsernameQuery, PublicGetUserByUsernameQueryVariables>(
-      PublicGetUserByUsernameDocument,
-      {
-        _eq: params!.username as string,
-      }
-    )
-    .toPromise();
+  const res = await supabase
+    .from<definitions["profiles"]>("profiles")
+    .select(`id, username, avatar_url, display_name, bio`)
+    .eq("username", params!.username as string)
+    .single();
 
+  if (res.data) {
+    return {
+      props: {
+        profile: res.data,
+      },
+    };
+  }
   return {
-    props: {
-      // urqlState is a keyword here so withUrqlClient can pick it up.
-      urqlState: ssrCache.extractData(),
-    },
+    notFound: true,
   };
 };
 
-const withUrql: NextComponentTypeWithLayout = withUrqlClient(
-  (ssr) => ({
-    url: "https://flare.hasura.app/v1/graphql",
-  }),
-  { ssr: false } // Important so we don't wrap our component in getInitialProps
-)(Profile);
+const Profile: NextPageWithLayout<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = (props) => {
+  const { profile } = props;
+  const currentUser = supabase.auth.user();
+  return (
+    <>
+      <header className="bg-paper border-t">
+        <Container size="common">
+          <div className="py-12">
+            <div className="flex items-start justify-between">
+              <div className="flex flex-col gap-2 md:flex-row md:gap-6">
+                <Avatar
+                  size="profile"
+                  src={profile.avatar_url}
+                  fallback={profile.display_name}
+                />
+                <div>
+                  <h1 className="font-medium">{profile.display_name}</h1>
+                  <h2 className="text-gray-400 text-sm">@{profile.username}</h2>
+                  <p className="mt-2 text-sm">{profile.bio}</p>
+                </div>
+              </div>
+              {profile.id === currentUser?.id ? (
+                <Link href="/settings" passHref>
+                  <Button as="a" variant="outline">
+                    Edit profile
+                  </Button>
+                </Link>
+              ) : (
+                <Button color="primary">Follow</Button>
+              )}
+            </div>
+          </div>
+        </Container>
+      </header>
+    </>
+  );
+};
 
-withUrql.getLayout = function getLayout(page) {
+Profile.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
-export default withUrql;
+export default Profile;

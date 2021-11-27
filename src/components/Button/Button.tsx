@@ -136,13 +136,13 @@ const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
       type={type}
     >
       {leftIcon && !isLoading && (
-        <ButtonIcon className="-ml-2 mr-3 h-5 w-5">{leftIcon}</ButtonIcon>
+        <ButtonIcon className="button-icon-left">{leftIcon}</ButtonIcon>
       )}
       {isLoading
         ? loadingText || <span className="opacity-0 invisible">{children}</span>
         : children}
       {rightIcon && !isLoading && (
-        <ButtonIcon className="-mr-2 ml-3 h-5 w-5">{rightIcon}</ButtonIcon>
+        <ButtonIcon className="button-icon-right">{rightIcon}</ButtonIcon>
       )}
     </Element>
   );
@@ -156,7 +156,6 @@ const ButtonIcon: React.FC<{ className?: string }> = (props) => {
         "aria-hidden": true,
         focusable: false,
         "data-testid": "buttonIcon",
-        className: "h-5 w-5",
       })
     : children;
 

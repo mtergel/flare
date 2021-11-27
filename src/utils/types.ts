@@ -1,6 +1,7 @@
-import { NextComponentType, NextPage } from "next";
-import { NextUrqlContext, WithUrqlProps } from "next-urql";
+import { NextPage } from "next";
 import { ReactElement, ReactNode } from "react";
+import { definitions } from "@/utils/generated";
+
 /**
  * NextPage extended with getLayout function
  */
@@ -8,16 +9,8 @@ export type NextPageWithLayout<P = {}> = NextPage<P> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
-export type NextComponentTypeWithLayout = NextComponentType<
-  NextUrqlContext,
-  {},
-  WithUrqlProps
-> & {
-  getLayout?: (page: ReactElement) => ReactNode;
-};
-
 export type EditTag = {
-  id?: string;
+  id?: number;
   value: string;
   label: string;
   __isNew__?: boolean;
@@ -45,4 +38,14 @@ export interface TocProps {
   activeId?: string;
 }
 
-export type Profile = {};
+export type ErrorCode = "NoProfile" | "NoUsername";
+
+type Post = definitions["posts"];
+export interface PostsJoins extends Post {
+  tags: definitions["tags"][];
+  user: definitions["profiles"];
+}
+
+export interface GetPostForEdit extends Post {
+  tags: definitions["post_tag"][];
+}

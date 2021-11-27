@@ -2,12 +2,11 @@ import { useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import { PluggableList } from "react-markdown/lib/react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { tomorrow } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import autoLink from "rehype-autolink-headings";
 import slug from "rehype-slug";
 import remarkEmoji from "remark-emoji";
 import remarkGfm from "remark-gfm";
-import remarkToc from "remark-toc";
 
 interface PreviewProps {
   value: string;
@@ -35,7 +34,7 @@ const Preview: React.FC<PreviewProps> = ({ value, disableAutoLink }) => {
 
   return (
     <ReactMarkdown
-      remarkPlugins={[remarkGfm, remarkToc, remarkEmoji]}
+      remarkPlugins={[remarkGfm, remarkEmoji]}
       rehypePlugins={rehypePlugins}
       components={{
         code({ node, inline, className, children, ...props }) {
@@ -43,7 +42,7 @@ const Preview: React.FC<PreviewProps> = ({ value, disableAutoLink }) => {
           return !inline && match ? (
             // @ts-ignore
             <SyntaxHighlighter
-              style={tomorrow}
+              style={vscDarkPlus}
               language={match[1]}
               PreTag="div"
               {...props}

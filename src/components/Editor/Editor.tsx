@@ -27,12 +27,14 @@ const options = {
 interface EditorProps {
   markdown: string;
   onChange: (value: string) => void;
+  title?: string | null;
   getCodemirrorInstance?: GetCodemirrorInstance | undefined;
 }
 const Editor: React.FC<EditorProps> = ({
   markdown,
   onChange,
   getCodemirrorInstance,
+  title,
 }) => {
   const [value, setValue] = useState(markdown);
 
@@ -64,8 +66,11 @@ const Editor: React.FC<EditorProps> = ({
         </TabsContent>
         <TabsContent value="preview">
           <div className="prose prose-sm editor-preview-tw border-b-2">
-            {value ? (
-              <Preview value={value} disableAutoLink />
+            {value || title ? (
+              <>
+                <h1>{title}</h1>
+                <Preview value={value} disableAutoLink />
+              </>
             ) : (
               <p>Nothing to preview.</p>
             )}

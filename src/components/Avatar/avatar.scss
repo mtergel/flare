@@ -25,4 +25,8 @@
   & > .fallback {
     @apply w-full h-full flex items-center justify-center bg-primary text-paper font-medium;
   }
+
+  &.avatar-shadow {
+    @apply shadow;
+  }
 }

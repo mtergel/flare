@@ -1,13 +1,18 @@
-import { User } from "@firebase/auth";
-import cookie from "js-cookie";
+import { definitions } from "@/utils/generated";
+import logger from "@/utils/logger";
+import { supabase } from "@/utils/supabaseClient";
+import { ErrorCode } from "@/utils/types";
+import { Session } from "@supabase/gotrue-js";
+import useLocalStorage from "hooks/useLocalForage";
+import { useRouter } from "next/dist/client/router";
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "../initApp";
 
 const AuthContext = createContext<{
-  user: User | null;
+  user: definitions["profiles"] | null;
   loading: boolean;
-  error: string | null;
+  error: ErrorCode | null;
   logout?: () => Promise<void>;
+  setUser?: (value: definitions["profiles"]) => void;
 }>({
   user: null,
   logout: undefined,
@@ -16,65 +21,85 @@ const AuthContext = createContext<{
 });
 
 const AuthProvider: React.FC<{}> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser, removeUser] = useLocalStorage<
+    definitions["profiles"] | null
+  >("currentUser", null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ErrorCode | null>(null);
+  const router = useRouter();
+
+  // session init
+  useEffect(() => {
+    setSession(supabase.auth.session());
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
+
+  // user set
+  useEffect(() => {
+    const getProfile = async () => {
+      try {
+        setLoading(true);
+        const currentUser = supabase.auth.user();
+        if (currentUser) {
+          const { data, error, status } = await supabase
+            .from<definitions["profiles"]>("profiles")
+            .select(`id, username, avatar_url, display_name, bio`)
+            .eq("id", currentUser.id)
+            .single();
+
+          if (error && status !== 406) {
+            throw error;
+          }
+
+          if (data) {
+            logger.debug("Settings user: ", data);
+            setError(null);
+            setUser(data);
+          }
+        }
+      } catch (error) {
+        logger.debug(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (session) {
+      getProfile();
+    } else {
+      setLoading(false);
+    }
+
+    // eslint-disable-next-line
+  }, [session]);
+
+  useEffect(() => {
+    if (user && user.username === null) {
+      setError("NoUsername");
+      console.log(router);
+      if (router.route !== "/onboarding") {
+        router.push("/onboarding");
+      }
+    }
+
+    // eslint-disable-next-line
+  }, [user]);
 
   const handleLogout = async () => {
     setLoading(true);
     // remove preview tokens
     fetch("/api/clearPreviewData");
-    await auth.signOut();
-    setUser(null);
-    cookie.remove("token");
+    await supabase.auth.signOut();
+    removeUser();
     setError(null);
   };
-
-  useEffect(() => {
-    return auth.onIdTokenChanged(async (user) => {
-      if (!user) {
-        setUser(null);
-        cookie.remove("token");
-        setLoading(false);
-        return;
-      }
-
-      const tokenResult = await user.getIdTokenResult();
-      if (tokenResult.claims["https://hasura.io/jwt/claims"]) {
-        // token
-        const token = await user.getIdToken();
-        cookie.set("token", token, {
-          expires: 0.24,
-          path: "/",
-          sameSite: "strict",
-          secure: process.env.NODE_ENV === "production",
-        });
-      } else {
-        try {
-          // refetch token
-          const token = await user.getIdToken(true);
-          cookie.set("token", token, {
-            expires: 0.24,
-            path: "/",
-            sameSite: "strict",
-            secure: process.env.NODE_ENV === "production",
-          });
-        } catch (error) {
-          setError("Could not refetch tokens");
-        }
-      }
-
-      // put it at bottom to generate claims
-      setUser(user);
-      setLoading(false);
-    });
-
-    // eslint-disable-next-line
-  }, []);
-
   return (
     <AuthContext.Provider
-      value={{ user, logout: handleLogout, loading, error }}
+      value={{ user, setUser, logout: handleLogout, loading, error }}
     >
       {children}
     </AuthContext.Provider>

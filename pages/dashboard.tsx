@@ -1,46 +1,68 @@
 import Button from "@/components/Button/Button";
 import Container from "@/components/Container/Container";
 import Fallback from "@/components/Fallback/Fallback";
+import Pagination from "@/components/Pagination/Pagination";
 import { themeColor } from "@/utils/const";
+import { queryParamToNumber } from "@/utils/query";
 import { NextPageWithLayout } from "@/utils/types";
-import {
-  useGetUserQuery,
-  useListUsersPostsQuery,
-} from "graphql/generated/graphql";
-import useProtected from "hooks/useProtected";
+import { useAuth } from "context/auth";
+import useFetchArticlesByUser from "hooks/supabase-hooks/articles/useFetchArticlesByUser";
+import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import { Folder } from "react-kawaii";
 import ArticleRow from "ui/Dashboard/ArticleRow";
 import Layout from "ui/Layout/Layout";
 import ErrorMessage from "ui/misc/ErrorMessage";
+import remove from "lodash/remove";
+import withAuth from "context/withAuth";
 
 const DashboardArticle: NextPageWithLayout = () => {
-  const { user } = useProtected();
+  const { user } = useAuth();
 
   if (user) {
-    return <Dashboard userId={user.uid} />;
-  } else {
-    return <Fallback />;
+    if (user.username) {
+      return <Dashboard userId={user.id} username={user.username} />;
+    } else {
+      return <ErrorMessage text="You dont have a profile setup" />;
+    }
   }
+
+  return null;
 };
 
 interface DashboardProps {
   userId: string;
+  username: string;
 }
 
-// TODO ADD PAGINATION HERE
-const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
-  const [user] = useGetUserQuery({
-    variables: {
-      user_id: userId,
-    },
-  });
-  const [{ fetching, data, error }] = useListUsersPostsQuery({
-    variables: {
-      _eq: userId,
-    },
-  });
-  if (fetching) {
+const itemPerPage = 10;
+
+const Dashboard: React.FC<DashboardProps> = ({ userId, username }) => {
+  const router = useRouter();
+  const currentPage = queryParamToNumber(router.query.p, 1);
+  const { data, isLoading, error, mutate } = useFetchArticlesByUser(
+    userId,
+    currentPage <= 0 ? 1 : currentPage,
+    itemPerPage
+  );
+
+  const handleLinkBuild = (page: number) => {
+    return `/dashboard?p=${page}`;
+  };
+
+  const handleDeleteMutation = (id: number) => {
+    if (data) {
+      // const copyOfArr = [...data.articles];
+      remove(data.articles, (article) => article.id === id);
+
+      mutate({
+        articles: data.articles,
+        count: data.count - 1,
+      });
+    }
+  };
+
+  if (isLoading) {
     return <Fallback />;
   }
 
@@ -55,7 +77,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
           <div className="mb-4">
             <h1 className="font-bold text-4xl">Articles</h1>
           </div>
-          {data.posts.length === 0 ? (
+          {data.articles.length === 0 ? (
             <div className="flex flex-col items-center justify-center space-y-8 pt-4">
               <div className="font-semibold text-lg text-gray-500 text-center">
                 <p>You don&apos;t have any articles</p>
@@ -69,17 +91,27 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
               </Link>
             </div>
           ) : (
-            <div className="space-y-4 divide-y">
-              {user.fetching && <Fallback />}
-              {user.data &&
-                user.data.users_by_pk &&
-                data.posts.map((post) => (
+            <div>
+              <div className="space-y-4 divide-y">
+                {data.articles.map((article) => (
                   <ArticleRow
-                    key={post.id}
-                    post={post}
-                    username={user.data?.users_by_pk?.username!}
+                    key={article.id}
+                    article={article}
+                    username={username}
+                    onDeleteMutation={handleDeleteMutation}
                   />
                 ))}
+              </div>
+              {data.count && data.count > itemPerPage && (
+                <div className="my-4 text-center">
+                  <Pagination
+                    currentPage={currentPage <= 0 ? 1 : currentPage}
+                    itemPerPage={itemPerPage}
+                    totalCount={data.count}
+                    buildLink={handleLinkBuild}
+                  />
+                </div>
+              )}
             </div>
           )}
         </Container>
@@ -94,4 +126,4 @@ DashboardArticle.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
-export default DashboardArticle;
+export default withAuth(DashboardArticle);

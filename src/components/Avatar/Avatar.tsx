@@ -6,6 +6,7 @@ interface AvatarProps
   extends React.ComponentProps<typeof AvatarPrimitive.AvatarImage> {
   fallback?: string;
   size?: SizeVariant;
+  shadow?: boolean;
 }
 
 type SizeVariant = "sm" | "md" | "lg" | "profile";
@@ -30,8 +31,8 @@ const Avatar = forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   AvatarProps
 >((props, forwardRef) => {
-  const { className, fallback, size, children, ...itemProps } = props;
-  const mergedRoot = clsx("avatar", getSize(size));
+  const { className, fallback, size, shadow, children, ...itemProps } = props;
+  const mergedRoot = clsx("avatar", getSize(size), shadow && "avatar-shadow");
   return (
     <AvatarPrimitive.Root
       className={mergedRoot}
@@ -44,7 +45,7 @@ const Avatar = forwardRef<
         className="fallback"
         data-testid="afallback"
       >
-        {fallback}
+        {fallback ? fallback[0] : fallback}
       </AvatarPrimitive.Fallback>
     </AvatarPrimitive.Root>
   );

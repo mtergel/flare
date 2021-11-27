@@ -3,12 +3,17 @@ import Slider from "@/components/Slider/Slider";
 import { useCallback, useState } from "react";
 import Cropper from "react-easy-crop";
 import { getCroppedImg } from "utils/cropImage";
+import imageCompression from "browser-image-compression";
+import { imageid } from "@/utils/ids";
 
-interface ImageCropProps {
+interface ImageAvatarCropProps {
   image: string;
-  onFinish: (base64: string) => any;
+  onFinish: (file: File) => any;
 }
-const ImageCrop: React.FC<ImageCropProps> = ({ image, onFinish }) => {
+const ImageAvatarCrop: React.FC<ImageAvatarCropProps> = ({
+  image,
+  onFinish,
+}) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState();
@@ -19,13 +24,23 @@ const ImageCrop: React.FC<ImageCropProps> = ({ image, onFinish }) => {
 
   const handleUpload = useCallback(async () => {
     const baseString = await getCroppedImg(image, croppedAreaPixels);
-    onFinish(baseString);
+    const file = await imageCompression.getFilefromDataUrl(
+      baseString,
+      `${imageid()}.jpeg`
+    );
+
+    const compressedFile = await imageCompression(file, {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 480,
+      useWebWorker: true,
+    });
+
+    onFinish(compressedFile);
   }, [croppedAreaPixels, image, onFinish]);
 
   return (
     <div>
-      {/* todo make these dynamic? */}
-      <div className="w-[300px] h-[300px] relative bg-black">
+      <div className="w-[300px] h-[300px] relative bg-paper">
         <Cropper
           image={image}
           crop={crop}
@@ -60,4 +75,4 @@ const ImageCrop: React.FC<ImageCropProps> = ({ image, onFinish }) => {
   );
 };
 
-export default ImageCrop;
+export default ImageAvatarCrop;

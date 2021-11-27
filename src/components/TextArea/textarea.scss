@@ -1,8 +1,8 @@
-.input {
+.textarea {
   // base style
   @apply bg-primary-50 dark:bg-gray-400 dark:bg-opacity-10 rounded-lg flex-shrink-0 outline-none border;
   // base size
-  @apply h-11 text-sm px-4;
+  @apply text-sm px-4 py-2;
   @apply transition-shadow;
 
   &:focus {
@@ -13,7 +13,7 @@
     @apply cursor-not-allowed bg-opacity-5 text-opacity-50 placeholder-opacity-50 placeholder-gray-400 text-gray-400;
   }
 
-  &.input-full {
+  &.textarea-full {
     @apply w-full;
   }
 }

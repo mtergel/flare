@@ -11,8 +11,15 @@
   @apply sm:rounded-lg sm:max-w-lg sm:top-1/2 sm:left-1/2 sm:bottom-auto sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2;
 
   @media (prefers-reduced-motion: no-preference) {
-    will-change: transform, opacity;
-    @apply animate-contentShow;
+    will-change: transition;
+    @apply animate-slideUp;
+  }
+
+  @media (min-width: 640px) {
+    @media (prefers-reduced-motion: no-preference) {
+      will-change: transform, opacity;
+      @apply animate-contentShow;
+    }
   }
 }
 
