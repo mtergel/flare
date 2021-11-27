@@ -42,7 +42,7 @@ const Profile: NextPageWithLayout<
   const currentUser = supabase.auth.user();
   return (
     <>
-      <header className="bg-paper">
+      <header className="bg-paper border-t">
         <Container size="common">
           <div className="py-12">
             <div className="flex items-start justify-between">

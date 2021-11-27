@@ -1,16 +1,14 @@
-import Link from "next/link";
-
 interface SavedToastProps {
   visible: boolean;
   onClose: () => void;
-  viewLink: string;
   published?: boolean;
+  onClick: () => void;
 }
 const SavedToast: React.FC<SavedToastProps> = ({
   visible,
   onClose,
-  viewLink,
   published,
+  onClick,
 }) => {
   return (
     <div
@@ -25,17 +23,14 @@ const SavedToast: React.FC<SavedToastProps> = ({
           </div>
           <div className="ml-3 flex-1">
             <p className="text-sm font-medium text-gray-900">Article saved!</p>
-            {published ? (
-              <Link href={viewLink} passHref>
-                <a className="mt-1 text-sm text-gray-500 cursor-pointer">
-                  Check out your article here.
-                </a>
-              </Link>
-            ) : (
-              <a className="mt-1 text-sm text-gray-500 cursor-pointer">
-                See your preview here.
-              </a>
-            )}
+            <button
+              onClick={onClick}
+              className="mt-1 text-sm text-gray-500 cursor-pointer"
+            >
+              {published
+                ? "Check out your article here."
+                : " See your preview here."}
+            </button>
           </div>
         </div>
       </div>

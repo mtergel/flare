@@ -10,7 +10,7 @@ export type NextPageWithLayout<P = {}> = NextPage<P> & {
 };
 
 export type EditTag = {
-  id?: string;
+  id?: number;
   value: string;
   label: string;
   __isNew__?: boolean;
@@ -44,4 +44,8 @@ type Post = definitions["posts"];
 export interface PostsJoins extends Post {
   tags: definitions["tags"][];
   user: definitions["profiles"];
+}
+
+export interface GetPostForEdit extends Post {
+  tags: definitions["post_tag"][];
 }

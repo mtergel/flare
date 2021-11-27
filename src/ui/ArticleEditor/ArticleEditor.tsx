@@ -9,10 +9,8 @@ import { definitions } from "@/utils/generated";
 import { postid } from "@/utils/ids";
 import logger from "@/utils/logger";
 import { supabase } from "@/utils/supabaseClient";
-import { EditTag } from "@/utils/types";
+import { EditTag, GetPostForEdit, PostsJoins } from "@/utils/types";
 import { FiCopy } from "@react-icons/all-files/fi/FiCopy";
-import { useAuth } from "context/auth";
-import "emoji-mart/css/emoji-mart.css";
 import compact from "lodash/compact";
 import keyBy from "lodash/keyBy";
 import md5 from "md5";
@@ -31,7 +29,7 @@ const TagSelector = dynamic(() => import("ui/ArticleEditor/TagSelector"), {
 });
 
 interface ArticleEditorProps {
-  id?: string | null;
+  id?: number | null;
   title?: string | null;
   body_markdown?: string | null;
   published?: boolean | null;
@@ -54,7 +52,6 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
 
   const router = useRouter();
   const [loadingText, setLoadingText] = useState<string | undefined>();
-  const { user } = useAuth();
 
   const {
     register,
@@ -64,8 +61,6 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     setError,
     reset,
     watch,
-    setValue,
-    getValues,
   } = useForm({
     defaultValues: {
       id,
@@ -90,7 +85,6 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     if (data.title && data.tag_keyword.length <= 4) {
       // check for new tags
       // by creating it beforehand
-      // we dont need permission to upsert (tags)(user)
       const newTags = data.tag_keyword
         .filter((i) => i.__isNew__)
         .map((i) => ({
@@ -104,95 +98,147 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
       }
 
       if (data.id) {
-        console.warn("Update method");
         // update method
-        // try {
-        //   const postTags = keyBy(tag_keyword, "value");
-        //   let toAdd: any[] = [];
-        //   data.tag_keyword.forEach((tag) => {
-        //     // check if postTags have been added
-        //     if (!postTags.hasOwnProperty(tag.value)) {
-        //       // not in initial values
-        //       // so must be added
-        //       toAdd.push({
-        //         post_id: data.id,
-        //         tag_keyword: tag.value,
-        //       });
-        //     } else {
-        //       // already exists
-        //       delete postTags[tag.value];
-        //     }
-        //   });
+        const postTags = keyBy(tag_keyword, "value");
+        let toAdd: { posts_id: number; tags_id: string; user_id: string }[] =
+          [];
+        data.tag_keyword.forEach((tag) => {
+          // check if postTags have been added
+          if (!postTags.hasOwnProperty(tag.value)) {
+            // not in initial values
+            // so must be added
+            toAdd.push({
+              posts_id: parseInt(data.id!),
+              tags_id: tag.value,
+              user_id: data.user_id,
+            });
+          } else {
+            // already exists
+            delete postTags[tag.value];
+          }
+        });
 
-        //   // check if tags have been removed
-        //   const toRemovePostTags = compact(
-        //     Object.values(postTags).map((i) => i.id)
-        //   );
+        // check if tags have been removed
+        const toRemovePostTags = compact(
+          Object.values(postTags).map((i) => i.id)
+        );
 
-        //   await insertPostsTags({
-        //     objects: toAdd,
-        //     on_conflict: {
-        //       constraint: Posts_Tags_Constraint.PostsTablePkey,
-        //       update_columns: [],
-        //     },
-        //   });
-        //   await deletePostsTags({
-        //     where: {
-        //       id: {
-        //         _in: toRemovePostTags,
-        //       },
-        //     },
-        //   });
+        if (toAdd.length > 0) {
+          setLoadingText("Creating tags");
 
-        //   const updatePostRes = await updatePost({
-        //     id: data.id,
-        //     _set: {
-        //       title: data.title,
-        //       emoji: data.emoji,
-        //       body_markdown: data.body_markdown,
-        //       published: data.published,
-        //     },
-        //   });
-        //   if (updatePostRes.data && updatePostRes.data.update_posts_by_pk) {
-        //     const updatedPost = updatePostRes.data.update_posts_by_pk;
-        //     if (data.published) {
-        //       await router.push(
-        //         `${updatedPost.user.username}/articles/${updatedPost.slug}`
-        //       );
-        //     } else {
-        //       reset({
-        //         id: updatedPost.id,
-        //         title: updatedPost.title,
-        //         body_markdown: updatedPost.body_markdown ?? "",
-        //         emoji: updatedPost.emoji ?? getRandomEmoji(),
-        //         published: updatedPost.published,
-        //         tag_keyword: updatedPost.posts_tags.map((tag) => ({
-        //           id: tag.id,
-        //           label: tag.tag_keyword,
-        //           value: tag.tag_keyword,
-        //         })),
-        //       });
-        //       toast.custom(
-        //         (t) => (
-        //           <SavedToast
-        //             visible={t.visible}
-        //             onClose={() => toast.dismiss(t.id)}
-        //             viewLink={`/api/preview?slug=${
-        //               updatedPost.slug
-        //             }&preview=${md5(
-        //               updatedPost.slug + process.env.NEXT_PUBLIC_SALT
-        //             )}`}
-        //           />
-        //         ),
-        //         {
-        //           duration: 10000,
-        //         }
-        //       );
-        //     }
-        //   }
-        // } catch (error) {
-        //   logger.debug(error);
-        // }
+          const newTagsRes = await supabase
+            .from<definitions["post_tag"]>("post_tag")
+            .upsert(toAdd);
+          if (newTagsRes.error) {
+            toast.error(
+              newTagsRes.error.message ??
+                "Error occured when connecting tags to post"
+            );
+          }
+        }
+
+        logger.debug(toRemovePostTags);
+
+        if (toRemovePostTags.length > 0) {
+          setLoadingText("Removing tags");
+
+          const deleteTagsRes = await supabase
+            .from<definitions["post_tag"]>("post_tag")
+            .delete()
+            .in("id", toRemovePostTags);
+
+          logger.debug(deleteTagsRes);
+
+          if (deleteTagsRes.error) {
+            toast.error(
+              deleteTagsRes.error.message ??
+                "Error occured when connecting tags to post"
+            );
+          }
+        }
+
+        setLoadingText("Updating post");
+
+        const updatePostRes = await supabase
+          .from<definitions["posts"]>("posts")
+          .update({
+            title: data.title,
+            emoji: data.emoji,
+            body_markdown: data.body_markdown,
+            published: data.published,
+          })
+          .eq("id", data.id)
+          .single();
+
+        const fetchPost = await supabase
+          .from<definitions["posts"]>("posts")
+          .select(
+            `
+            *,
+            tags:post_tag (*),
+            user:user_id (username)
+            `
+          )
+          .eq("id", data.id)
+          .single();
+
+        setLoadingText(undefined);
+
+        if (fetchPost.data) {
+          reset({
+            body_markdown: fetchPost.data.body_markdown,
+            emoji: fetchPost.data.emoji,
+            published: fetchPost.data.published,
+            tag_keyword: (fetchPost.data as GetPostForEdit).tags.map((i) => ({
+              id: i.id,
+              label: i.tags_id,
+              value: i.tags_id,
+            })),
+            title: fetchPost.data.title,
+          });
+
+          if (updatePostRes.data) {
+            toast.custom(
+              (t) => (
+                <SavedToast
+                  visible={t.visible}
+                  onClose={() => toast.dismiss(t.id)}
+                  published={updatePostRes.data.published}
+                  onClick={async () => {
+                    if (updatePostRes.data.published) {
+                      router.push(
+                        `/${
+                          (updatePostRes.data as PostsJoins).user.username
+                        }/articles/${updatePostRes.data.slug}`
+                      );
+                    } else {
+                      const session = supabase.auth.session();
+                      const res = await fetch(
+                        `/api/preview?slug=${
+                          updatePostRes.data.slug
+                        }&preview=${md5(
+                          updatePostRes.data.slug + process.env.NEXT_PUBLIC_SALT
+                        )}`,
+                        {
+                          headers: {
+                            Authorization: `Bearer ${session?.access_token}`,
+                          },
+                          redirect: "follow",
+                        }
+                      );
+                      router.push(res.url);
+                    }
+                  }}
+                />
+              ),
+              {
+                duration: 10000,
+              }
+            );
+          }
+        } else {
+          throw fetchPost.error;
+        }
       } else {
         try {
           // create post
@@ -231,7 +277,8 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
                   tags_id: i.value,
                   user_id: data.user_id,
                 }))
-              );
+              )
+              .single();
 
             if (postTagRes.error) {
               toast.error(
@@ -240,29 +287,9 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
               );
             }
 
+            await router.push("/dashboard");
+
             setLoadingText(undefined);
-            const createdPost = postRes.data[0];
-            console.log(createdPost);
-            router.push("/");
-            // if (data.published) {
-            //   // just redirect to new created post
-            //   await router.push(
-            //     `${user?.username}/articles/${createdPost.slug}`
-            //   );
-            // } else {
-            //   // if we are on new
-            //   // should push to the newly created post
-            //   const res = await fetch(
-            //     `/api/preview?slug=${createdPost.slug}&preview=${md5(
-            //       createdPost.slug! + process.env.NEXT_PUBLIC_SALT
-            //     )}`,
-            //     {
-            //       method: "GET",
-            //       redirect: "follow",
-            //     }
-            //   );
-            //   await router.push(res.url);
-            // }
           } else {
             toast.error(
               postRes.error.message ?? "Error occured when creating post"

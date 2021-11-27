@@ -20,7 +20,8 @@ const fetcher = async (userId: string, page: number, itemsPerPage: number) => {
     .match({
       user_id: userId,
       post_type: "article",
-    });
+    })
+    .order("created_at", { ascending: true });
 
   if (res.error) {
     logger.debug(res.error);

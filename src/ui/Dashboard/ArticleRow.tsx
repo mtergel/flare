@@ -191,7 +191,21 @@ const ArticleRow: React.FC<ArticleRowProps> = ({
         <div className="border rounded py-1 px-2">
           {article.published ? "Published" : "Draft"}
         </div>
-        <time>{dayjs(article.updated_at).fromNow()}</time>
+        <div className="flex items-center space-x-1">
+          <span>Updated: </span>
+
+          <time aria-label="updated at" dateTime={article.updated_at}>
+            {dayjs(article.updated_at).fromNow()}
+          </time>
+        </div>
+
+        <time
+          aria-label="created at"
+          className="hidden"
+          dateTime={article.created_at}
+        >
+          {dayjs(article.created_at).fromNow()}
+        </time>
       </footer>
       <AlertDialog
         title="Delete article"

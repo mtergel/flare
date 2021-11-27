@@ -15,7 +15,7 @@ const Settings: NextPageWithLayout = () => {
 
   if (user) {
     return (
-      <div className="bg-paper h-full">
+      <div className="bg-paper h-full border-t">
         <Container size="small" className="py-12">
           <h1 className="text-4xl font-bold">Settings</h1>
           <div className="mt-12">
