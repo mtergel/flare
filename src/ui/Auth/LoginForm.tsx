@@ -5,30 +5,6 @@ import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
 import { FaGoogle } from "@react-icons/all-files/fa/FaGoogle";
 import { MdFlare } from "@react-icons/all-files/md/MdFlare";
 import { useState } from "react";
-import toast from "react-hot-toast";
-
-// const handleError = (error: FirebaseError) => {
-//   switch (error.code) {
-//     case "auth/popup-blocked": {
-//       toast.error("Enable popups on this website");
-//       break;
-//     }
-//     case "auth/popup-blockedauth/account-exists-with-different-credential": {
-//       toast.error("Email is used in an other provider");
-//       break;
-//     }
-
-//     case "auth/popup-closed-by-user": {
-//       toast.error(error.message);
-//       break;
-//     }
-
-//     default: {
-//       toast.error(error.message);
-//       break;
-//     }
-//   }
-// };
 
 const LoginForm: React.FC<{}> = () => {
   const [loadingState, setLoadingState] = useState({

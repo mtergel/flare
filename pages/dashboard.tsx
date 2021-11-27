@@ -14,13 +14,10 @@ import ArticleRow from "ui/Dashboard/ArticleRow";
 import Layout from "ui/Layout/Layout";
 import ErrorMessage from "ui/misc/ErrorMessage";
 import remove from "lodash/remove";
+import withAuth from "context/withAuth";
 
 const DashboardArticle: NextPageWithLayout = () => {
-  // try turning this into a HOC
-  const { user, loading } = useAuth();
-  if (loading) {
-    return <Fallback />;
-  }
+  const { user } = useAuth();
 
   if (user) {
     if (user.username) {
@@ -129,4 +126,4 @@ DashboardArticle.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
-export default DashboardArticle;
+export default withAuth(DashboardArticle);

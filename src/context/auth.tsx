@@ -70,6 +70,8 @@ const AuthProvider: React.FC<{}> = ({ children }) => {
 
     if (session) {
       getProfile();
+    } else {
+      setLoading(false);
     }
 
     // eslint-disable-next-line

@@ -1,10 +1,11 @@
 import Button from "@/components/Button/Button";
+import Fallback from "@/components/Fallback/Fallback";
 import FormControl from "@/components/FormControl/FormControl";
 import IconButton from "@/components/IconButton/IconButton";
 import Input from "@/components/Input/Input";
 import TextArea from "@/components/TextArea/TextArea";
 import UploadAvatar from "@/components/UploadAvatar/UploadAvatar";
-import { blacklistedUsernames } from "@/utils/const";
+import { avatarURL, blacklistedUsernames, themeColor } from "@/utils/const";
 import { definitions } from "@/utils/generated";
 import logger from "@/utils/logger";
 import { usernameReg } from "@/utils/regex";
@@ -18,11 +19,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { IceCream } from "react-kawaii";
 
 const Onboarding: NextPage = () => {
   const { user, error, loading } = useAuth();
   const router = useRouter();
-  const currentUser = supabase.auth.user();
 
   const [profileId, setProfileId] = useState<"handle" | "misc">("handle");
 
@@ -34,7 +35,11 @@ const Onboarding: NextPage = () => {
     // eslint-disable-next-line
   }, [loading, error]);
 
-  if (currentUser) {
+  if (loading) {
+    return <Fallback />;
+  }
+
+  if (user) {
     return (
       <div className="h-full sm:flex sm:flex-col sm:items-center sm:justify-center">
         {profileId === "handle" ? (
@@ -250,20 +255,13 @@ const OnboardingMiscForm: React.FC<OnboardingMiscFormProps> = () => {
             throw uploadResult.error;
           }
 
-          if (
-            data.avatarUrl.includes(
-              "https://anyqfjvtgmdymcwdoeac.supabase.co/storage/v1/object/public/avatar/"
-            )
-          ) {
+          if (data.avatarUrl.includes(avatarURL)) {
             // try deleting the old file
-            try {
-              const path = data.avatarUrl.replace(
-                "https://anyqfjvtgmdymcwdoeac.supabase.co/storage/v1/object/public/avatar/",
-                ""
-              );
-              await supabase.storage.from("avatar").remove([path]);
-            } catch (error) {
-              logger.debug("cant delete: ", data.avatarUrl);
+            const path = data.avatarUrl.replace(avatarURL, "");
+            const res = await supabase.storage.from("avatar").remove([path]);
+            if (res.error) {
+              toast.error("Can't delete image");
+              logger.debug("cant delete", res.error);
             }
           }
 
@@ -306,8 +304,11 @@ const OnboardingMiscForm: React.FC<OnboardingMiscFormProps> = () => {
 
   if (finished) {
     return (
-      <div>
-        You&apos;re profile is all set up!
+      <div className="flex flex-col items-center justify-center p-4 ">
+        <div className="pb-2">
+          <IceCream size={200} mood="blissful" color={themeColor} />
+        </div>
+        <span>You&apos;re profile is all set up!</span>
         <Link href="/" passHref>
           <a>Home</a>
         </Link>

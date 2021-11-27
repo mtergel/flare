@@ -14,3 +14,6 @@ export const blacklistedUsernames = [
   "onboarding",
   "settings",
 ];
+
+export const avatarURL =
+  "https://anyqfjvtgmdymcwdoeac.supabase.co/storage/v1/object/public/avatar/";

@@ -1,14 +1,11 @@
-import Fallback from "@/components/Fallback/Fallback";
 import { useAuth } from "context/auth";
+import withAuth from "context/withAuth";
 import { NextPage } from "next";
 import ArticleEditor from "ui/ArticleEditor/ArticleEditor";
 import MinHeader from "ui/Layout/MinHeader";
 
 const NewArticle: NextPage = () => {
-  const { user, loading } = useAuth();
-  if (loading) {
-    return <Fallback />;
-  }
+  const { user } = useAuth();
 
   if (user) {
     return (
@@ -24,4 +21,4 @@ const NewArticle: NextPage = () => {
   return null;
 };
 
-export default NewArticle;
+export default withAuth(NewArticle);
