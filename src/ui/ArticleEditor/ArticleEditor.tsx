@@ -52,6 +52,12 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
 
   const router = useRouter();
   const [loadingText, setLoadingText] = useState<string | undefined>();
+  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    copyToClipboard(`![Image description](${uploadedImageUrl})`);
+    setCopied(true);
+  };
 
   const {
     register,
@@ -208,7 +214,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
                     if (updatePostRes.data.published) {
                       router.push(
                         `/${
-                          (updatePostRes.data as PostsJoins).user.username
+                          (fetchPost.data as PostsJoins).user.username
                         }/articles/${updatePostRes.data.slug}`
                       );
                     } else {
@@ -329,13 +335,6 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     }
   }, [watchedTextArea]);
 
-  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
-  const handleCopy = () => {
-    copyToClipboard(`![Image description](${uploadedImageUrl})`);
-    setCopied(true);
-  };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Container size="common">
@@ -360,6 +359,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
               onUpload={(url) => {
                 setUploadedImageUrl(url);
               }}
+              user_id={user_id}
             />
           </div>
           {uploadedImageUrl && (

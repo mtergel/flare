@@ -72,12 +72,13 @@ const UserDD: React.FC<UserDDProps> = () => {
           <DropdownMenuContent sideOffset={4}>
             <Link href={`/${user.username!}`} passHref>
               <DropdownMenuItem asChild>
-                <a className="block" onClick={onClose}>
+                <a className="block py-3" onClick={onClose}>
                   <h1 className="font-semibold text-sm">{user.display_name}</h1>
                   <h2 className="text-gray-400 text-xs">{`@${user.username}`}</h2>
                 </a>
               </DropdownMenuItem>
             </Link>
+            <DropdownMenuSeparator />
 
             <Link href={`/dashboard`} passHref>
               <DropdownMenuItem asChild>
@@ -128,7 +129,7 @@ const UserDD: React.FC<UserDDProps> = () => {
         </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button size="sm" color="primary">
+            <Button size="sm" color="primary" className="hidden sm:inline-flex">
               Add
             </Button>
           </DropdownMenuTrigger>

@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import logger from "@/utils/logger";
-import { blacklistedUsernames } from "@/utils/const";
+import { avatarURL, blacklistedUsernames } from "@/utils/const";
 import { supabase } from "@/utils/supabaseClient";
 import { useAuth } from "context/auth";
 
@@ -64,17 +64,10 @@ const UserForm: React.FC<UserFormProps> = ({ user }) => {
             throw uploadResult.error;
           }
 
-          if (
-            data.avatarUrl.includes(
-              "https://anyqfjvtgmdymcwdoeac.supabase.co/storage/v1/object/public/avatar/"
-            )
-          ) {
+          if (data.avatarUrl.includes(avatarURL)) {
             // try to delete the old file
             try {
-              const path = data.avatarUrl.replace(
-                "https://anyqfjvtgmdymcwdoeac.supabase.co/storage/v1/object/public/avatar/",
-                ""
-              );
+              const path = data.avatarUrl.replace(avatarURL, "");
               await supabase.storage.from("avatar").remove([path]);
             } catch (error) {
               logger.debug("cant delete: ", data.avatarUrl);

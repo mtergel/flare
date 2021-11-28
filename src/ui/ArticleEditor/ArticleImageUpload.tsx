@@ -1,12 +1,19 @@
 import Button from "@/components/Button/Button";
+import { imageid } from "@/utils/ids";
+import renameFile from "@/utils/renameFile";
+import { supabase } from "@/utils/supabaseClient";
 import { FiImage } from "@react-icons/all-files/fi/FiImage";
 import imageCompression from "browser-image-compression";
 import { ChangeEvent, useState } from "react";
+import toast from "react-hot-toast";
+import logger from "@/utils/logger";
 
 interface ArticleImageUploadProps {
+  user_id: string;
   onUpload: (url: string) => void;
 }
 const ArticleImageUpload: React.FC<ArticleImageUploadProps> = ({
+  user_id,
   onUpload,
 }) => {
   const [uploading, setUploading] = useState(false);
@@ -19,30 +26,29 @@ const ArticleImageUpload: React.FC<ArticleImageUploadProps> = ({
         maxSizeMB: 4,
         maxWidthOrHeight: 1920,
         useWebWorker: true,
-        fileType: "image/jpeg", // override to jpeg?
       });
 
-      // remove this
-      onUpload("https://images.unsplash.com/photo-1480796927426-f609979314bd");
+      const fileName = `${imageid()}.${compressedFile.name.split(".").pop()}`;
+      const renamedFile = renameFile(compressedFile, fileName);
+      const uploadRes = await supabase.storage
+        .from("uploads")
+        .upload(`${user_id}/${fileName}`, renamedFile);
+      if (uploadRes.error) {
+        logger.debug(uploadRes.error);
+        toast.error("Error occured when uploading image.");
+      } else {
+        const { publicURL, error } = supabase.storage
+          .from("uploads")
+          .getPublicUrl(`${user_id}/${fileName}`);
+        if (publicURL) {
+          onUpload(publicURL);
+        } else if (error) {
+          logger.debug(error);
+          toast.error("Error occured when getting public url.");
+        }
+      }
+
       setUploading(false);
-
-      // const storageRef = ref(storage, newName);
-
-      // try {
-      //   // uploading
-      //   const res = await uploadBytes(storageRef, renamedFile, {});
-      //   const url = await getDownloadURL(res.ref);
-
-      //   // callback
-      //   onUpload(url);
-      //   setUploading(false);
-      // } catch (error) {
-      //   setUploading(false);
-      //   logger.debug("Error uploading image: ", error);
-      //   if (error.code === "storage/unauthorized") {
-      //     toast.error("Maximum size limit is 5MB.");
-      //   }
-      // }
     }
   };
   return (
