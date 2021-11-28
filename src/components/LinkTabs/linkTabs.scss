@@ -1,0 +1,29 @@
+.link-tabs {
+  @apply relative;
+
+  & .link-tabs-items {
+    &::before {
+      content: "";
+      display: inline-block;
+      min-width: 20px;
+      height: 1px;
+    }
+
+    @apply flex items-center overflow-x-auto whitespace-nowrap;
+
+    & .link-tab-item {
+      @apply font-semibold text-gray-500 mr-6 px-0 py-2 relative outline-none;
+
+      &[data-state="active"] {
+        @apply text-tDefault;
+
+        &::before {
+          content: "";
+          @apply absolute bottom-0 left-0 w-full bg-tDefault;
+          height: 2px;
+          z-index: 1;
+        }
+      }
+    }
+  }
+}
