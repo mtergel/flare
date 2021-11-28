@@ -3,7 +3,8 @@
 }
 
 .dropdown-content {
-  @apply min-w-[230px] bg-paper shadow flex flex-col overflow-hidden rounded text-sm dark:border;
+  @apply min-w-[230px] bg-paper shadow-popover flex flex-col overflow-hidden rounded-lg text-sm dark:border;
+
   @media (prefers-reduced-motion: no-preference) {
     will-change: transform, opacity;
     &[data-state="open"] {

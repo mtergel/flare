@@ -32,6 +32,7 @@ module.exports = {
       },
       boxShadow: {
         flare: "0 2px 4px #4385bb12",
+        popover: "0 3px 12px -1px #04253f40",
       },
       animation: {
         spinner: "spinner 1.5s linear infinite",

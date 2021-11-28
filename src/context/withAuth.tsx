@@ -12,6 +12,7 @@ function withAuth<P extends object>(AppOrPage: ComponentType<P>) {
 
     useEffect(() => {
       if (!user && !loading) {
+        console.log(user, loading);
         // if finished loading and still no user
         // redirect to enter page (login page)
         router.push(`/enter?redirect=${router.pathname}`);

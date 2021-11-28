@@ -15,6 +15,7 @@ import Layout from "ui/Layout/Layout";
 import ErrorMessage from "ui/misc/ErrorMessage";
 import remove from "lodash/remove";
 import withAuth from "context/withAuth";
+import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
 
 const DashboardArticle: NextPageWithLayout = () => {
   const { user } = useAuth();
@@ -73,9 +74,20 @@ const Dashboard: React.FC<DashboardProps> = ({ userId, username }) => {
   if (data) {
     return (
       <div className="h-full border-t bg-paper">
-        <Container size="wide" className="my-6">
-          <div className="mb-4">
+        <Container size="wide" className="py-12">
+          <div className="mb-8 flex items-center justify-between">
             <h1 className="font-bold text-4xl">Articles</h1>
+            <Link href="/new" passHref>
+              <Button
+                className="sm:hidden"
+                color="primary"
+                size="sm"
+                leftIcon={<FiPlus />}
+                as="a"
+              >
+                Add new
+              </Button>
+            </Link>
           </div>
           {data.articles.length === 0 ? (
             <div className="flex flex-col items-center justify-center space-y-8 pt-4">
