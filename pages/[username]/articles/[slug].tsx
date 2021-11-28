@@ -1,27 +1,25 @@
 import Avatar from "@/components/Avatar/Avatar";
 import Container from "@/components/Container/Container";
+import Preview from "@/components/Editor/Preview";
 import MobileToc from "@/components/Toc/MobileToc";
+import Toc from "@/components/Toc/Toc";
 import { definitions } from "@/utils/generated";
 import { supabase } from "@/utils/supabaseClient";
 import { MDHeading, PostsJoins } from "@/utils/types";
-import { FiPlay } from "@react-icons/all-files/fi/FiPlay";
 import { FiCalendar } from "@react-icons/all-files/fi/FiCalendar";
 import { FiClock } from "@react-icons/all-files/fi/FiClock";
-
+import { FiPlay } from "@react-icons/all-files/fi/FiPlay";
+import dayjs from "dayjs";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
 // @ts-ignore
 import toc from "markdown-toc";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
-import { useRouter } from "next/dist/client/router";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import readingTime from "reading-time";
 import Layout from "ui/Layout/Layout";
 import { NextPageWithLayout } from "utils/types";
-import dayjs from "dayjs";
-import Preview from "@/components/Editor/Preview";
-import Toc from "@/components/Toc/Toc";
-import Image from "next/image";
 
 type ArticlePageProps = {
   isPreview: boolean;
@@ -89,8 +87,6 @@ const ArticlePage: NextPageWithLayout<
   InferGetStaticPropsType<typeof getStaticProps>
 > = (props) => {
   const { isPreview, headings, article } = props;
-  console.log(isPreview, headings, article);
-  const router = useRouter();
   // observor for toc
   const [activeId, setActiveId] = useState("");
   const callbackHandler = (id: string) => {
