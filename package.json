@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "next build",
+    "analyze": "ANALYZE=true yarn build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest --watch",
@@ -55,6 +56,7 @@
     "swr": "^1.0.1"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^12.0.4",
     "@tailwindcss/line-clamp": "^0.2.2",
     "@tailwindcss/typography": "^0.4.1",
     "@testing-library/jest-dom": "^5.15.0",
