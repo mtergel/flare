@@ -23,6 +23,8 @@ import slugify from "slugify";
 import EmojiPicker from "ui/ArticleEditor/EmojiPicker";
 import ArticleImageUpload from "./ArticleImageUpload";
 import SavedToast from "./SavedToast";
+import readingTime from "reading-time";
+import { mutate } from "swr";
 
 const TagSelector = dynamic(() => import("ui/ArticleEditor/TagSelector"), {
   ssr: false,
@@ -172,6 +174,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             emoji: data.emoji,
             body_markdown: data.body_markdown,
             published: data.published,
+            reading_time: Math.ceil(readingTime(data.body_markdown).minutes),
           })
           .eq("id", data.id)
           .single();
@@ -191,6 +194,8 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
         setLoadingText(undefined);
 
         if (fetchPost.data) {
+          mutate([fetchPost.data.id, "__article"]);
+
           reset({
             body_markdown: fetchPost.data.body_markdown,
             emoji: fetchPost.data.emoji,
@@ -241,9 +246,13 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
                 duration: 10000,
               }
             );
+          } else {
+            logger.debug("Could not update post");
+            toast.error("Could not update post");
           }
         } else {
-          throw fetchPost.error;
+          logger.debug("Could not fetch post");
+          toast.error("Could not update post");
         }
       } else {
         try {
@@ -267,6 +276,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
               post_type: "article",
               slug: slug.trim(),
               user_id: data.user_id,
+              reading_time: Math.ceil(readingTime(data.body_markdown).minutes),
             });
 
           if (postRes.data) {

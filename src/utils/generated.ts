@@ -122,6 +122,7 @@ export interface paths {
           post_type?: parameters["rowFilter.posts.post_type"];
           updated_at?: parameters["rowFilter.posts.updated_at"];
           user_id?: parameters["rowFilter.posts.user_id"];
+          reading_time?: parameters["rowFilter.posts.reading_time"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -182,6 +183,7 @@ export interface paths {
           post_type?: parameters["rowFilter.posts.post_type"];
           updated_at?: parameters["rowFilter.posts.updated_at"];
           user_id?: parameters["rowFilter.posts.user_id"];
+          reading_time?: parameters["rowFilter.posts.reading_time"];
         };
         header: {
           /** Preference */
@@ -206,6 +208,7 @@ export interface paths {
           post_type?: parameters["rowFilter.posts.post_type"];
           updated_at?: parameters["rowFilter.posts.updated_at"];
           user_id?: parameters["rowFilter.posts.user_id"];
+          reading_time?: parameters["rowFilter.posts.reading_time"];
         };
         body: {
           /** posts */
@@ -481,6 +484,7 @@ export interface definitions {
      * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
      */
     user_id: string;
+    reading_time?: number;
   };
   profiles: {
     /**
@@ -545,6 +549,7 @@ export interface parameters {
   "rowFilter.posts.post_type": string;
   "rowFilter.posts.updated_at": string;
   "rowFilter.posts.user_id": string;
+  "rowFilter.posts.reading_time": string;
   /** profiles */
   "body.profiles": definitions["profiles"];
   "rowFilter.profiles.id": string;

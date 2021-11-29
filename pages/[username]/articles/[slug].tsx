@@ -17,7 +17,6 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import readingTime from "reading-time";
 import Layout from "ui/Layout/Layout";
 import { NextPageWithLayout } from "utils/types";
 
@@ -94,7 +93,6 @@ const ArticlePage: NextPageWithLayout<
   };
   useIntersectionObserver(callbackHandler);
 
-  const stats = readingTime(article.body_markdown ?? "");
   return (
     <article className="bg-base pb-16">
       {isPreview && (
@@ -145,12 +143,14 @@ const ArticlePage: NextPageWithLayout<
                   {dayjs(article.updated_at).format("YYYY.MM.DD")}
                 </time>
               </div>
-              <div className="flex items-center space-x-1">
-                <span>
-                  <FiClock className="h-4 w-4" />
-                </span>
-                <span>{stats.text}</span>
-              </div>
+              {article.reading_time && (
+                <div className="flex items-center space-x-1">
+                  <span>
+                    <FiClock className="h-4 w-4" />
+                  </span>
+                  <span>{`${article.reading_time} min read`}</span>
+                </div>
+              )}
             </div>
           </div>
         </Container>

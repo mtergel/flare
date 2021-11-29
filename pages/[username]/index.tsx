@@ -5,7 +5,7 @@ import LinkTabs from "@/components/LinkTabs/LinkTabs";
 import { definitions } from "@/utils/generated";
 import { queryParamToString } from "@/utils/query";
 import { supabase } from "@/utils/supabaseClient";
-import { NextPageWithLayout } from "@/utils/types";
+import { NextPageWithLayout, PostsJoins } from "@/utils/types";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
@@ -13,6 +13,7 @@ import Layout from "ui/Layout/Layout";
 
 type UserPageProps = {
   profile: definitions["profiles"];
+  articles: PostsJoins[];
 };
 // maybe change this to ISR later.
 export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
@@ -26,10 +27,31 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
     .eq("username", params!.username as string)
     .single();
 
+  const articlesRes = await supabase
+    .from<definitions["posts"]>("posts")
+    .select(
+      `
+      *,
+      tags!post_tag (*),
+      user:user_id (*)
+      `,
+      { count: "estimated" }
+    )
+    .match({
+      user_id: res.data?.id,
+      post_type: "article",
+      published: true,
+    })
+    .range(0, 19)
+    .order("created_at", { ascending: true });
+
+  console.log(articlesRes);
+
   if (res.data) {
     return {
       props: {
         profile: res.data,
+        articles: (articlesRes.data as PostsJoins[]) ?? [],
       },
     };
   }
@@ -41,13 +63,13 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
 const Profile: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = (props) => {
-  const { profile } = props;
+  const { profile, articles } = props;
   const currentUser = supabase.auth.user();
   const router = useRouter();
 
   const profileTabItems = [
     {
-      displayName: "Articles",
+      displayName: `Articles ${articles.length}`,
       href: `/${profile.username}`,
     },
     {
