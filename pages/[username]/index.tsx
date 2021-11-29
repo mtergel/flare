@@ -1,3 +1,4 @@
+import ArticleCard from "@/components/ArticleCard/ArticleCard";
 import Avatar from "@/components/Avatar/Avatar";
 import Button from "@/components/Button/Button";
 import Container from "@/components/Container/Container";
@@ -127,6 +128,13 @@ const Profile: NextPageWithLayout<
           />
         </Container>
       </div>
+      <Container size="common" className="grid grid-cols-1 md:grid-cols-2">
+        {activeTab === `/${profile.username}`
+          ? articles.map((i) => (
+              <ArticleCard key={i.id} article={i as PostsJoins} />
+            ))
+          : null}
+      </Container>
     </>
   );
 };

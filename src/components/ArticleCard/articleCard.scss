@@ -1,0 +1,20 @@
+.article-card {
+  @apply flex justify-between py-4 px-0;
+
+  & .article-bg {
+    @apply h-24 w-24 bg-paper flex items-center justify-center text-5xl rounded-xl;
+  }
+
+  & .article-content {
+    width: calc(100% - 116px);
+
+    & .article-user {
+      @apply flex items-center justify-between mt-2 text-sm max-w-full;
+
+      & .article-user-info {
+        @apply text-xs;
+        width: calc(100% - 43px);
+      }
+    }
+  }
+}
