@@ -46,8 +46,6 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
     .range(0, 19)
     .order("created_at", { ascending: true });
 
-  console.log(articlesRes);
-
   if (res.data) {
     return {
       props: {
@@ -128,7 +126,7 @@ const Profile: NextPageWithLayout<
           />
         </Container>
       </div>
-      <Container size="common" className="grid grid-cols-1 md:grid-cols-2">
+      <Container size="common" className="py-4 grid grid-cols-1 md:grid-cols-2">
         {activeTab === `/${profile.username}`
           ? articles.map((i) => (
               <ArticleCard key={i.id} article={i as PostsJoins} />

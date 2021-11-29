@@ -191,6 +191,10 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
           .eq("id", data.id)
           .single();
 
+        if (updatePostRes.data?.published) {
+          await fetch("/api/clearPreviewData");
+        }
+
         setLoadingText(undefined);
 
         if (fetchPost.data) {

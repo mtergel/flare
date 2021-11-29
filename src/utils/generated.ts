@@ -123,6 +123,7 @@ export interface paths {
           updated_at?: parameters["rowFilter.posts.updated_at"];
           user_id?: parameters["rowFilter.posts.user_id"];
           reading_time?: parameters["rowFilter.posts.reading_time"];
+          published_at?: parameters["rowFilter.posts.published_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -184,6 +185,7 @@ export interface paths {
           updated_at?: parameters["rowFilter.posts.updated_at"];
           user_id?: parameters["rowFilter.posts.user_id"];
           reading_time?: parameters["rowFilter.posts.reading_time"];
+          published_at?: parameters["rowFilter.posts.published_at"];
         };
         header: {
           /** Preference */
@@ -209,6 +211,7 @@ export interface paths {
           updated_at?: parameters["rowFilter.posts.updated_at"];
           user_id?: parameters["rowFilter.posts.user_id"];
           reading_time?: parameters["rowFilter.posts.reading_time"];
+          published_at?: parameters["rowFilter.posts.published_at"];
         };
         body: {
           /** posts */
@@ -423,6 +426,23 @@ export interface paths {
       };
     };
   };
+  "/rpc/update_published_date": {
+    post: {
+      parameters: {
+        body: {
+          args: { [key: string]: unknown };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
   "/rpc/create_profile_for_new_user": {
     post: {
       parameters: {
@@ -485,6 +505,7 @@ export interface definitions {
      */
     user_id: string;
     reading_time?: number;
+    published_at?: string;
   };
   profiles: {
     /**
@@ -550,6 +571,7 @@ export interface parameters {
   "rowFilter.posts.updated_at": string;
   "rowFilter.posts.user_id": string;
   "rowFilter.posts.reading_time": string;
+  "rowFilter.posts.published_at": string;
   /** profiles */
   "body.profiles": definitions["profiles"];
   "rowFilter.profiles.id": string;

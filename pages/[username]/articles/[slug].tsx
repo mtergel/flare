@@ -139,8 +139,8 @@ const ArticlePage: NextPageWithLayout<
                 <span>
                   <FiCalendar className="h-4 w-4" />
                 </span>
-                <time dateTime={article.updated_at}>
-                  {dayjs(article.updated_at).format("YYYY.MM.DD")}
+                <time dateTime={article.published_at}>
+                  {dayjs(article.published_at).format("YYYY.MM.DD")}
                 </time>
               </div>
               {article.reading_time && (

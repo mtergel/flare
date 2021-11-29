@@ -116,7 +116,6 @@ const UserForm: React.FC<UserFormProps> = ({ user }) => {
       logger.debug("Error occured: ", error);
       toast.error("Error occured.");
     }
-    console.log(data);
   };
 
   const handleCrop = (file: File) => {
