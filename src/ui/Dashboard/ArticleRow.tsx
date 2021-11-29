@@ -188,7 +188,7 @@ const ArticleRow: React.FC<ArticleRowProps> = ({
         </div>
       </div>
       <footer className="text-xs flex items-center flex-wrap gap-2 text-gray-500">
-        <div className="border rounded py-1 px-2">
+        <div className="border rounded py-[2px] px-[5px]">
           {article.published ? "Published" : "Draft"}
         </div>
         <div className="flex items-center space-x-1">

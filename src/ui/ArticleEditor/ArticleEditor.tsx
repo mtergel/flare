@@ -226,6 +226,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
                           (fetchPost.data as PostsJoins).user.username
                         }/articles/${updatePostRes.data.slug}`
                       );
+                      toast.dismiss(t.id);
                     } else {
                       const session = supabase.auth.session();
                       const res = await fetch(
@@ -242,6 +243,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
                         }
                       );
                       router.push(res.url);
+                      toast.dismiss(t.id);
                     }
                   }}
                 />
@@ -297,8 +299,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
                   tags_id: i.value,
                   user_id: data.user_id,
                 }))
-              )
-              .single();
+              );
 
             if (postTagRes.error) {
               toast.error(

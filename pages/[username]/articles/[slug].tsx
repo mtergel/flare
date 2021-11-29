@@ -135,14 +135,17 @@ const ArticlePage: NextPageWithLayout<
               <span className="font-bold text-center">{article.title}</span>
             </h1>
             <div className="flex items-center justify-center text-sm text-gray-500 space-x-6">
-              <div className="flex items-center space-x-1">
-                <span>
-                  <FiCalendar className="h-4 w-4" />
-                </span>
-                <time dateTime={article.published_at}>
-                  {dayjs(article.published_at).format("YYYY.MM.DD")}
-                </time>
-              </div>
+              {article.published_at && (
+                <div className="flex items-center space-x-1">
+                  <span>
+                    <FiCalendar className="h-4 w-4" />
+                  </span>
+                  <time dateTime={article.published_at}>
+                    {dayjs(article.published_at).format("YYYY.MM.DD")}
+                  </time>
+                </div>
+              )}
+
               {article.reading_time && (
                 <div className="flex items-center space-x-1">
                   <span>

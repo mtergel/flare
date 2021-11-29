@@ -1,4 +1,3 @@
-import ArticleCard from "@/components/ArticleCard/ArticleCard";
 import Avatar from "@/components/Avatar/Avatar";
 import Button from "@/components/Button/Button";
 import Container from "@/components/Container/Container";
@@ -11,11 +10,16 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import Layout from "ui/Layout/Layout";
+import UserArticles from "ui/Profile/UserArticles";
 
 type UserPageProps = {
   profile: definitions["profiles"];
-  articles: PostsJoins[];
+  articles: {
+    articles: PostsJoins[];
+    count: number;
+  };
 };
+
 // maybe change this to ISR later.
 export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
   context
@@ -43,14 +47,17 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
       post_type: "article",
       published: true,
     })
-    .range(0, 19)
-    .order("created_at", { ascending: true });
+    .range(0, 23)
+    .order("created_at", { ascending: false });
 
   if (res.data) {
     return {
       props: {
         profile: res.data,
-        articles: (articlesRes.data as PostsJoins[]) ?? [],
+        articles: {
+          articles: (articlesRes.data as PostsJoins[]) ?? [],
+          count: articlesRes.count ?? 0,
+        },
       },
     };
   }
@@ -68,7 +75,7 @@ const Profile: NextPageWithLayout<
 
   const profileTabItems = [
     {
-      displayName: `Articles ${articles.length}`,
+      displayName: `Articles ${articles.count}`,
       href: `/${profile.username}`,
     },
     {
@@ -126,12 +133,10 @@ const Profile: NextPageWithLayout<
           />
         </Container>
       </div>
-      <Container size="common" className="py-4 grid grid-cols-1 md:grid-cols-2">
-        {activeTab === `/${profile.username}`
-          ? articles.map((i) => (
-              <ArticleCard key={i.id} article={i as PostsJoins} />
-            ))
-          : null}
+      <Container size="common">
+        {activeTab === `/${profile.username}` ? (
+          <UserArticles userId={profile.id} initialData={articles.articles} />
+        ) : null}
       </Container>
     </>
   );
