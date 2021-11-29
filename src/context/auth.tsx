@@ -78,7 +78,6 @@ const AuthProvider: React.FC<{}> = ({ children }) => {
   useEffect(() => {
     if (user && user.username === null) {
       setError("NoUsername");
-      console.log(router);
       if (router.route !== "/onboarding") {
         router.push("/onboarding");
       }

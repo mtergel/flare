@@ -53,7 +53,8 @@ div#__next {
 @import "../components/Tabs/tabs.scss";
 @import "../components/Toc/toc.scss";
 @import "../components/AlertDialog/alertDialog.scss";
-
+@import "../components/LinkTabs/linkTabs.scss";
+@import "../components/ArticleCard//articleCard.scss";
 @import "./misc.scss";
 
 @tailwind utilities;

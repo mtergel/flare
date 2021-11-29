@@ -17,7 +17,6 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import readingTime from "reading-time";
 import Layout from "ui/Layout/Layout";
 import { NextPageWithLayout } from "utils/types";
 
@@ -94,7 +93,6 @@ const ArticlePage: NextPageWithLayout<
   };
   useIntersectionObserver(callbackHandler);
 
-  const stats = readingTime(article.body_markdown ?? "");
   return (
     <article className="bg-base pb-16">
       {isPreview && (
@@ -137,20 +135,25 @@ const ArticlePage: NextPageWithLayout<
               <span className="font-bold text-center">{article.title}</span>
             </h1>
             <div className="flex items-center justify-center text-sm text-gray-500 space-x-6">
-              <div className="flex items-center space-x-1">
-                <span>
-                  <FiCalendar className="h-4 w-4" />
-                </span>
-                <time dateTime={article.updated_at}>
-                  {dayjs(article.updated_at).format("YYYY.MM.DD")}
-                </time>
-              </div>
-              <div className="flex items-center space-x-1">
-                <span>
-                  <FiClock className="h-4 w-4" />
-                </span>
-                <span>{stats.text}</span>
-              </div>
+              {article.published_at && (
+                <div className="flex items-center space-x-1">
+                  <span>
+                    <FiCalendar className="h-4 w-4" />
+                  </span>
+                  <time dateTime={article.published_at}>
+                    {dayjs(article.published_at).format("YYYY.MM.DD")}
+                  </time>
+                </div>
+              )}
+
+              {article.reading_time && (
+                <div className="flex items-center space-x-1">
+                  <span>
+                    <FiClock className="h-4 w-4" />
+                  </span>
+                  <span>{`${article.reading_time} min read`}</span>
+                </div>
+              )}
             </div>
           </div>
         </Container>
