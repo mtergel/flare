@@ -29,7 +29,7 @@
 }
 
 .alert-button {
-  @apply py-4 w-full transition-colors text-gray-500;
+  @apply py-4 w-full transition-colors text-gray-500 font-light text-sm;
 
   &:hover,
   &:focus {

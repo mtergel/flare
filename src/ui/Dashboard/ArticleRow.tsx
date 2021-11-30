@@ -214,10 +214,10 @@ const ArticleRow: React.FC<ArticleRowProps> = ({
         onOpenChange={setIsOpen}
         actions={
           <div className="alert-button-container">
+            <AlertCancelButton>Cancel</AlertCancelButton>
             <AlertActionButton className="alert-danger" onClick={handleDelete}>
               Delete
             </AlertActionButton>
-            <AlertCancelButton>Cancel</AlertCancelButton>
           </div>
         }
       />

@@ -13,11 +13,17 @@ interface ArticleCardProps {
 const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   return (
     <article className="article-card">
-      <Link href={`/${article.user.username}/${article.slug}`} passHref>
+      <Link
+        href={`/${article.user.username}/articles/${article.slug}`}
+        passHref
+      >
         <a className="article-bg">{article.emoji}</a>
       </Link>
       <div className="article-content">
-        <Link href={`/${article.user.username}/${article.slug}`} passHref>
+        <Link
+          href={`/${article.user.username}/articles/${article.slug}`}
+          passHref
+        >
           <a>
             <h2 className="line-clamp-3 font-bold">{article.title}</h2>
           </a>

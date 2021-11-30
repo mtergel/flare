@@ -5,17 +5,17 @@ import Pagination from "@/components/Pagination/Pagination";
 import { themeColor } from "@/utils/const";
 import { queryParamToNumber } from "@/utils/query";
 import { NextPageWithLayout } from "@/utils/types";
+import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
 import { useAuth } from "context/auth";
+import withAuth from "context/withAuth";
 import useFetchArticlesByUser from "hooks/supabase-hooks/articles/useFetchArticlesByUser";
+import remove from "lodash/remove";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import { Folder } from "react-kawaii";
 import ArticleRow from "ui/Dashboard/ArticleRow";
 import Layout from "ui/Layout/Layout";
 import ErrorMessage from "ui/misc/ErrorMessage";
-import remove from "lodash/remove";
-import withAuth from "context/withAuth";
-import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
 
 const DashboardArticle: NextPageWithLayout = () => {
   const { user } = useAuth();
@@ -24,7 +24,7 @@ const DashboardArticle: NextPageWithLayout = () => {
     if (user.username) {
       return <Dashboard userId={user.id} username={user.username} />;
     } else {
-      return <ErrorMessage text="You dont have a profile setup" />;
+      return <ErrorMessage text="You don't have a profile setup" />;
     }
   }
 
@@ -53,7 +53,6 @@ const Dashboard: React.FC<DashboardProps> = ({ userId, username }) => {
 
   const handleDeleteMutation = (id: number) => {
     if (data) {
-      // const copyOfArr = [...data.articles];
       remove(data.articles, (article) => article.id === id);
 
       mutate({

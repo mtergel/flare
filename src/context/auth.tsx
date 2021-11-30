@@ -29,13 +29,28 @@ const AuthProvider: React.FC<{}> = ({ children }) => {
   const [error, setError] = useState<ErrorCode | null>(null);
   const router = useRouter();
 
-  // session init
   useEffect(() => {
-    setSession(supabase.auth.session());
+    const session = supabase.auth.session();
+    if (!session) {
+      // no session found in localhost
+      // clear data
+      removeUser();
+      setLoading(false);
+    }
+    setSession(session);
 
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (_, session) => {
+        setSession(session);
+      }
+    );
+
+    return () => {
+      if (authListener) {
+        authListener.unsubscribe();
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // user set
