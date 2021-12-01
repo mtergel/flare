@@ -1,6 +1,6 @@
 .textarea {
   // base style
-  @apply bg-primary-50 dark:bg-gray-400 dark:bg-opacity-10 rounded-lg flex-shrink-0 outline-none border;
+  @apply bg-primary-50 dark:bg-gray-400 dark:bg-opacity-10 rounded-lg flex-shrink-0 outline-none;
   // base size
   @apply text-sm px-4 py-2;
   @apply transition-shadow;

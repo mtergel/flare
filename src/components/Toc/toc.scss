@@ -27,7 +27,7 @@
     }
 
     & a {
-      @apply relative my-2 line-clamp-2;
+      @apply relative mt-0 sm:mt-2 mb-2 line-clamp-2;
     }
 
     &.active {

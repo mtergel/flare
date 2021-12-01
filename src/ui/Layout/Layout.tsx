@@ -1,5 +1,5 @@
 import Container from "@/components/Container/Container";
-import { MdFlare } from "@react-icons/all-files/md/MdFlare";
+import Image from "next/image";
 import Link from "next/link";
 import UserButton from "./UserButton";
 
@@ -11,10 +11,13 @@ const Layout: React.FC<{}> = ({ children }) => {
           <h1>
             <Link href="/" passHref>
               <a className="text-lg font-bold flex-grow flex space-x-1 items-center">
-                <span>
-                  <MdFlare className="text-primary-500" />
-                </span>
-                <span className="text-2xl tracking-wider">Flare</span>
+                <Image
+                  src="/assets/logo_small.png"
+                  alt=""
+                  width={48}
+                  height={48}
+                  objectFit="contain"
+                />
               </a>
             </Link>
           </h1>

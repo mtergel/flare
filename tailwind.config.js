@@ -27,9 +27,6 @@ module.exports = {
         tDefault: "var(--color-text-default)",
         tMuted: "var(--color-text-muted)",
       },
-      fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-      },
       boxShadow: {
         flare: "0 2px 4px #4385bb12",
         popover: "0 3px 12px -1px #04253f40",
@@ -112,15 +109,32 @@ module.exports = {
         DEFAULT: {
           css: {
             color: theme("colors.tDefault"),
-            pre: {
-              backgroundColor: "inherit",
-              paddingRight: 0,
-              paddingLeft: 0,
-              marginLeft: 0,
-              marginRight: 0,
-              "& div": {
-                borderRadius: "3px",
-              },
+
+            "pre code::before": {
+              "padding-left": "unset",
+            },
+            "pre code::after": {
+              "padding-right": "unset",
+            },
+            img: {
+              margin: "1.5rem auto",
+              display: "table",
+              maxWidth: "100%",
+              height: "auto",
+            },
+            code: {
+              backgroundColor: theme("colors.gray.200"),
+              fontWeight: "normal",
+              "border-radius": "6px",
+              padding: ".2em .4em",
+              margin: 0,
+              fontSize: "85%",
+            },
+            "code::before": {
+              content: '""',
+            },
+            "code::after": {
+              content: '""',
             },
             h1: {
               paddingBottom: ".2em",

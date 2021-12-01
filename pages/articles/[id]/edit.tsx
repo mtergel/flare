@@ -5,9 +5,13 @@ import withAuth from "context/withAuth";
 import useGetArticle from "hooks/supabase-hooks/articles/useGetArticle";
 import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
-import ArticleEditor from "ui/ArticleEditor/ArticleEditor";
+import dynamic from "next/dynamic";
 import MinHeader from "ui/Layout/MinHeader";
 import ErrorMessage from "ui/misc/ErrorMessage";
+
+const ArticleEditor = dynamic(() => import("ui/ArticleEditor/ArticleEditor"), {
+  ssr: false,
+});
 
 const EditWrapper: NextPage = () => {
   const { user } = useAuth();

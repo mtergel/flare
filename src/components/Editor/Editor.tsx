@@ -4,45 +4,21 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/Tabs/Tabs";
-import "easymde/dist/easymde.min.css";
-import dynamic from "next/dynamic";
-import { useCallback, useState } from "react";
-import { GetCodemirrorInstance } from "react-simplemde-editor";
+import "codemirror-github-dark/lib/codemirror-github-dark-theme.css";
+import "codemirror-github-light/lib/codemirror-github-light-theme.css";
+import "codemirror/lib/codemirror.css";
+import "codemirror/mode/markdown/markdown";
+import { useTheme } from "next-themes";
+import { Controlled as CodeMirror } from "react-codemirror2";
 import Preview from "./Preview";
-
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  ssr: false,
-});
-
-const options = {
-  autofocus: false,
-  spellChecker: false,
-  placeholder: "Write your post content here...",
-  toolbar: [],
-  autoDownloadFontAwesome: false,
-  status: false,
-  styleSelectedText: false,
-} as EasyMDE.Options;
 
 interface EditorProps {
   markdown: string;
   onChange: (value: string) => void;
   title?: string | null;
-  getCodemirrorInstance?: GetCodemirrorInstance | undefined;
 }
-const Editor: React.FC<EditorProps> = ({
-  markdown,
-  onChange,
-  getCodemirrorInstance,
-  title,
-}) => {
-  const [value, setValue] = useState(markdown);
-
-  const handleChange = useCallback((value: string) => {
-    setValue(value);
-    onChange(value);
-    // eslint-disable-next-line
-  }, []);
+const Editor: React.FC<EditorProps> = ({ markdown, onChange, title }) => {
+  const { resolvedTheme } = useTheme();
 
   return (
     <div className="editor-container">
@@ -56,20 +32,26 @@ const Editor: React.FC<EditorProps> = ({
         </TabsList>
 
         <TabsContent value="write">
-          <SimpleMDE
-            id="md-editor"
-            options={options}
-            value={value}
-            onChange={handleChange}
-            getCodemirrorInstance={getCodemirrorInstance}
+          <CodeMirror
+            value={markdown}
+            onBeforeChange={(_editor, _data, value) => {
+              onChange(value);
+            }}
+            className="md_editor"
+            options={{
+              mode: "markdown",
+              theme: resolvedTheme === "light" ? "github-light" : "github-dark",
+              lineNumbers: true,
+              lineWrapping: true,
+            }}
           />
         </TabsContent>
         <TabsContent value="preview">
-          <div className="prose prose-sm editor-preview-tw border-b-2">
-            {value || title ? (
+          <div className="prose editor-preview-tw border-b-2">
+            {markdown || title ? (
               <>
                 <h1>{title}</h1>
-                <Preview value={value} disableAutoLink />
+                <Preview value={markdown} />
               </>
             ) : (
               <p>Nothing to preview.</p>

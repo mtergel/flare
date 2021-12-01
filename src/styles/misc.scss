@@ -6,10 +6,6 @@
   @apply bg-gray-100 dark:bg-gray-100 dark:bg-opacity-5;
 }
 
-.emoji-mart-anchor-bar {
-  width: 56% !important;
-}
-
 .toastOverride {
   @apply text-sm dark:border dark:border-gray-500 dark:border-opacity-20;
   background: var(--color-paper) !important;

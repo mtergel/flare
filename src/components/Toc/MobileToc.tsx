@@ -27,8 +27,11 @@ const MobileToc: React.FC<TocProps> = ({ headings, activeId }) => {
       <DropdownMenuTrigger asChild>
         <IconButton aria-label="table of content" icon={<FiList />} />
       </DropdownMenuTrigger>
-      <DropdownMenuContent sideOffset={4} className="p-4">
-        <div className="mb-2">
+      <DropdownMenuContent
+        sideOffset={4}
+        className="p-4 max-w-xs overflow-auto"
+      >
+        <div className="mb-2 ">
           <Button
             size="sm"
             variant="ghost"
@@ -46,6 +49,7 @@ const MobileToc: React.FC<TocProps> = ({ headings, activeId }) => {
               <li
                 key={i.i}
                 className={clsx(
+                  "whitespace-normal line-clamp-1",
                   activeId === i.slug && "active",
                   i.lvl >= 3 && "depth-2"
                 )}

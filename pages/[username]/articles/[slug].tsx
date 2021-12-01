@@ -1,9 +1,9 @@
 import Avatar from "@/components/Avatar/Avatar";
 import Container from "@/components/Container/Container";
-import Preview from "@/components/Editor/Preview";
 import MobileToc from "@/components/Toc/MobileToc";
 import Toc from "@/components/Toc/Toc";
 import { definitions } from "@/utils/generated";
+import { markdownProcessor } from "@/utils/markdownProcessor";
 import { supabase } from "@/utils/supabaseClient";
 import { MDHeading, PostsJoins } from "@/utils/types";
 import { FiCalendar } from "@react-icons/all-files/fi/FiCalendar";
@@ -24,6 +24,7 @@ type ArticlePageProps = {
   isPreview: boolean;
   headings: MDHeading[];
   article: PostsJoins;
+  renderHTML: string;
 };
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
@@ -66,11 +67,16 @@ export const getStaticProps: GetStaticProps<ArticlePageProps> = async (
         !res.data.published ||
         (context.preview && context.previewData === params!.slug);
 
+      const file = await markdownProcessor.process(
+        res.data.body_markdown ?? ""
+      );
+
       return {
         props: {
           isPreview: isPreview ?? false,
           headings: headings.json,
           article: res.data as PostsJoins,
+          renderHTML: String(file),
         },
         revalidate: 60,
       };
@@ -85,7 +91,7 @@ export const getStaticProps: GetStaticProps<ArticlePageProps> = async (
 const ArticlePage: NextPageWithLayout<
   InferGetStaticPropsType<typeof getStaticProps>
 > = (props) => {
-  const { isPreview, headings, article } = props;
+  const { isPreview, headings, article, renderHTML } = props;
   // observor for toc
   const [activeId, setActiveId] = useState("");
   const callbackHandler = (id: string) => {
@@ -178,11 +184,10 @@ const ArticlePage: NextPageWithLayout<
                     </Link>
                   ))}
                 </div>
-                <div className="prose">
-                  {article.body_markdown && (
-                    <Preview value={article.body_markdown} />
-                  )}
-                </div>
+                <div
+                  dangerouslySetInnerHTML={{ __html: renderHTML }}
+                  className="prose w-full max-w-full"
+                />
               </Container>
             </div>
           </section>

@@ -34,39 +34,23 @@
   @apply text-4xl font-bold w-full py-2 mt-5 mb-8 bg-transparent resize-none outline-none border-none;
   line-height: 1.5;
 }
+.md_editor {
+  @apply pt-2;
 
-.EasyMDEContainer .CodeMirror {
-  font-size: 0.875rem !important;
-  line-height: 1.25rem !important;
+  & .CodeMirror {
+    @apply h-auto min-h-[300px];
+  }
+
+  & .cm-s-github-dark.CodeMirror,
+  .cm-s-github-dark .CodeMirror-lines,
+  .cm-s-github-dark .CodeMirror-gutters {
+    @apply bg-paper;
+  }
 }
 
 .editor-container {
-  & .EasyMDEContainer .CodeMirror {
-    border: unset;
-
-    @apply border border-border border-solid;
-    @apply mx-0 my-4 p-2 md:mx-2;
-    @apply rounded resize-y;
-    @apply min-h-[300px];
-    @apply bg-base text-tDefault;
-
-    &:focus-within {
-      @apply bg-paper ring-2 ring-primary;
-    }
-  }
-
-  & .CodeMirror-selected {
-    background: highlight !important;
-  }
-
-  & .CodeMirror-cursor {
-    @apply border-tDefault;
-  }
-
   & .editor-preview-tw {
-    @apply mx-0 my-4 p-2 md:mx-2;
-    @apply min-h-[300px];
-    @apply max-w-full;
+    @apply max-w-5xl mx-auto p-8 pl-4;
   }
 }
 

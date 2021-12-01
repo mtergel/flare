@@ -1,8 +1,12 @@
 import { useAuth } from "context/auth";
 import withAuth from "context/withAuth";
 import { NextPage } from "next";
-import ArticleEditor from "ui/ArticleEditor/ArticleEditor";
+import dynamic from "next/dynamic";
 import MinHeader from "ui/Layout/MinHeader";
+
+const ArticleEditor = dynamic(() => import("ui/ArticleEditor/ArticleEditor"), {
+  ssr: false,
+});
 
 const NewArticle: NextPage = () => {
   const { user } = useAuth();

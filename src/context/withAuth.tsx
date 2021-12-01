@@ -14,7 +14,7 @@ function withAuth<P extends object>(AppOrPage: ComponentType<P>) {
       if (!user && !loading) {
         // if finished loading and still no user
         // redirect to enter page (login page)
-        router.push(`/enter?redirect=${router.pathname}`);
+        router.push(`/enter`);
       }
 
       // eslint-disable-next-line
