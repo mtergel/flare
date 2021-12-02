@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
         { count: "estimated" }
       )
       .match({
-        user_id: "10aa457d-5c2c-4e7b-b5de-eb6f63589a2f",
+        user_id: res.data.id,
         published: true,
         post_type: "article",
       })
