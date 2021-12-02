@@ -80,7 +80,7 @@ const UserDD: React.FC<UserDDProps> = () => {
             </Link>
             <DropdownMenuSeparator />
 
-            <Link href={`/dashboard`} passHref>
+            <Link href={`/user/dashboard`} passHref>
               <DropdownMenuItem asChild>
                 <a onClick={onClose}>
                   <DropdownMenuLeftSlot>
@@ -90,7 +90,7 @@ const UserDD: React.FC<UserDDProps> = () => {
                 </a>
               </DropdownMenuItem>
             </Link>
-            <Link href={`/settings`} passHref>
+            <Link href={`/user/settings`} passHref>
               <DropdownMenuItem asChild>
                 <a onClick={onClose}>
                   <DropdownMenuLeftSlot>
@@ -134,7 +134,7 @@ const UserDD: React.FC<UserDDProps> = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent sideOffset={4}>
-            <Link href={`/new`} passHref>
+            <Link href={`/user/new`} passHref>
               <DropdownMenuItem asChild>
                 <a onClick={onClose}>Article</a>
               </DropdownMenuItem>

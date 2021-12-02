@@ -123,7 +123,7 @@ module.exports = {
               height: "auto",
             },
             code: {
-              backgroundColor: theme("colors.gray.200"),
+              backgroundColor: theme("colors.gray.100"),
               fontWeight: "normal",
               "border-radius": "6px",
               padding: ".2em .4em",

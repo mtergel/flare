@@ -1,5 +1,4 @@
 import { useAuth } from "context/auth";
-import withAuth from "context/withAuth";
 import { NextPage } from "next";
 import dynamic from "next/dynamic";
 import MinHeader from "ui/Layout/MinHeader";
@@ -20,9 +19,9 @@ const NewArticle: NextPage = () => {
         </div>
       </div>
     );
+  } else {
+    return null;
   }
-
-  return null;
 };
 
-export default withAuth(NewArticle);
+export default NewArticle;

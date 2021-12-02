@@ -41,6 +41,12 @@
     }
     @apply list-none pl-2;
   }
+
+  & blockquote {
+    & p:first-of-type::before {
+      content: "";
+    }
+  }
 }
 
 /*

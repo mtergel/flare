@@ -113,7 +113,7 @@ const ArticlePage: NextPageWithLayout<
         <Container size="wide">
           <div className="flex items-center justify-between h-14">
             <Link href={`/${article.user.username}`} passHref>
-              <a className="flex items-center flex-1 min-w-0">
+              <a className="flex items-center min-w-0">
                 <span className="mr-2 flex-shrink-0">
                   <Avatar
                     src={article.user.avatar_url || undefined}

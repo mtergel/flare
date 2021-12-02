@@ -20,7 +20,7 @@ const MinHeader: React.FC<{}> = () => {
     <header className="h-16 flex-shrink-0 shadow-flare dark:border-b">
       <Container className="h-full">
         <div className="flex items-center justify-between h-full">
-          <Link href="/dashboard" passHref>
+          <Link href="/user/dashboard" passHref>
             <IconButton
               variant="ghost"
               aria-label="dashboard"

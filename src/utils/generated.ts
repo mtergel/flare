@@ -426,6 +426,23 @@ export interface paths {
       };
     };
   };
+  "/rpc/create_published_date": {
+    post: {
+      parameters: {
+        body: {
+          args: { [key: string]: unknown };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
   "/rpc/update_published_date": {
     post: {
       parameters: {

@@ -3,7 +3,7 @@ import logger from "@/utils/logger";
 import { supabase } from "@/utils/supabaseClient";
 import { ErrorCode } from "@/utils/types";
 import { Session } from "@supabase/gotrue-js";
-import useLocalStorage from "hooks/useLocalForage";
+import useLocalForage from "hooks/useLocalForage";
 import { useRouter } from "next/dist/client/router";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -22,7 +22,7 @@ const AuthContext = createContext<{
 
 const AuthProvider: React.FC<{}> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser, removeUser] = useLocalStorage<
+  const [user, setUser, removeUser] = useLocalForage<
     definitions["profiles"] | null
   >("currentUser", null);
   const [loading, setLoading] = useState(true);
@@ -40,7 +40,13 @@ const AuthProvider: React.FC<{}> = ({ children }) => {
     setSession(session);
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (_, session) => {
+      async (event, session) => {
+        await fetch("/api/auth", {
+          method: "POST",
+          headers: new Headers({ "Content-Type": "application/json" }),
+          credentials: "same-origin",
+          body: JSON.stringify({ event, session }),
+        });
         setSession(session);
       }
     );

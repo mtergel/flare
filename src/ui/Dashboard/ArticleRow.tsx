@@ -1,7 +1,7 @@
 import {
-  AlertDialog,
-  AlertCancelButton,
   AlertActionButton,
+  AlertCancelButton,
+  AlertDialog,
 } from "@/components/AlertDialog/AlertDialog";
 import {
   DropdownMenu,
@@ -60,21 +60,19 @@ const ArticleRow: React.FC<ArticleRowProps> = ({
   };
 
   const deletingPost = async () => {
-    try {
-      setLoading(true);
-      logger.debug("Deleting post...: ", article.id);
+    setLoading(true);
+    logger.debug("Deleting post...: ", article.id);
 
-      await supabase
-        .from<definitions["posts"]>("posts")
-        .delete()
-        .match({ id: article.id });
+    const res = await supabase
+      .from<definitions["posts"]>("posts")
+      .delete()
+      .match({ id: article.id });
 
+    if (res.error) {
+      logger.debug(res.error);
+      throw res.error;
+    } else {
       onDeleteMutation(article.id);
-
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      logger.debug(error);
     }
   };
 

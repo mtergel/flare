@@ -7,7 +7,6 @@ import { queryParamToNumber } from "@/utils/query";
 import { NextPageWithLayout } from "@/utils/types";
 import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
 import { useAuth } from "context/auth";
-import withAuth from "context/withAuth";
 import useFetchArticlesByUser from "hooks/supabase-hooks/articles/useFetchArticlesByUser";
 import remove from "lodash/remove";
 import { useRouter } from "next/dist/client/router";
@@ -48,7 +47,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userId, username }) => {
   );
 
   const handleLinkBuild = (page: number) => {
-    return `/dashboard?p=${page}`;
+    return `/user/dashboard?p=${page}`;
   };
 
   const handleDeleteMutation = (id: number) => {
@@ -76,7 +75,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userId, username }) => {
         <Container size="wide" className="py-12">
           <div className="mb-8 flex items-center justify-between">
             <h1 className="font-bold text-4xl">Articles</h1>
-            <Link href="/new" passHref>
+            <Link href="/user/new" passHref>
               <Button
                 className="sm:hidden"
                 color="primary"
@@ -95,7 +94,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userId, username }) => {
                 <p>Let&apos;s create one!</p>
               </div>
               <Folder mood="excited" color={themeColor} />
-              <Link href="/new" passHref>
+              <Link href="/user/new" passHref>
                 <Button as="a" color="primary">
                   Create
                 </Button>
@@ -137,4 +136,4 @@ DashboardArticle.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
-export default withAuth(DashboardArticle);
+export default DashboardArticle;
