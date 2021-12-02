@@ -103,7 +103,7 @@ const ArticlePage: NextPageWithLayout<
     <article className="bg-base pb-16">
       {isPreview && (
         <Link href={`/articles/${article.id}/edit`} passHref>
-          <a className="flex items-center justify-center bg-gray-500 text-paper text-sm py-4 font-bold">
+          <a className="flex items-center justify-center bg-gray-600 text-paper text-sm py-4 font-bold">
             <FiPlay className="mr-2 h-5 w-5" />
             <span>Preview Mode (Edit)</span>
           </a>
@@ -241,7 +241,7 @@ const ArticlePage: NextPageWithLayout<
                 </div>
                 {headings.length > 0 && (
                   <>
-                    <div className="h-6" />
+                    <div className="h-6 block w-[1px] flex-shrink-0" />
                     <div className="p-5 bg-paper rounded-xl overflow-auto shadow-main">
                       <div className="font-semibold">Table of Content</div>
                       <Toc headings={headings} activeId={activeId} />

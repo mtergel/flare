@@ -45,12 +45,12 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
         { count: "estimated" }
       )
       .match({
-        user_id: res.data.id,
+        user_id: "10aa457d-5c2c-4e7b-b5de-eb6f63589a2f",
+        published: true,
+        post_type: "article",
       })
       .range(0, 23)
       .order("created_at", { ascending: false });
-
-    console.log(articlesRes);
 
     return {
       props: {
@@ -73,7 +73,6 @@ const Profile: NextPageWithLayout<
   const { profile, articles } = props;
   const currentUser = supabase.auth.user();
   const router = useRouter();
-  // console.warn(articles);
   const profileTabItems = [
     {
       displayName: `Articles ${articles.count}`,
@@ -134,11 +133,11 @@ const Profile: NextPageWithLayout<
           />
         </Container>
       </div>
-      {/* <Container size="common">
+      <Container size="common">
         {activeTab === `/${profile.username}` ? (
           <UserArticles userId={profile.id} initialData={articles.articles} />
         ) : null}
-      </Container> */}
+      </Container>
     </>
   );
 };
