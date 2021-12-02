@@ -1,11 +1,11 @@
 import "@/styles/globals.scss";
-import type { AppProps } from "next/app";
-import { NextPageWithLayout } from "utils/types";
-import { ThemeProvider } from "next-themes";
-import { IconContext } from "@react-icons/all-files/lib";
 import { IdProvider } from "@radix-ui/react-id";
+import { IconContext } from "@react-icons/all-files/lib";
 import AuthProvider from "context/auth";
+import { ThemeProvider } from "next-themes";
+import type { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
+import { NextPageWithLayout } from "utils/types";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;

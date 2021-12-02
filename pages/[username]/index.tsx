@@ -25,32 +25,33 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
   context
 ) => {
   const params = context.params; // params.username
+  const client = supabase;
 
-  const res = await supabase
+  const res = await client
     .from<definitions["profiles"]>("profiles")
     .select(`id, username, avatar_url, display_name, bio`)
     .eq("username", params!.username as string)
     .single();
 
-  const articlesRes = await supabase
-    .from<definitions["posts"]>("posts")
-    .select(
-      `
-      *,
-      tags!post_tag (*),
-      user:user_id (*)
-      `,
-      { count: "estimated" }
-    )
-    .match({
-      user_id: res.data?.id,
-      post_type: "article",
-      published: true,
-    })
-    .range(0, 23)
-    .order("created_at", { ascending: false });
-
   if (res.data) {
+    const articlesRes = await client
+      .from<definitions["posts"]>("posts")
+      .select(
+        `
+        *,
+        tags!post_tag (*),
+        user:user_id (*)
+        `,
+        { count: "estimated" }
+      )
+      .match({
+        user_id: res.data.id,
+        published: true,
+        post_type: "article",
+      })
+      .range(0, 23)
+      .order("created_at", { ascending: false });
+
     return {
       props: {
         profile: res.data,
@@ -72,7 +73,6 @@ const Profile: NextPageWithLayout<
   const { profile, articles } = props;
   const currentUser = supabase.auth.user();
   const router = useRouter();
-
   const profileTabItems = [
     {
       displayName: `Articles ${articles.count}`,
@@ -112,7 +112,7 @@ const Profile: NextPageWithLayout<
                 </div>
               </div>
               {profile.id === currentUser?.id ? (
-                <Link href="/settings" passHref>
+                <Link href="/user/settings" passHref>
                   <Button as="a" variant="outline" size="sm">
                     Edit profile
                   </Button>

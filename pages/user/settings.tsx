@@ -1,17 +1,11 @@
 import Container from "@/components/Container/Container";
-import Fallback from "@/components/Fallback/Fallback";
 import { useAuth } from "context/auth";
-import { useRouter } from "next/dist/client/router";
 import Layout from "ui/Layout/Layout";
 import UserForm from "ui/Settings/UserForm";
 import { NextPageWithLayout } from "utils/types";
 
 const Settings: NextPageWithLayout = () => {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  if (loading) {
-    return <Fallback />;
-  }
+  const { user } = useAuth();
 
   if (user) {
     return (
@@ -24,10 +18,9 @@ const Settings: NextPageWithLayout = () => {
         </Container>
       </div>
     );
+  } else {
+    return null;
   }
-
-  router.push("/enter");
-  return null;
 };
 
 Settings.getLayout = function getLayout(page) {

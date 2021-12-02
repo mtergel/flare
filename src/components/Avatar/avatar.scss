@@ -23,7 +23,7 @@
   }
 
   & > .fallback {
-    @apply w-full h-full flex items-center justify-center bg-primary text-paper font-medium;
+    @apply w-full h-full flex items-center justify-center bg-primary text-paper font-semibold;
   }
 
   &.avatar-shadow {

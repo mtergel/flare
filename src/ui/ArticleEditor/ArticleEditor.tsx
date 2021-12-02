@@ -19,12 +19,12 @@ import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import readingTime from "reading-time";
 import slugify from "slugify";
+import { mutate } from "swr";
 import EmojiPicker from "ui/ArticleEditor/EmojiPicker";
 import ArticleImageUpload from "./ArticleImageUpload";
 import SavedToast from "./SavedToast";
-import readingTime from "reading-time";
-import { mutate } from "swr";
 
 const TagSelector = dynamic(() => import("ui/ArticleEditor/TagSelector"), {
   ssr: false,
@@ -82,7 +82,6 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
   });
 
   const onSubmit = async (data: {
-    id?: string | null;
     title: string;
     body_markdown: string;
     published: boolean;
@@ -105,7 +104,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
         await supabase.from<definitions["tags"]>("tags").insert(newTags);
       }
 
-      if (data.id) {
+      if (id) {
         // update method
         const postTags = keyBy(tag_keyword, "value");
         let toAdd: { posts_id: number; tags_id: string; user_id: string }[] =
@@ -116,7 +115,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             // not in initial values
             // so must be added
             toAdd.push({
-              posts_id: parseInt(data.id!),
+              posts_id: id,
               tags_id: tag.value,
               user_id: data.user_id,
             });
@@ -138,6 +137,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             .from<definitions["post_tag"]>("post_tag")
             .upsert(toAdd);
           if (newTagsRes.error) {
+            console.error(newTagsRes.error);
             toast.error(
               newTagsRes.error.message ??
                 "Error occured when connecting tags to post"
@@ -176,7 +176,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             published: data.published,
             reading_time: Math.ceil(readingTime(data.body_markdown).minutes),
           })
-          .eq("id", data.id)
+          .eq("id", id)
           .single();
 
         const fetchPost = await supabase
@@ -188,7 +188,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             user:user_id (username)
             `
           )
-          .eq("id", data.id)
+          .eq("id", id)
           .single();
 
         if (updatePostRes.data?.published) {
@@ -201,6 +201,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
           mutate([fetchPost.data.id, "__article"]);
 
           reset({
+            id: fetchPost.data.id,
             body_markdown: fetchPost.data.body_markdown,
             emoji: fetchPost.data.emoji,
             published: fetchPost.data.published,
@@ -210,6 +211,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
               value: i.tags_id,
             })),
             title: fetchPost.data.title,
+            user_id: fetchPost.data.user_id,
           });
 
           if (updatePostRes.data) {
@@ -308,7 +310,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
               );
             }
 
-            await router.push("/dashboard");
+            await router.push("/user/dashboard");
 
             setLoadingText(undefined);
           } else {

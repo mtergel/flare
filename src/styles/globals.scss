@@ -58,3 +58,13 @@ div#__next {
 @import "./misc.scss";
 
 @tailwind utilities;
+
+.animation-delay-100 {
+  animation-delay: 0.1s;
+}
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+.animation-delay-400 {
+  animation-delay: 0.4s;
+}

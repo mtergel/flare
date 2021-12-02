@@ -43,6 +43,7 @@ const Editor: React.FC<EditorProps> = ({ markdown, onChange, title }) => {
               theme: resolvedTheme === "light" ? "github-light" : "github-dark",
               lineNumbers: true,
               lineWrapping: true,
+              viewportMargin: Infinity,
             }}
           />
         </TabsContent>
