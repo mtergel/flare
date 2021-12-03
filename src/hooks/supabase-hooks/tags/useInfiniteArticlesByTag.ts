@@ -4,25 +4,26 @@ import { supabase } from "@/utils/supabaseClient";
 import { PostsJoins } from "@/utils/types";
 import useSWRInfinite from "swr/infinite";
 
-const fetcher = async (userId: string, page: number, itemsPerPage: number) => {
+const fetcher = async (tagsId: string, page: number, itemsPerPage: number) => {
   const res = await supabase
     .from<definitions["posts"]>("posts")
     .select(
       `
-      id,
-      emoji,
-      title,
-      post_type,
-      reading_time,
-      published,
-      published_at,
-      slug,
-      user:user_id (username, display_name, avatar_url)
+        id,
+        title,
+        post_type,
+        reading_time,
+        published,
+        published_at,
+        user:user_id (
+            username, display_name, avatar_url
+        ),
+        tags!inner(id)
         `
     )
     .range(page * itemsPerPage, (page + 1) * itemsPerPage - 1)
     .match({
-      user_id: userId,
+      "tags.id": tagsId,
       post_type: "article",
       published: true,
     })
@@ -39,14 +40,14 @@ const fetcher = async (userId: string, page: number, itemsPerPage: number) => {
 
 /**
  * Use this hook in where pagination is not suitable
- * @param {string}  userId - User id.
+ * @param {string}  tagId - Tag id.
  * @param {number} itemsPerPage - number of items in a page
  * @param {object} initialData - Initial data [0] index to hydrate the hook, will revalidate
  * @returns {object} Hook results with additional indicator props
  */
 
-function useInfiniteArticles(
-  userId: string,
+function useInfiniteArticlesByTag(
+  tagId: string,
   itemsPerPage: number,
   initialData?: PostsJoins[]
 ) {
@@ -55,7 +56,7 @@ function useInfiniteArticles(
     (index, previousPageData) => {
       // this works when your at the last index and try to fetch more
       if (previousPageData && !previousPageData.length) return null;
-      return [userId, index, itemsPerPage];
+      return [tagId, index, itemsPerPage];
     },
     fetcher,
     {
@@ -85,4 +86,4 @@ function useInfiniteArticles(
   };
 }
 
-export default useInfiniteArticles;
+export default useInfiniteArticlesByTag;

@@ -44,7 +44,7 @@ export const getStaticProps: GetStaticProps<ArticlePageProps> = async (
     .select(
       `
       *,
-      tags!post_tag(*),
+      tags (*),
       user:user_id (*)
       `
     )
