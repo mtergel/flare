@@ -15,7 +15,7 @@ import UserArticles from "ui/Profile/UserArticles";
 type UserPageProps = {
   profile: definitions["profiles"];
   articles: {
-    articles: PostsJoins[];
+    data: PostsJoins[];
     count: number;
   };
 };
@@ -38,9 +38,16 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
       .from<definitions["posts"]>("posts")
       .select(
         `
-        *,
-        tags!post_tag (*),
-        user:user_id (*)
+        id,
+        title,
+        emoji,
+        post_type,
+        reading_time,
+        published_at,
+        slug,
+        user:user_id (
+          username, display_name, avatar_url
+        )
         `,
         { count: "estimated" }
       )
@@ -56,7 +63,7 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
       props: {
         profile: res.data,
         articles: {
-          articles: (articlesRes.data as PostsJoins[]) ?? [],
+          data: (articlesRes.data as PostsJoins[]) ?? [],
           count: articlesRes.count ?? 0,
         },
       },
@@ -135,7 +142,7 @@ const Profile: NextPageWithLayout<
       </div>
       <Container size="common">
         {activeTab === `/${profile.username}` ? (
-          <UserArticles userId={profile.id} initialData={articles.articles} />
+          <UserArticles userId={profile.id} initialData={articles.data} />
         ) : null}
       </Container>
     </>

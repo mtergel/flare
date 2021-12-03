@@ -1,5 +1,5 @@
 .avatar {
-  @apply inline-flex items-center justify-end align-middle overflow-hidden select-none rounded-full bg-paper;
+  @apply inline-flex items-center justify-end align-middle overflow-hidden select-none rounded-full bg-paper border;
 
   &.avatar-sm {
     @apply h-8 w-8;

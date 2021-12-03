@@ -137,7 +137,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             .from<definitions["post_tag"]>("post_tag")
             .upsert(toAdd);
           if (newTagsRes.error) {
-            console.error(newTagsRes.error);
+            logger.debug(newTagsRes.error);
             toast.error(
               newTagsRes.error.message ??
                 "Error occured when connecting tags to post"

@@ -44,7 +44,7 @@ export const getStaticProps: GetStaticProps<ArticlePageProps> = async (
     .select(
       `
       *,
-      tags!post_tag(*),
+      tags (*),
       user:user_id (*)
       `
     )
@@ -78,7 +78,7 @@ export const getStaticProps: GetStaticProps<ArticlePageProps> = async (
           article: res.data as PostsJoins,
           renderHTML: String(file),
         },
-        revalidate: 60,
+        revalidate: 300,
       };
     }
   }
@@ -137,7 +137,7 @@ const ArticlePage: NextPageWithLayout<
             <div className="text-7xl">
               <span>{article.emoji}</span>
             </div>
-            <h1 className="text-2xl inline-block max-w-3xl">
+            <h1 className="text-3xl inline-block max-w-3xl">
               <span className="font-bold text-center">{article.title}</span>
             </h1>
             <div className="flex items-center justify-center text-sm text-gray-500 space-x-6">
@@ -173,12 +173,15 @@ const ArticlePage: NextPageWithLayout<
                   {article.tags.map((i) => (
                     <Link key={i.id} passHref href={`/tags/${i.id}`}>
                       <a className="border rounded-full flex items-center space-x-1 text-xs py-1 pl-1 pr-3">
-                        <Image
-                          alt=""
-                          src={i.image_url}
-                          width={24}
-                          height={24}
-                        />
+                        <div className="h-6 w-6 rounded-full border">
+                          <Image
+                            alt=""
+                            src={i.image_url}
+                            width={24}
+                            height={24}
+                            className="rounded-full border"
+                          />
+                        </div>
                         <span>{i.name}</span>
                       </a>
                     </Link>
@@ -201,12 +204,15 @@ const ArticlePage: NextPageWithLayout<
                       {article.tags.map((i) => (
                         <Link key={i.id} passHref href={`/tags/${i.id}`}>
                           <a className="flex space-x-1 items-center mt-3 flex-1 min-w-[49%] text-sm">
-                            <Image
-                              alt=""
-                              src={i.image_url}
-                              width={24}
-                              height={24}
-                            />
+                            <div className="h-6 w-6 rounded-full border">
+                              <Image
+                                alt=""
+                                src={i.image_url}
+                                width={24}
+                                height={24}
+                                className="rounded-full border"
+                              />
+                            </div>
                             <span>{i.name}</span>
                           </a>
                         </Link>
