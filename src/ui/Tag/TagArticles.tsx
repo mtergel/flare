@@ -34,7 +34,7 @@ const TagArticles: React.FC<TagArticlesProps> = ({ tagId, initialData }) => {
     return (
       <div className="pt-8 flex flex-col items-center justify-center space-y-7">
         <Ghost size={200} mood="sad" color={themeColor} />
-        <span className="text-gray-500 text-lg">
+        <span className="text-tMuted text-lg">
           No articles published this tag yet.
         </span>
       </div>
@@ -54,7 +54,7 @@ const TagArticles: React.FC<TagArticlesProps> = ({ tagId, initialData }) => {
       return (
         <div className="pt-8 flex flex-col items-center justify-center space-y-7">
           <Ghost size={200} mood="ko" color={themeColor} />
-          <span className="text-gray-500 text-lg">No articles found.</span>
+          <span className="text-tMuted text-lg">No articles found.</span>
         </div>
       );
     }

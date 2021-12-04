@@ -74,7 +74,7 @@ const UserDD: React.FC<UserDDProps> = () => {
               <DropdownMenuItem asChild>
                 <a className="block py-3" onClick={onClose}>
                   <h1 className="font-semibold text-sm">{user.display_name}</h1>
-                  <h2 className="text-gray-400 text-xs">{`@${user.username}`}</h2>
+                  <h2 className="text-tMuted text-xs">{`@${user.username}`}</h2>
                 </a>
               </DropdownMenuItem>
             </Link>

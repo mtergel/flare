@@ -185,7 +185,7 @@ const ArticleRow: React.FC<ArticleRowProps> = ({
           </DropdownMenu>
         </div>
       </div>
-      <footer className="text-xs flex items-center flex-wrap gap-2 text-gray-500">
+      <footer className="text-xs flex items-center flex-wrap gap-2 text-tMuted">
         <div className="border rounded py-[2px] px-[5px]">
           {article.published ? "Published" : "Draft"}
         </div>

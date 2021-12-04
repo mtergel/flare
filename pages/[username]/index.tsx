@@ -110,7 +110,7 @@ const Profile: NextPageWithLayout<
                 />
                 <div className="mt-3 sm:mt-0">
                   <h1 className="font-bold text-xl">{profile.display_name}</h1>
-                  <h2 className="text-gray-400 text-sm mt-1">
+                  <h2 className="text-tMuted text-sm mt-1">
                     @{profile.username}
                   </h2>
                   <div className="mt-3">

@@ -140,7 +140,7 @@ const ArticlePage: NextPageWithLayout<
             <h1 className="text-3xl inline-block max-w-3xl">
               <span className="font-bold text-center">{article.title}</span>
             </h1>
-            <div className="flex items-center justify-center text-sm text-gray-500 space-x-6">
+            <div className="flex items-center justify-center text-sm text-tMuted space-x-6">
               {article.published_at && (
                 <div className="flex items-center space-x-1">
                   <span>

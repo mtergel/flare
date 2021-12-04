@@ -15,7 +15,7 @@
     padding-left: 21px;
     margin-top: 5px;
     position: relative;
-    @apply relative font-semibold text-sm text-gray-500;
+    @apply relative font-semibold text-sm text-tMuted;
 
     &::before {
       content: "";

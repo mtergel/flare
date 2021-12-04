@@ -197,7 +197,7 @@ const UserForm: React.FC<UserFormProps> = ({ user }) => {
             {errors.username ? (
               <span className="error">{errors.username.message}</span>
             ) : (
-              <p className="text-gray-400 text-sm mt-2">
+              <p className="text-tMuted text-sm mt-2">
                 You can enter alphanumeric characters and underscore.
               </p>
             )}
@@ -223,7 +223,7 @@ const UserForm: React.FC<UserFormProps> = ({ user }) => {
             {errors.bio && <span className="error">{errors.bio.message}</span>}
           </FormControl>
 
-          <p className="text-sm text-gray-500 mt-4">
+          <p className="text-sm text-tMuted mt-4">
             These changes will be displayed on your profile.
           </p>
 

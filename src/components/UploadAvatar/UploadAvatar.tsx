@@ -63,7 +63,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({
         />
         <div
           tabIndex={0}
-          className="text-gray-400 text-sm mt-2 flex items-center justify-center"
+          className="text-tMuted text-sm mt-2 flex items-center justify-center"
         >
           Change
         </div>

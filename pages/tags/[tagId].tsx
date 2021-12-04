@@ -150,7 +150,7 @@ const TagPage: NextPageWithLayout<
                 <div className="mt-3 pl-3 sm:pl-0 sm:mt-0">
                   <h1 className="font-bold text-2xl">{tag.name}</h1>
                   <div className="mt-3">
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-tMuted">
                       Tag your posts with{" "}
                       <span className="gray-bg py-1 px-2 rounded-lg">
                         {tag.id}

@@ -432,7 +432,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             <div className="flex items-center space-x-2">
               <label
                 htmlFor="published"
-                className="text-sm font-semibold text-gray-500"
+                className="text-sm font-semibold text-tMuted"
               >
                 Publish
               </label>

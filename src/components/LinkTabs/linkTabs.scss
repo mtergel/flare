@@ -12,7 +12,7 @@
     @apply flex items-center overflow-x-auto whitespace-nowrap;
 
     & .link-tab-item {
-      @apply font-semibold text-gray-500 mr-6 px-0 py-2 relative outline-none;
+      @apply font-semibold text-tMuted mr-6 px-0 py-2 relative outline-none;
 
       &[data-state="active"] {
         @apply text-tDefault;

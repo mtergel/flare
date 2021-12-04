@@ -24,10 +24,10 @@ const SavedToast: React.FC<SavedToastProps> = ({
             </div>
           </div>
           <div className="ml-3 flex-1">
-            <p className="text-sm font-medium text-gray-900">Article saved!</p>
+            <p className="text-sm font-medium text-tDefault">Article saved!</p>
             <button
               onClick={onClick}
-              className="mt-1 text-sm text-gray-500 cursor-pointer"
+              className="mt-1 text-sm text-tMuted cursor-pointer"
             >
               {published && "Check out your article here."}
             </button>

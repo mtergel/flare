@@ -34,7 +34,7 @@
   }
 
   & .dropdown-item-left-slot {
-    @apply text-gray-400 inline-flex items-center mr-2;
+    @apply text-tMuted inline-flex items-center mr-2;
 
     & svg {
       @apply h-4 w-4;
@@ -72,7 +72,7 @@
 }
 
 .dropdown-label {
-  @apply text-xs text-gray-400 pl-9 py-1;
+  @apply text-xs text-tMuted pl-9 py-1;
 }
 
 .dropdown-radio {
@@ -87,7 +87,7 @@
       @apply absolute left-2 top-0 bottom-0 flex items-center justify-center;
 
       & svg {
-        @apply h-4 w-4 text-gray-400;
+        @apply h-4 w-4 text-tMuted;
       }
     }
   }

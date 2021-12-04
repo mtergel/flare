@@ -37,7 +37,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
             />
             <div className="article-user-info">
               <div className="line-clamp-1">{article.user.display_name}</div>
-              <div className="flex items-center text-xs text-gray-500 space-x-1">
+              <div className="flex items-center text-xs text-tMuted space-x-1">
                 <time aria-label="Published at" dateTime={article.published_at}>
                   {dayjs(article.published_at).fromNow()}
                 </time>
