@@ -6,7 +6,7 @@
   @apply transition-shadow;
 
   &:focus {
-    @apply ring-2 ring-primary outline-none;
+    @apply ring ring-primary outline-none;
   }
 
   &:disabled {
