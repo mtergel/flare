@@ -7,7 +7,7 @@ export const themeColor = "#67BAFF";
 
 // TODO
 // MOVE THIS THIS BACKEND CONSTRAINT
-export const blacklistedUsernames = ["enter", "onboarding", "user"];
+export const blacklistedUsernames = ["enter", "onboarding", "user", "search"];
 
 export const avatarURL =
   "https://anyqfjvtgmdymcwdoeac.supabase.co/storage/v1/object/public/avatar/";

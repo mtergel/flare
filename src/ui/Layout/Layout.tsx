@@ -2,6 +2,8 @@ import Container from "@/components/Container/Container";
 import Image from "next/image";
 import Link from "next/link";
 import UserButton from "./UserButton";
+import { FiSearch } from "@react-icons/all-files/fi/FiSearch";
+import IconButton from "@/components/IconButton/IconButton";
 
 const Layout: React.FC<{}> = ({ children }) => {
   return (
@@ -21,7 +23,12 @@ const Layout: React.FC<{}> = ({ children }) => {
               </a>
             </Link>
           </h1>
-          <div className="flex-grow flex items-center justify-end">
+          <div className="flex-grow flex items-center justify-end space-x-2">
+            <Link href="/search" passHref>
+              <a className="p-2 rounded-full">
+                <FiSearch className="h-5 w-5 text-tMuted" />
+              </a>
+            </Link>
             <UserButton />
           </div>
         </Container>

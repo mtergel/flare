@@ -65,7 +65,7 @@ const IconButton = forwardRef<Ref, IconButtonProps>((props, ref) => {
     className,
     getSize(size),
     isRound && "ibtn-round",
-    "text-gray-500"
+    "text-tMuted"
   );
 
   return (
