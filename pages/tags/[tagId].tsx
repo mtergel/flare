@@ -78,10 +78,12 @@ export const getStaticProps: GetStaticProps<TagPageProps> = async (context) => {
         username, display_name, avatar_url
       ),
       tags!inner(id)
-      `
+      `,
+        // this is giving the wrong count
+        { count: "estimated" }
       )
+      .eq("tags.id", res.data.id)
       .match({
-        "tags.id": res.data.id,
         published: true,
         post_type: "article",
       })
