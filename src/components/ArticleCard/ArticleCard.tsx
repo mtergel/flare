@@ -4,20 +4,23 @@ import Avatar from "../Avatar/Avatar";
 
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
+import clsx from "clsx";
 
 dayjs.extend(relativeTime);
 interface ArticleCardProps {
   article: PostsJoins;
+  emojiClass?: string;
 }
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
+// TODO FIX CLASS
+const ArticleCard: React.FC<ArticleCardProps> = ({ article, emojiClass }) => {
   return (
     <article className="article-card">
       <Link
         href={`/${article.user.username}/articles/${article.slug}`}
         passHref
       >
-        <a className="article-bg">{article.emoji}</a>
+        <a className={clsx(emojiClass, "article-bg")}>{article.emoji}</a>
       </Link>
       <div className="article-content">
         <Link

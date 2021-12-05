@@ -21,3 +21,7 @@
     }
   }
 }
+
+.article-tag {
+  @apply border rounded-full flex items-center space-x-1 text-xs py-1 pl-1 pr-3;
+}
