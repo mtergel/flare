@@ -6,9 +6,11 @@ import debounce from "debounce-promise";
 import { useRouter } from "next/dist/client/router";
 import { ChangeEvent, useCallback } from "react";
 
-interface SearchFieldProps {}
+interface SearchFieldProps {
+  defaultValue?: string;
+}
 
-const SearchField: React.FC<SearchFieldProps> = () => {
+const SearchField: React.FC<SearchFieldProps> = ({ defaultValue }) => {
   const router = useRouter();
 
   const handleSearch = async (inputValue: string | undefined) => {
@@ -29,6 +31,7 @@ const SearchField: React.FC<SearchFieldProps> = () => {
   return (
     <InputGroup>
       <Input
+        defaultValue={defaultValue}
         type="text"
         placeholder="Enter a keyword"
         className="rounded-full pl-6 pr-14"
