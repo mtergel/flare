@@ -35,7 +35,7 @@ interface DashboardProps {
   username: string;
 }
 
-const itemPerPage = 10;
+const itemsPerPage = 10;
 
 const Dashboard: React.FC<DashboardProps> = ({ userId, username }) => {
   const router = useRouter();
@@ -43,7 +43,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userId, username }) => {
   const { data, isLoading, error, mutate } = useFetchArticlesByUser(
     userId,
     currentPage <= 0 ? 1 : currentPage,
-    itemPerPage
+    itemsPerPage
   );
 
   const handleLinkBuild = (page: number) => {
@@ -89,7 +89,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userId, username }) => {
           </div>
           {data.articles.length === 0 ? (
             <div className="flex flex-col items-center justify-center space-y-8 pt-4">
-              <div className="font-semibold text-lg text-gray-500 text-center">
+              <div className="font-semibold text-lg text-tMuted text-center">
                 <p>You don&apos;t have any articles</p>
                 <p>Let&apos;s create one!</p>
               </div>
@@ -112,11 +112,11 @@ const Dashboard: React.FC<DashboardProps> = ({ userId, username }) => {
                   />
                 ))}
               </div>
-              {data.count && data.count > itemPerPage && (
+              {data.count && data.count > itemsPerPage && (
                 <div className="my-4 text-center">
                   <Pagination
                     currentPage={currentPage <= 0 ? 1 : currentPage}
-                    itemPerPage={itemPerPage}
+                    itemsPerPage={itemsPerPage}
                     totalCount={data.count}
                     buildLink={handleLinkBuild}
                   />

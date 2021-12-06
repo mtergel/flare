@@ -6,7 +6,7 @@ import Link from "next/link";
 interface PaginationProps {
   totalCount: number;
   currentPage: number;
-  itemPerPage: number;
+  itemsPerPage: number;
   buildLink: (page: number) => string;
 }
 
@@ -17,11 +17,11 @@ const buttonCx = "w-8";
 const Pagination: React.FC<PaginationProps> = ({
   totalCount,
   currentPage,
-  itemPerPage,
+  itemsPerPage,
   buildLink,
 }) => {
-  if (totalCount > itemPerPage) {
-    const pages = Math.ceil(totalCount / itemPerPage);
+  if (totalCount > itemsPerPage) {
+    const pages = Math.ceil(totalCount / itemsPerPage);
     const buttons = buildButtons(currentPage, pages, buildLink);
 
     return (

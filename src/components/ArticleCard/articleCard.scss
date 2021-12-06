@@ -1,10 +1,6 @@
 .article-card {
   @apply flex justify-between py-4 px-0;
 
-  & .article-bg {
-    @apply h-20 w-20 sm:h-24 sm:w-24 text-5xl bg-paper flex items-center justify-center rounded-xl;
-  }
-
   & .article-content {
     width: calc(100% - 96px);
     @media (min-width: 640px) {
@@ -20,4 +16,12 @@
       }
     }
   }
+}
+
+.article-bg {
+  @apply text-4xl h-20 w-20 sm:h-24 sm:w-24 sm:text-5xl bg-paper flex items-center justify-center rounded-xl;
+}
+
+.article-tag {
+  @apply border rounded-full flex items-center space-x-1 text-xs py-1 pl-1 pr-3;
 }

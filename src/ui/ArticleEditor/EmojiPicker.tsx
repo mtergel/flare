@@ -23,7 +23,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ value, onChange }) => {
         <DropdownMenuTrigger asChild>
           <button className="flex items-center gray-bg w-full p-5 rounded-lg">
             <span className="text-5xl border-r pr-4 mr-5">{value}</span>
-            <div className="flex flex-col items-start text-left text-sm text-gray-600">
+            <div className="flex flex-col items-start text-left text-sm text-tMuted">
               <span>Select an eye catching emoji</span>
             </div>
           </button>

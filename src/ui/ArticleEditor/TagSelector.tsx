@@ -1,58 +1,17 @@
 import { definitions } from "@/utils/generated";
 import { supabase } from "@/utils/supabaseClient";
 import { EditTag } from "@/utils/types";
-import dayjs from "dayjs";
 import debounce from "debounce-promise";
-import { useCallback, useEffect, useState } from "react";
+import useFeaturedTags from "hooks/useFeaturedTags";
+import { useCallback } from "react";
 import AsyncCreatable from "react-select/async-creatable";
-import logger from "@/utils/logger";
-import useLocalStorage from "hooks/useLocalStorage";
-
-const today = dayjs();
 
 interface TagSelectorProps {
   value: EditTag[];
   onChange: (value: EditTag[]) => void;
 }
 const TagSelector: React.FC<TagSelectorProps> = ({ value, onChange }) => {
-  const [fetching, setFetching] = useState(false);
-  const [options, setOptions] = useLocalStorage("AUTOCOMPLETE", {
-    items: [] as string[],
-    timestamp: Date.now(),
-  });
-
-  const savedTime = dayjs(options.timestamp);
-  const fetchTags = async () => {
-    setFetching(true);
-
-    const res = await supabase
-      .from<definitions["tags"]>("tags")
-      .select(`id`)
-      .eq("featured", true);
-
-    if (res.data) {
-      setOptions({
-        items: res.data.map((i) => i.id),
-        timestamp: Date.now(),
-      });
-    }
-
-    if (res.error) {
-      logger.debug(res.error);
-    }
-
-    setFetching(false);
-  };
-
-  useEffect(() => {
-    if (options.items.length === 0) {
-      fetchTags();
-    } else if (today.subtract(3, "day") > savedTime) {
-      fetchTags();
-    }
-
-    // eslint-disable-next-line
-  }, []);
+  const { fetching, options } = useFeaturedTags();
 
   const handleSearch = async (inputValue: string | undefined) => {
     if (inputValue) {
@@ -76,8 +35,8 @@ const TagSelector: React.FC<TagSelectorProps> = ({ value, onChange }) => {
   const debouncedSearch = useCallback(debounce(handleSearch, 300), []);
 
   const _options = options.items.map((i) => ({
-    value: i,
-    label: i,
+    value: i.id,
+    label: i.id,
   }));
 
   return (

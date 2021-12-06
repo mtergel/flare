@@ -21,9 +21,7 @@ const UserArticles: React.FC<UserArticlesProps> = ({ userId, initialData }) => {
     return (
       <div className="pt-8 flex flex-col items-center justify-center space-y-7">
         <Browser size={200} mood="shocked" color={themeColor} />
-        <span className="text-gray-500 text-lg">
-          No articles published yet.
-        </span>
+        <span className="text-tMuted text-lg">No articles published yet.</span>
       </div>
     );
   }

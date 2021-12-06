@@ -82,19 +82,18 @@ const Profile: NextPageWithLayout<
   const router = useRouter();
   const profileTabItems = [
     {
+      key: "article",
       displayName: `Articles ${articles.count}`,
       href: `/${profile.username}`,
     },
     {
+      key: "notebook",
       displayName: "Notebooks",
       href: `/${profile.username}?tab=notebook`,
     },
   ];
 
-  const activeTab =
-    queryParamToString(router.query.tab, "article") === "article"
-      ? `/${profile.username}`
-      : `/${profile.username}?tab=notebook`;
+  const activeTab = queryParamToString(router.query.tab, "article");
 
   return (
     <>
@@ -110,7 +109,7 @@ const Profile: NextPageWithLayout<
                 />
                 <div className="mt-3 sm:mt-0">
                   <h1 className="font-bold text-xl">{profile.display_name}</h1>
-                  <h2 className="text-gray-400 text-sm mt-1">
+                  <h2 className="text-tMuted text-sm mt-1">
                     @{profile.username}
                   </h2>
                   <div className="mt-3">
@@ -141,7 +140,7 @@ const Profile: NextPageWithLayout<
         </Container>
       </div>
       <Container size="common">
-        {activeTab === `/${profile.username}` ? (
+        {activeTab === `article` ? (
           <UserArticles userId={profile.id} initialData={articles.data} />
         ) : null}
       </Container>

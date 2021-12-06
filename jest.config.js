@@ -9,6 +9,7 @@ module.exports = {
         Absolute imports see tsconfig.json
     */
     "^@/components/(.*)$": "<rootDir>/src/components/$1",
+    "^@/utils/(.*)$": "<rootDir>/src/utils/$1",
     /* Handle CSS imports (with CSS modules)
       https://jestjs.io/docs/webpack#mocking-css-modules */
     "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",

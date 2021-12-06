@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { ReactElement, ReactNode } from "react";
 import { definitions } from "@/utils/generated";
+import { PostgrestResponse } from "@supabase/postgrest-js";
 
 /**
  * NextPage extended with getLayout function
@@ -49,3 +50,14 @@ export interface PostsJoins extends Post {
 export interface GetPostForEdit extends Post {
   tags: definitions["post_tag"][];
 }
+
+export type SearchResultType = {
+  articleCount: number;
+  userCount: number;
+};
+
+export type LinkTab = {
+  key: string;
+  href: string;
+  displayName: string;
+};

@@ -4,20 +4,24 @@ import Avatar from "../Avatar/Avatar";
 
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
+import clsx from "clsx";
 
 dayjs.extend(relativeTime);
 interface ArticleCardProps {
   article: PostsJoins;
+  emojiClass?: string;
 }
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
+const ArticleCard: React.FC<ArticleCardProps> = ({ article, emojiClass }) => {
+  const merged = clsx(emojiClass, "article-bg");
+
   return (
     <article className="article-card">
       <Link
         href={`/${article.user.username}/articles/${article.slug}`}
         passHref
       >
-        <a className="article-bg">{article.emoji}</a>
+        <a className={merged}>{article.emoji}</a>
       </Link>
       <div className="article-content">
         <Link
@@ -37,7 +41,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
             />
             <div className="article-user-info">
               <div className="line-clamp-1">{article.user.display_name}</div>
-              <div className="flex items-center text-xs text-gray-500 space-x-1">
+              <div className="flex items-center text-xs text-tMuted space-x-1">
                 <time aria-label="Published at" dateTime={article.published_at}>
                   {dayjs(article.published_at).fromNow()}
                 </time>

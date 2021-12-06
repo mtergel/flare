@@ -1,3 +1,4 @@
+import Tag from "@/components/ArticleCard/Tag";
 import Avatar from "@/components/Avatar/Avatar";
 import Container from "@/components/Container/Container";
 import MobileToc from "@/components/Toc/MobileToc";
@@ -140,7 +141,7 @@ const ArticlePage: NextPageWithLayout<
             <h1 className="text-3xl inline-block max-w-3xl">
               <span className="font-bold text-center">{article.title}</span>
             </h1>
-            <div className="flex items-center justify-center text-sm text-gray-500 space-x-6">
+            <div className="flex items-center justify-center text-sm text-tMuted space-x-6">
               {article.published_at && (
                 <div className="flex items-center space-x-1">
                   <span>
@@ -171,20 +172,7 @@ const ArticlePage: NextPageWithLayout<
               <Container>
                 <div className="flex flex-none items-center overflow-x-auto mb-4 gap-2 lg:hidden">
                   {article.tags.map((i) => (
-                    <Link key={i.id} passHref href={`/tags/${i.id}`}>
-                      <a className="border rounded-full flex items-center space-x-1 text-xs py-1 pl-1 pr-3">
-                        <div className="h-6 w-6 rounded-full border">
-                          <Image
-                            alt=""
-                            src={i.image_url}
-                            width={24}
-                            height={24}
-                            className="rounded-full border"
-                          />
-                        </div>
-                        <span>{i.name}</span>
-                      </a>
-                    </Link>
+                    <Tag tag={i} key={i.id} />
                   ))}
                 </div>
                 <div
@@ -202,20 +190,12 @@ const ArticlePage: NextPageWithLayout<
                     <div className="font-semibold">Tags</div>
                     <div className="flex flex-wrap justify-between">
                       {article.tags.map((i) => (
-                        <Link key={i.id} passHref href={`/tags/${i.id}`}>
-                          <a className="flex space-x-1 items-center mt-3 flex-1 min-w-[49%] text-sm">
-                            <div className="h-6 w-6 rounded-full border">
-                              <Image
-                                alt=""
-                                src={i.image_url}
-                                width={24}
-                                height={24}
-                                className="rounded-full border"
-                              />
-                            </div>
-                            <span>{i.name}</span>
-                          </a>
-                        </Link>
+                        <Tag
+                          tag={i}
+                          key={i.id}
+                          className="flex space-x-1 items-center mt-3 flex-1 min-w-[49%] border-0 text-xs"
+                          largeImage
+                        />
                       ))}
                     </div>
                   </div>
@@ -249,7 +229,7 @@ const ArticlePage: NextPageWithLayout<
                   <>
                     <div className="h-6 block w-[1px] flex-shrink-0" />
                     <div className="p-5 bg-paper rounded-xl overflow-auto shadow-main">
-                      <div className="font-semibold">Table of Content</div>
+                      <div className="font-semibold mb-4">Table of Content</div>
                       <Toc headings={headings} activeId={activeId} />
                     </div>
                   </>

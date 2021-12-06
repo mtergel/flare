@@ -66,18 +66,18 @@ export const getStaticProps: GetStaticProps<TagPageProps> = async (context) => {
       .from("posts")
       .select(
         `
-      id,
-      title,
-      emoji,
-      post_type,
-      reading_time,
-      published,
-      published_at,
-      slug,
-      user:user_id (
-        username, display_name, avatar_url
-      ),
-      tags!inner(id)
+        id,
+        title,
+        emoji,
+        post_type,
+        reading_time,
+        published,
+        published_at,
+        slug,
+        user:user_id (
+          username, display_name, avatar_url
+        ),
+        tags!inner(id)
       `,
         // this is giving the wrong count
         { count: "estimated" }
@@ -118,22 +118,22 @@ const TagPage: NextPageWithLayout<
   InferGetStaticPropsType<typeof getStaticProps>
 > = (props) => {
   const { tag, articles } = props;
+  console.log(articles);
   const router = useRouter();
   const profileTabItems = [
     {
+      key: "article",
       displayName: `Articles`,
       href: `/${tag.id}`,
     },
     {
+      key: "notebook",
       displayName: "Notebooks",
       href: `/${tag.id}?tab=notebook`,
     },
   ];
 
-  const activeTab =
-    queryParamToString(router.query.tab, "article") === "article"
-      ? `/${tag.id}`
-      : `/${tag.id}?tab=notebook`;
+  const activeTab = queryParamToString(router.query.tab, "article");
 
   return (
     <>
@@ -150,7 +150,7 @@ const TagPage: NextPageWithLayout<
                 <div className="mt-3 pl-3 sm:pl-0 sm:mt-0">
                   <h1 className="font-bold text-2xl">{tag.name}</h1>
                   <div className="mt-3">
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-tMuted">
                       Tag your posts with{" "}
                       <span className="gray-bg py-1 px-2 rounded-lg">
                         {tag.id}
@@ -174,7 +174,7 @@ const TagPage: NextPageWithLayout<
         </Container>
       </div>
       <Container size="common">
-        {activeTab === `/${tag.id}` ? (
+        {activeTab === `article` ? (
           <TagArticles tagId={tag.id} initialData={articles.data} />
         ) : null}
       </Container>

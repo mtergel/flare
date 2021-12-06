@@ -3,7 +3,7 @@ import logger from "@/utils/logger";
 import { supabase } from "@/utils/supabaseClient";
 import { ErrorCode } from "@/utils/types";
 import { Session } from "@supabase/gotrue-js";
-import useLocalForage from "hooks/useLocalForage";
+import useLocalStorage from "hooks/useLocalStorage";
 import { useRouter } from "next/dist/client/router";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -22,9 +22,12 @@ const AuthContext = createContext<{
 
 const AuthProvider: React.FC<{}> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser, removeUser] = useLocalForage<
-    definitions["profiles"] | null
-  >("currentUser", null);
+  const [user, setUser] = useLocalStorage<definitions["profiles"] | null>(
+    "currentUser",
+    null
+  );
+
+  const removeUser = () => setUser(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ErrorCode | null>(null);
   const router = useRouter();

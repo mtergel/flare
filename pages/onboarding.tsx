@@ -131,7 +131,7 @@ const OnboardingHandleForm: React.FC<OnboardingHandleFormProps> = ({
         <h1 className="text-2xl font-semibold mb-4">Welcome</h1>
         <div className="space-y-1 mt-2">
           <h2 className="text-lg">Let&apos;s decide the name</h2>
-          <p className="text-gray-400 text-sm">
+          <p className="text-tMuted text-sm">
             A username is the @username other Flare users can use to find you. A
             name is the name visible to users on your profile. You can always
             change these later.
@@ -195,7 +195,7 @@ const OnboardingHandleForm: React.FC<OnboardingHandleFormProps> = ({
           {errors.username ? (
             <span className="error">{errors.username.message}</span>
           ) : (
-            <p className="text-gray-400 text-sm mt-2">
+            <p className="text-tMuted text-sm mt-2">
               You can enter alphanumeric characters and underscore.
             </p>
           )}
