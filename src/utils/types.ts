@@ -61,3 +61,9 @@ export type LinkTab = {
   href: string;
   displayName: string;
 };
+
+export type Likes = {
+  isLiked: boolean;
+  count: number;
+  hasError?: boolean;
+};

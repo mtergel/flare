@@ -6,18 +6,19 @@ import Toc from "@/components/Toc/Toc";
 import { definitions } from "@/utils/generated";
 import { markdownProcessor } from "@/utils/markdownProcessor";
 import { supabase } from "@/utils/supabaseClient";
-import { MDHeading, PostsJoins } from "@/utils/types";
+import { Likes, MDHeading, PostsJoins } from "@/utils/types";
+import updateViewCount from "@/utils/updateViewCount";
 import { FiCalendar } from "@react-icons/all-files/fi/FiCalendar";
 import { FiClock } from "@react-icons/all-files/fi/FiClock";
 import { FiPlay } from "@react-icons/all-files/fi/FiPlay";
 import dayjs from "dayjs";
 import useIntersectionObserver from "hooks/useIntersectionObserver";
+import { isNumber } from "lodash";
 // @ts-ignore
 import toc from "markdown-toc";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Layout from "ui/Layout/Layout";
 import { NextPageWithLayout } from "utils/types";
 
@@ -26,6 +27,7 @@ type ArticlePageProps = {
   headings: MDHeading[];
   article: PostsJoins;
   renderHTML: string;
+  likes: Likes;
 };
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
@@ -57,8 +59,35 @@ export const getStaticProps: GetStaticProps<ArticlePageProps> = async (
 
   if (res.data) {
     // preview mode or article is published
+
+    let likes = {
+      isLiked: false,
+      count: 0,
+      hasError: false,
+    };
+
     // can be viewed
     if (res.data.published || context.preview) {
+      // get likes count
+      const likesRes = await supabase
+        .from<definitions["post_likes"]>("post_likes")
+        .select(
+          `
+            id
+          `,
+          {
+            count: "estimated",
+          }
+        )
+        .eq("posts_id", res.data.id)
+        .limit(1);
+
+      if (isNumber(likesRes.count)) {
+        likes.count = likesRes.count as number;
+      } else {
+        likes.hasError = true;
+      }
+
       // generate headings
       const headings = toc(res.data.body_markdown, {
         maxDepth: 2,
@@ -78,6 +107,7 @@ export const getStaticProps: GetStaticProps<ArticlePageProps> = async (
           headings: headings.json,
           article: res.data as PostsJoins,
           renderHTML: String(file),
+          likes,
         },
         revalidate: 300,
       };
@@ -92,13 +122,23 @@ export const getStaticProps: GetStaticProps<ArticlePageProps> = async (
 const ArticlePage: NextPageWithLayout<
   InferGetStaticPropsType<typeof getStaticProps>
 > = (props) => {
-  const { isPreview, headings, article, renderHTML } = props;
+  const { isPreview, headings, article, renderHTML, likes } = props;
   // observor for toc
   const [activeId, setActiveId] = useState("");
   const callbackHandler = (id: string) => {
     setActiveId(id);
   };
   useIntersectionObserver(callbackHandler);
+
+  const handleViews = useCallback(async () => {
+    if (!isPreview) {
+      await updateViewCount(article.slug);
+    }
+  }, [article.slug, isPreview]);
+
+  useEffect(() => {
+    handleViews();
+  }, [handleViews]);
 
   return (
     <article className="bg-base pb-16">

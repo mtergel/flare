@@ -5,6 +5,7 @@ import Avatar from "../Avatar/Avatar";
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
 import clsx from "clsx";
+import { FiHeart } from "@react-icons/all-files/fi/FiHeart";
 
 dayjs.extend(relativeTime);
 interface ArticleCardProps {
@@ -51,6 +52,15 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, emojiClass }) => {
                     <span>{`${article.reading_time} min read`}</span>
                   </>
                 )}
+                {/* {article.likes && (
+                  <>
+                    <span>·</span>
+                    <div className="flex items-center">
+                      <FiHeart className="h-3 w-3 text-tMuted" />
+                      <span>{article.likes.count}</span>
+                    </div>
+                  </>
+                )} */}
               </div>
             </div>
           </a>
