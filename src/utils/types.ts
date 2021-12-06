@@ -61,3 +61,9 @@ export type SearchResultType = [
   PostgrestResponse<PostsJoins>,
   PostgrestResponse<definitions["profiles"]>
 ];
+
+export type LinkTab = {
+  key: string;
+  href: string;
+  displayName: string;
+};

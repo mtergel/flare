@@ -12,15 +12,16 @@ interface ArticleCardProps {
   emojiClass?: string;
 }
 
-// TODO FIX CLASS
 const ArticleCard: React.FC<ArticleCardProps> = ({ article, emojiClass }) => {
+  const merged = clsx(emojiClass, "article-bg");
+
   return (
     <article className="article-card">
       <Link
         href={`/${article.user.username}/articles/${article.slug}`}
         passHref
       >
-        <a className={clsx(emojiClass, "article-bg")}>{article.emoji}</a>
+        <a className={merged}>{article.emoji}</a>
       </Link>
       <div className="article-content">
         <Link

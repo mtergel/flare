@@ -2,11 +2,13 @@
   @apply relative;
 
   & .link-tabs-items {
-    &::before {
-      content: "";
-      display: inline-block;
-      min-width: 20px;
-      height: 1px;
+    &:not(:first-child) {
+      &::before {
+        content: "";
+        display: inline-block;
+        min-width: 20px;
+        height: 1px;
+      }
     }
 
     @apply flex items-center overflow-x-auto whitespace-nowrap;
@@ -24,12 +26,6 @@
           z-index: 1;
         }
       }
-      // & .link-tab-count {
-      //   @apply inline-block ml-1 text-tDefault bg-gray-100 dark:bg-gray-100 dark:bg-opacity-5 text-xs text-center border border-transparent font-medium;
-      //   min-width: 20px;
-      //   border-radius: 2em;
-      //   padding: 0 6px;
-      // }
     }
   }
 }
