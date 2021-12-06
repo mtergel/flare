@@ -51,16 +51,10 @@ export interface GetPostForEdit extends Post {
   tags: definitions["post_tag"][];
 }
 
-export type SearchResultType = [
-  PostgrestResponse<{
-    id: string;
-    name: string;
-    image_url: string;
-    featured?: boolean | undefined;
-  }>,
-  PostgrestResponse<PostsJoins>,
-  PostgrestResponse<definitions["profiles"]>
-];
+export type SearchResultType = {
+  articleCount: number;
+  userCount: number;
+};
 
 export type LinkTab = {
   key: string;
