@@ -34,7 +34,7 @@ const fetcher = async (input: searchProps) => {
       published: true,
       post_type: "article",
     })
-    .ilike("title", `%${param}%`)
+    .textSearch("title", `'${param}'`)
     .range((page - 1) * itemsPerPage, page * itemsPerPage - 1);
 
   if (res.error) {

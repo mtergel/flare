@@ -22,7 +22,7 @@ const fetcher = async (input: searchProps) => {
       avatar_url
       `
     )
-    .ilike("username", `%${param}%`)
+    .textSearch("username", `'${param}'`)
     .range((page - 1) * itemsPerPage, page * itemsPerPage - 1);
 
   if (res.error) {
