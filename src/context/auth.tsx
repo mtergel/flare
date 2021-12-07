@@ -2,7 +2,7 @@ import { definitions } from "@/utils/generated";
 import logger from "@/utils/logger";
 import { supabase } from "@/utils/supabaseClient";
 import { ErrorCode } from "@/utils/types";
-import { Session } from "@supabase/gotrue-js";
+import { AuthChangeEvent, Session } from "@supabase/gotrue-js";
 import useLocalStorage from "hooks/useLocalStorage";
 import { useRouter } from "next/dist/client/router";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -19,6 +19,15 @@ const AuthContext = createContext<{
   loading: true,
   error: null,
 });
+
+const setCookies = async (event: AuthChangeEvent, session: Session | null) => {
+  await fetch("/api/auth", {
+    method: "POST",
+    headers: new Headers({ "Content-Type": "application/json" }),
+    credentials: "same-origin",
+    body: JSON.stringify({ event, session }),
+  });
+};
 
 const AuthProvider: React.FC<{}> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
@@ -44,12 +53,7 @@ const AuthProvider: React.FC<{}> = ({ children }) => {
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        await fetch("/api/auth", {
-          method: "POST",
-          headers: new Headers({ "Content-Type": "application/json" }),
-          credentials: "same-origin",
-          body: JSON.stringify({ event, session }),
-        });
+        await setCookies(event, session);
         setSession(session);
       }
     );
@@ -69,6 +73,8 @@ const AuthProvider: React.FC<{}> = ({ children }) => {
         setLoading(true);
         const currentUser = supabase.auth.user();
         if (currentUser) {
+          await setCookies("SIGNED_IN", session);
+
           const { data, error, status } = await supabase
             .from<definitions["profiles"]>("profiles")
             .select(`id, username, avatar_url, display_name, bio`)

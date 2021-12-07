@@ -212,5 +212,23 @@
     &:focus {
       @apply border-border;
     }
+
+    &.ibtn-sm {
+      & svg {
+        @apply h-4 w-4;
+      }
+    }
+
+    &.ibtn-md {
+      & svg {
+        @apply h-5 w-5;
+      }
+    }
+
+    &.ibtn-lg {
+      & svg {
+        @apply h-6 w-6;
+      }
+    }
   }
 }

@@ -12,6 +12,102 @@ export interface paths {
       };
     };
   };
+  "/post_likes": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.post_likes.id"];
+          posts_id?: parameters["rowFilter.post_likes.posts_id"];
+          user_id?: parameters["rowFilter.post_likes.user_id"];
+          created_at?: parameters["rowFilter.post_likes.created_at"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["post_likes"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** post_likes */
+          post_likes?: definitions["post_likes"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.post_likes.id"];
+          posts_id?: parameters["rowFilter.post_likes.posts_id"];
+          user_id?: parameters["rowFilter.post_likes.user_id"];
+          created_at?: parameters["rowFilter.post_likes.created_at"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.post_likes.id"];
+          posts_id?: parameters["rowFilter.post_likes.posts_id"];
+          user_id?: parameters["rowFilter.post_likes.user_id"];
+          created_at?: parameters["rowFilter.post_likes.created_at"];
+        };
+        body: {
+          /** post_likes */
+          post_likes?: definitions["post_likes"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/post_tag": {
     get: {
       parameters: {
@@ -124,6 +220,9 @@ export interface paths {
           user_id?: parameters["rowFilter.posts.user_id"];
           reading_time?: parameters["rowFilter.posts.reading_time"];
           published_at?: parameters["rowFilter.posts.published_at"];
+          fts?: parameters["rowFilter.posts.fts"];
+          view_count?: parameters["rowFilter.posts.view_count"];
+          like_count?: parameters["rowFilter.posts.like_count"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -186,6 +285,9 @@ export interface paths {
           user_id?: parameters["rowFilter.posts.user_id"];
           reading_time?: parameters["rowFilter.posts.reading_time"];
           published_at?: parameters["rowFilter.posts.published_at"];
+          fts?: parameters["rowFilter.posts.fts"];
+          view_count?: parameters["rowFilter.posts.view_count"];
+          like_count?: parameters["rowFilter.posts.like_count"];
         };
         header: {
           /** Preference */
@@ -212,6 +314,9 @@ export interface paths {
           user_id?: parameters["rowFilter.posts.user_id"];
           reading_time?: parameters["rowFilter.posts.reading_time"];
           published_at?: parameters["rowFilter.posts.published_at"];
+          fts?: parameters["rowFilter.posts.fts"];
+          view_count?: parameters["rowFilter.posts.view_count"];
+          like_count?: parameters["rowFilter.posts.like_count"];
         };
         body: {
           /** posts */
@@ -238,6 +343,7 @@ export interface paths {
           username?: parameters["rowFilter.profiles.username"];
           avatar_url?: parameters["rowFilter.profiles.avatar_url"];
           bio?: parameters["rowFilter.profiles.bio"];
+          fts?: parameters["rowFilter.profiles.fts"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -294,6 +400,7 @@ export interface paths {
           username?: parameters["rowFilter.profiles.username"];
           avatar_url?: parameters["rowFilter.profiles.avatar_url"];
           bio?: parameters["rowFilter.profiles.bio"];
+          fts?: parameters["rowFilter.profiles.fts"];
         };
         header: {
           /** Preference */
@@ -314,6 +421,7 @@ export interface paths {
           username?: parameters["rowFilter.profiles.username"];
           avatar_url?: parameters["rowFilter.profiles.avatar_url"];
           bio?: parameters["rowFilter.profiles.bio"];
+          fts?: parameters["rowFilter.profiles.fts"];
         };
         body: {
           /** profiles */
@@ -426,6 +534,42 @@ export interface paths {
       };
     };
   };
+  "/rpc/process_like_count": {
+    post: {
+      parameters: {
+        body: {
+          args: { [key: string]: unknown };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
+  "/rpc/increment_page_view": {
+    post: {
+      parameters: {
+        body: {
+          args: {
+            post_slug: string;
+          };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
   "/rpc/create_published_date": {
     post: {
       parameters: {
@@ -480,6 +624,24 @@ export interface paths {
 }
 
 export interface definitions {
+  post_likes: {
+    /**
+     * Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Note:
+     * This is a Foreign Key to `posts.id`.<fk table='posts' column='id'/>
+     */
+    posts_id?: number;
+    /**
+     * Note:
+     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     */
+    user_id?: string;
+    created_at: string;
+  };
   post_tag: {
     /**
      * Note:
@@ -523,6 +685,9 @@ export interface definitions {
     user_id: string;
     reading_time?: number;
     published_at?: string;
+    fts?: string;
+    view_count: number;
+    like_count: number;
   };
   profiles: {
     /**
@@ -535,6 +700,7 @@ export interface definitions {
     username?: string;
     avatar_url?: string;
     bio?: string;
+    fts?: string;
   };
   tags: {
     /**
@@ -569,6 +735,12 @@ export interface parameters {
   offset: string;
   /** Limiting and Pagination */
   limit: string;
+  /** post_likes */
+  "body.post_likes": definitions["post_likes"];
+  "rowFilter.post_likes.id": string;
+  "rowFilter.post_likes.posts_id": string;
+  "rowFilter.post_likes.user_id": string;
+  "rowFilter.post_likes.created_at": string;
   /** post_tag */
   "body.post_tag": definitions["post_tag"];
   "rowFilter.post_tag.id": string;
@@ -589,6 +761,9 @@ export interface parameters {
   "rowFilter.posts.user_id": string;
   "rowFilter.posts.reading_time": string;
   "rowFilter.posts.published_at": string;
+  "rowFilter.posts.fts": string;
+  "rowFilter.posts.view_count": string;
+  "rowFilter.posts.like_count": string;
   /** profiles */
   "body.profiles": definitions["profiles"];
   "rowFilter.profiles.id": string;
@@ -597,6 +772,7 @@ export interface parameters {
   "rowFilter.profiles.username": string;
   "rowFilter.profiles.avatar_url": string;
   "rowFilter.profiles.bio": string;
+  "rowFilter.profiles.fts": string;
   /** tags */
   "body.tags": definitions["tags"];
   "rowFilter.tags.id": string;
