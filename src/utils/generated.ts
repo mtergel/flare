@@ -634,12 +634,12 @@ export interface definitions {
      * Note:
      * This is a Foreign Key to `posts.id`.<fk table='posts' column='id'/>
      */
-    posts_id: number;
+    posts_id?: number;
     /**
      * Note:
      * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
      */
-    user_id: string;
+    user_id?: string;
     created_at: string;
   };
   post_tag: {

@@ -1,7 +1,10 @@
+import Dialog from "@/components/Dialog/Dialog";
 import Spinner from "@/components/Spinner/Spinner";
 import { useAuth } from "context/auth";
 import usePostLiked from "hooks/supabase-hooks/like/usePostLiked";
+import useDisclosure from "hooks/useDisclosure";
 import { useState } from "react";
+import LoginForm from "ui/Auth/LoginForm";
 
 interface PostLikeButtonProps {
   like_count: number;
@@ -12,32 +15,41 @@ interface PostLikeButtonProps {
 const PostLikeButton: React.FC<PostLikeButtonProps> = (props) => {
   const { hideCount, like_count, post_id } = props;
   const { user } = useAuth();
-
-  const noop = (_: boolean) => {};
+  const { isOpen, setIsOpen, onOpen } = useDisclosure();
 
   if (user) {
     return <LoggedIn user_id={user.id} {...props} />;
   }
 
-  // TODO POP UP LOGIN MODAL
+  const LoginButton: React.FC<{}> = () => {
+    return (
+      <Dialog
+        title="Flare"
+        description="Where programmers share ideas and help each other grow."
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        content={
+          <div className="h-full sm:h-96">
+            <LoginForm />
+          </div>
+        }
+      >
+        <LikeButton
+          id={`${post_id}-hide-count`}
+          checked={false}
+          onChange={() => onOpen()}
+        />
+      </Dialog>
+    );
+  };
 
   if (hideCount) {
-    return (
-      <LikeButton
-        id={`${post_id}-hide-count`}
-        checked={false}
-        onChange={noop}
-      />
-    );
+    return <LoginButton />;
   }
 
   return (
     <div className="flex items-center space-x-2">
-      <LikeButton
-        id={`${post_id}-with-count`}
-        checked={false}
-        onChange={noop}
-      />
+      <LoginButton />
       <span className="text-sm text-tMuted">{like_count}</span>
     </div>
   );
@@ -123,6 +135,10 @@ interface LikeButtonProps {
   onChange: (value: boolean) => void;
   disabled?: boolean;
 }
+
+// weird sizes and animation
+// if needed larger size or small size
+// consider changing to normal svg icons
 const LikeButton: React.FC<LikeButtonProps> = ({
   checked,
   id,
