@@ -25,7 +25,11 @@ const MobileToc: React.FC<TocProps> = ({ headings, activeId }) => {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <IconButton aria-label="table of content" icon={<FiList />} />
+        <IconButton
+          aria-label="table of content"
+          icon={<FiList />}
+          variant="ghost"
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         sideOffset={4}

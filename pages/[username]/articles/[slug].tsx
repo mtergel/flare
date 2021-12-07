@@ -20,6 +20,7 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import Layout from "ui/Layout/Layout";
+import PostLikeButton from "ui/LikeButton/PostLikeButton";
 import { NextPageWithLayout } from "utils/types";
 
 type ArticlePageProps = {
@@ -166,9 +167,16 @@ const ArticlePage: NextPageWithLayout<
                 </span>
               </a>
             </Link>
-            {headings.length > 0 && (
-              <MobileToc activeId={activeId} headings={headings} />
-            )}
+            <div className="flex items-center space-x-3">
+              {headings.length > 0 && (
+                <MobileToc activeId={activeId} headings={headings} />
+              )}
+              <PostLikeButton
+                post_id={article.id}
+                like_count={article.like_count}
+                hideCount
+              />
+            </div>
           </div>
         </Container>
       </aside>
@@ -219,6 +227,16 @@ const ArticlePage: NextPageWithLayout<
                   dangerouslySetInnerHTML={{ __html: renderHTML }}
                   className="prose w-full max-w-full"
                 />
+                <div className="mt-10">
+                  <PostLikeButton
+                    post_id={article.id}
+                    like_count={article.like_count}
+                    buttonProps={{
+                      variant: "solid",
+                      isRound: true,
+                    }}
+                  />
+                </div>
               </Container>
             </div>
           </section>

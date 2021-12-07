@@ -20,6 +20,7 @@ export interface paths {
           posts_id?: parameters["rowFilter.post_likes.posts_id"];
           user_id?: parameters["rowFilter.post_likes.user_id"];
           created_at?: parameters["rowFilter.post_likes.created_at"];
+          liked?: parameters["rowFilter.post_likes.liked"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -74,6 +75,7 @@ export interface paths {
           posts_id?: parameters["rowFilter.post_likes.posts_id"];
           user_id?: parameters["rowFilter.post_likes.user_id"];
           created_at?: parameters["rowFilter.post_likes.created_at"];
+          liked?: parameters["rowFilter.post_likes.liked"];
         };
         header: {
           /** Preference */
@@ -92,6 +94,7 @@ export interface paths {
           posts_id?: parameters["rowFilter.post_likes.posts_id"];
           user_id?: parameters["rowFilter.post_likes.user_id"];
           created_at?: parameters["rowFilter.post_likes.created_at"];
+          liked?: parameters["rowFilter.post_likes.liked"];
         };
         body: {
           /** post_likes */
@@ -222,6 +225,7 @@ export interface paths {
           published_at?: parameters["rowFilter.posts.published_at"];
           fts?: parameters["rowFilter.posts.fts"];
           view_count?: parameters["rowFilter.posts.view_count"];
+          like_count?: parameters["rowFilter.posts.like_count"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -286,6 +290,7 @@ export interface paths {
           published_at?: parameters["rowFilter.posts.published_at"];
           fts?: parameters["rowFilter.posts.fts"];
           view_count?: parameters["rowFilter.posts.view_count"];
+          like_count?: parameters["rowFilter.posts.like_count"];
         };
         header: {
           /** Preference */
@@ -314,6 +319,7 @@ export interface paths {
           published_at?: parameters["rowFilter.posts.published_at"];
           fts?: parameters["rowFilter.posts.fts"];
           view_count?: parameters["rowFilter.posts.view_count"];
+          like_count?: parameters["rowFilter.posts.like_count"];
         };
         body: {
           /** posts */
@@ -531,6 +537,23 @@ export interface paths {
       };
     };
   };
+  "/rpc/increment_like_count": {
+    post: {
+      parameters: {
+        body: {
+          args: { [key: string]: unknown };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
   "/rpc/increment_page_view": {
     post: {
       parameters: {
@@ -621,6 +644,7 @@ export interface definitions {
      */
     user_id: string;
     created_at: string;
+    liked: boolean;
   };
   post_tag: {
     /**
@@ -667,6 +691,7 @@ export interface definitions {
     published_at?: string;
     fts?: string;
     view_count: number;
+    like_count: number;
   };
   profiles: {
     /**
@@ -720,6 +745,7 @@ export interface parameters {
   "rowFilter.post_likes.posts_id": string;
   "rowFilter.post_likes.user_id": string;
   "rowFilter.post_likes.created_at": string;
+  "rowFilter.post_likes.liked": string;
   /** post_tag */
   "body.post_tag": definitions["post_tag"];
   "rowFilter.post_tag.id": string;
@@ -742,6 +768,7 @@ export interface parameters {
   "rowFilter.posts.published_at": string;
   "rowFilter.posts.fts": string;
   "rowFilter.posts.view_count": string;
+  "rowFilter.posts.like_count": string;
   /** profiles */
   "body.profiles": definitions["profiles"];
   "rowFilter.profiles.id": string;

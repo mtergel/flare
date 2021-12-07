@@ -52,15 +52,11 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, emojiClass }) => {
                     <span>{`${article.reading_time} min read`}</span>
                   </>
                 )}
-                {/* {article.likes && (
-                  <>
-                    <span>·</span>
-                    <div className="flex items-center">
-                      <FiHeart className="h-3 w-3 text-tMuted" />
-                      <span>{article.likes.count}</span>
-                    </div>
-                  </>
-                )} */}
+                <span>·</span>
+                <div className="flex items-center justify-center">
+                  <FiHeart className="h-3 w-3 mr-1" />
+                  <span className="text-xs">{article.like_count}</span>
+                </div>
               </div>
             </div>
           </a>

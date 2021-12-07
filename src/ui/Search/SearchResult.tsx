@@ -1,6 +1,6 @@
 import LinkTabs from "@/components/LinkTabs/LinkTabs";
 import { definitions } from "@/utils/generated";
-import { queryParamToNumber, queryParamToString } from "@/utils/query";
+import { queryParamToString } from "@/utils/query";
 import { supabase } from "@/utils/supabaseClient";
 import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
@@ -39,7 +39,7 @@ const SearchResult: React.FC<{ param: string }> = ({ param }) => {
         published: true,
         post_type: "article",
       })
-      .ilike("title", `%${input}%`)
+      .textSearch("title", `'${input}'`)
       .limit(1);
 
     const profileRes = supabase
@@ -52,7 +52,7 @@ const SearchResult: React.FC<{ param: string }> = ({ param }) => {
           count: "estimated",
         }
       )
-      .ilike("username", `%${input}%`)
+      .textSearch("username", `'${input}'`)
       .limit(1);
 
     const res = await Promise.all([postRes as any, profileRes]);

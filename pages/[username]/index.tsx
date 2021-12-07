@@ -45,6 +45,7 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
         reading_time,
         published_at,
         slug,
+        like_count,
         user:user_id (
           username, display_name, avatar_url
         )
