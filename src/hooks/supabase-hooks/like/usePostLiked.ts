@@ -2,6 +2,7 @@ import { definitions } from "@/utils/generated";
 import logger from "@/utils/logger";
 import { supabase } from "@/utils/supabaseClient";
 import { PostgrestError } from "@supabase/postgrest-js";
+import { useState } from "react";
 import useSWR from "swr";
 
 const fetcher = async (userId: string, postId: number) => {
@@ -10,8 +11,7 @@ const fetcher = async (userId: string, postId: number) => {
     .select(
       `
       *
-      `,
-      { count: "estimated" }
+      `
     )
     .match({
       user_id: userId,
@@ -21,7 +21,14 @@ const fetcher = async (userId: string, postId: number) => {
 
   if (res.error) {
     logger.debug(res.error);
-    throw res.error;
+    if (
+      res.error.details ===
+      "Results contain 0 rows, application/vnd.pgrst.object+json requires 1 row"
+    ) {
+      return null;
+    } else {
+      throw res.error;
+    }
   }
 
   logger.debug(res);
@@ -41,12 +48,15 @@ function usePostLiked(userId: string, postId?: number) {
     fetcher,
     {
       errorRetryCount: 3,
+      revalidateOnFocus: false,
     }
   );
 
+  const [loading, setLoading] = useState(false);
+
   const like = async () => {
-    // no data and not validating
-    if (!data && !isValidating) {
+    if (!data) {
+      setLoading(true);
       // insert into table
       const res = await supabase
         .from<definitions["post_likes"]>("post_likes")
@@ -59,31 +69,28 @@ function usePostLiked(userId: string, postId?: number) {
       if (res.data) {
         await mutate(res.data);
       }
+      setLoading(false);
     }
   };
 
   const unlike = async () => {
-    // data exists and not validating
-    if (data && !isValidating) {
-      // update into table
+    if (data) {
+      setLoading(true);
+
       await supabase
         .from<definitions["post_likes"]>("post_likes")
-        .update({
-          liked: false,
-        })
+        .delete()
         .eq("id", data.id);
 
-      await mutate({
-        ...data,
-        liked: false,
-      });
+      await mutate(null);
+      setLoading(false);
     }
   };
 
   return {
     data,
     isValidating,
-    isLoading: !error && data === undefined, // null is valid now
+    isLoading: (!error && data === undefined) || loading, // null is valid now
     mutate,
     error: error as PostgrestError,
     like,

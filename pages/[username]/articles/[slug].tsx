@@ -231,10 +231,6 @@ const ArticlePage: NextPageWithLayout<
                   <PostLikeButton
                     post_id={article.id}
                     like_count={article.like_count}
-                    buttonProps={{
-                      variant: "solid",
-                      isRound: true,
-                    }}
                   />
                 </div>
               </Container>

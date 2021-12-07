@@ -17,7 +17,7 @@ const EmptyParamPage: React.FC<{}> = () => {
   return (
     <div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-5">
       {options.items.map((i) => (
-        <Link key={i.id} href={`/tag/${i.id}`} passHref>
+        <Link key={i.id} href={`/tags/${i.id}`} passHref>
           <a className="transition-colors hover:bg-gray-100 p-4 flex flex-col items-center justify-center space-y-2 border rounded-xl">
             <Image
               className="rounded-full border"

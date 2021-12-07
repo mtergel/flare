@@ -1,9 +1,5 @@
-import { Likes } from "@/utils/types";
+import Spinner from "@/components/Spinner/Spinner";
 import { useAuth } from "context/auth";
-import { FiHeart } from "@react-icons/all-files/fi/FiHeart";
-import IconButton, {
-  IconButtonProps,
-} from "@/components/IconButton/IconButton";
 import usePostLiked from "hooks/supabase-hooks/like/usePostLiked";
 import { useState } from "react";
 
@@ -11,38 +7,36 @@ interface PostLikeButtonProps {
   like_count: number;
   post_id: number;
   hideCount?: boolean;
-  buttonProps?: Omit<IconButtonProps, "aria-label">;
 }
 
 const PostLikeButton: React.FC<PostLikeButtonProps> = (props) => {
-  const { hideCount, buttonProps, like_count } = props;
+  const { hideCount, like_count, post_id } = props;
   const { user } = useAuth();
+
+  const noop = (_: boolean) => {};
 
   if (user) {
     return <LoggedIn user_id={user.id} {...props} />;
   }
 
+  // TODO POP UP LOGIN MODAL
+
   if (hideCount) {
     return (
-      <IconButton
-        aria-label="like"
-        icon={<FiHeart />}
-        variant="ghost"
-        // disabled={isLoading}
-        {...buttonProps}
+      <LikeButton
+        id={`${post_id}-hide-count`}
+        checked={false}
+        onChange={noop}
       />
     );
   }
 
   return (
     <div className="flex items-center space-x-2">
-      <IconButton
-        aria-label="like"
-        icon={<FiHeart />}
-        variant="ghost"
-        size="lg"
-        // disabled={isLoading}
-        {...buttonProps}
+      <LikeButton
+        id={`${post_id}-with-count`}
+        checked={false}
+        onChange={noop}
       />
       <span className="text-sm text-tMuted">{like_count}</span>
     </div>
@@ -56,41 +50,85 @@ const LoggedIn: React.FC<LoggenInProps> = ({
   like_count,
   post_id,
   hideCount,
-  buttonProps,
   user_id,
 }) => {
-  // const { data, isLoading, error } = usePostLiked(user_id, post_id);
+  const [localCount, setLocalCount] = useState(like_count);
+  const updateCount = (change: number) =>
+    setLocalCount((prev) => prev + change);
+  const { data, isLoading, error, like, unlike } = usePostLiked(
+    user_id,
+    post_id
+  );
 
-  const [checked, setChecked] = useState(false);
+  const handleLike = (_checked: boolean) => {
+    if (!isLoading) {
+      if (_checked) {
+        if (!data) {
+          // data is null
+          like();
+          updateCount(1);
+        }
+      } else {
+        if (data) {
+          unlike();
+          updateCount(-1);
+        }
+      }
+    }
+  };
 
-  if (hideCount) {
+  const handleChange = (e: boolean) => {
+    handleLike(e);
+  };
+
+  if (isLoading) {
     return (
-      <LikeButton
-        id={`${post_id}-hide-count`}
-        checked={checked}
-        onChange={(e) => setChecked(e)}
-      />
+      <div className="likeBtn-container">
+        <Spinner size="sm" className="text-primary" />
+      </div>
     );
   }
 
-  return (
-    <div className="flex items-center space-x-2">
-      <LikeButton
-        id={`${post_id}-with-count`}
-        checked={checked}
-        onChange={(e) => setChecked(e)}
-      />
-      <span className="text-sm text-tMuted">{like_count}</span>
-    </div>
-  );
+  if (data !== undefined) {
+    if (hideCount) {
+      return (
+        <LikeButton
+          id={`${post_id}-hide-count`}
+          checked={Boolean(data)}
+          onChange={(e) => handleChange(e)}
+          disabled={isLoading || Boolean(error)}
+        />
+      );
+    }
+
+    return (
+      <div className="flex items-center space-x-2">
+        <LikeButton
+          id={`${post_id}-with-count`}
+          checked={Boolean(data)}
+          onChange={(e) => handleChange(e)}
+          disabled={isLoading || Boolean(error)}
+        />
+        <span className="text-sm text-tMuted">{localCount}</span>
+      </div>
+    );
+  }
+
+  return null;
 };
 
 interface LikeButtonProps {
   id: string;
   checked: boolean;
   onChange: (value: boolean) => void;
+  disabled?: boolean;
 }
-const LikeButton: React.FC<LikeButtonProps> = ({ checked, id, onChange }) => {
+const LikeButton: React.FC<LikeButtonProps> = ({
+  checked,
+  id,
+  onChange,
+  disabled,
+}) => {
   return (
     <div className="likeBtn-container">
       <input
@@ -99,6 +137,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ checked, id, onChange }) => {
         className="likeBtn"
         id={`likeBtn-${id}`}
         onChange={(e) => onChange(e.currentTarget.checked)}
+        disabled={disabled}
       />
       <label htmlFor={`likeBtn-${id}`}>
         <svg
