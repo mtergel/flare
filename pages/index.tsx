@@ -1,6 +1,9 @@
 import Layout from "ui/Layout/Layout";
 import { NextPageWithLayout } from "utils/types";
 
+// get posts by published date limit 24 ?
+// then order by viewcount I guess ?
+
 const Home: NextPageWithLayout = () => {
   return (
     <>
