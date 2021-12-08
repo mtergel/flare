@@ -74,6 +74,7 @@ export const getStaticProps: GetStaticProps<TagPageProps> = async (context) => {
         published,
         published_at,
         slug,
+        like_count,
         user:user_id (
           username, display_name, avatar_url
         ),
@@ -118,7 +119,6 @@ const TagPage: NextPageWithLayout<
   InferGetStaticPropsType<typeof getStaticProps>
 > = (props) => {
   const { tag, articles } = props;
-  console.log(articles);
   const router = useRouter();
   const profileTabItems = [
     {
