@@ -102,9 +102,13 @@ module.exports = {
         ...theme("colors"),
         DEFAULT: theme("colors.border", "currentColor"),
       }),
-      fill: {
+      fill: (theme) => ({
+        current: "currentColor",
         paper: "var(--color-paper)",
-      },
+        black: theme("colors.black"),
+        white: theme("colors.white"),
+      }),
+
       typography: (theme) => ({
         DEFAULT: {
           css: {

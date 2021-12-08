@@ -1,0 +1,25 @@
+.tooltip-content {
+  @apply rounded px-4 py-2 text-xs bg-black text-white shadow-lg;
+
+  @media (prefers-reduced-motion: no-preference) {
+    will-change: transform, opacity;
+    &[data-state="delayed-open"] {
+      &[data-side="top"] {
+        @apply animate-slideUpAndFade;
+      }
+      &[data-side="bottom"] {
+        @apply animate-slideDownAndFade;
+      }
+      &[data-side="right"] {
+        @apply animate-slideRightAndFade;
+      }
+      &[data-side="left"] {
+        @apply animate-slideLeftAndFade;
+      }
+    }
+  }
+}
+
+.tooltip-arrow {
+  @apply fill-black dark:fill-white;
+}

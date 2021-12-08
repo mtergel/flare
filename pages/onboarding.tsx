@@ -107,7 +107,11 @@ const OnboardingHandleForm: React.FC<OnboardingHandleFormProps> = ({
       }
     } catch (error) {
       logger.debug("Error occured: ", error);
-      toast.error("Error occured.");
+      if (error.code === "23505") {
+        toast.error("Username is already taken");
+      } else {
+        toast.error("Error occured.");
+      }
     }
   };
 
@@ -304,7 +308,7 @@ const OnboardingMiscForm: React.FC<OnboardingMiscFormProps> = () => {
 
   if (finished) {
     return (
-      <div className="flex flex-col items-center justify-center p-4 ">
+      <div className="flex flex-col items-center justify-center p-4 h-full bg-paper">
         <div className="pb-2">
           <IceCream size={200} mood="blissful" color={themeColor} />
         </div>
