@@ -121,6 +121,7 @@ const AuthProvider: React.FC<{}> = ({ children }) => {
     // remove preview tokens
     fetch("/api/clearPreviewData");
     await supabase.auth.signOut();
+    await router.push("/");
     removeUser();
     setError(null);
   };
