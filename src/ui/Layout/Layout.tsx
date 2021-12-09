@@ -1,9 +1,8 @@
 import Container from "@/components/Container/Container";
+import { FiSearch } from "@react-icons/all-files/fi/FiSearch";
 import Image from "next/image";
 import Link from "next/link";
 import UserButton from "./UserButton";
-import { FiSearch } from "@react-icons/all-files/fi/FiSearch";
-import IconButton from "@/components/IconButton/IconButton";
 
 const Layout: React.FC<{}> = ({ children }) => {
   return (

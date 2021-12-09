@@ -1,9 +1,8 @@
 import Button from "@/components/Button/Button";
 import { supabase } from "@/utils/supabaseClient";
-
 import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
 import { FaGoogle } from "@react-icons/all-files/fa/FaGoogle";
-import { MdFlare } from "@react-icons/all-files/md/MdFlare";
+import Image from "next/image";
 import { useState } from "react";
 
 const LoginForm: React.FC<{}> = () => {
@@ -42,14 +41,20 @@ const LoginForm: React.FC<{}> = () => {
     <div className="pt-8 h-full flex flex-col">
       <header className="text-center flex flex-col items-center justify-center">
         <h1>
-          <div className="font-bold flex-grow flex space-x-1 items-center">
-            <span>
-              <MdFlare className="text-primary-500 h-10 w-10" />
-            </span>
+          <div className="font-bold flex-grow flex space-x-2 items-center">
+            <div>
+              <Image
+                src="/assets/logo_small.png"
+                alt=""
+                width={48}
+                height={48}
+                objectFit="contain"
+              />
+            </div>
             <span className="text-4xl tracking-wider">Flare</span>
           </div>
         </h1>
-        <p className="text-secondary pt-4">
+        <p className="text-secondary pt-4 text-sm text-tMuted">
           Where programmers share ideas and help each other grow.
         </p>
       </header>
