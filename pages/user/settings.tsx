@@ -24,7 +24,7 @@ const Settings: NextPageWithLayout = () => {
 };
 
 Settings.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
+  return <Layout hideFooter>{page}</Layout>;
 };
 
 export default Settings;

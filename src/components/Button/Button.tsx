@@ -1,9 +1,5 @@
 import clsx from "clsx";
-import React, {
-  ButtonHTMLAttributes,
-  DetailedHTMLProps,
-  forwardRef,
-} from "react";
+import { forwardRef, isValidElement, cloneElement } from "react";
 
 export type SizeVariant = "sm" | "md" | "lg";
 type ButtonVariant = "outline" | "solid" | "ghost";
@@ -48,8 +44,8 @@ interface ButtonOptions<E extends React.ElementType = React.ElementType> {
 
 type Ref = HTMLButtonElement;
 
-export type ButtonProps = DetailedHTMLProps<
-  ButtonHTMLAttributes<HTMLButtonElement>,
+export type ButtonProps = React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 > &
   ButtonOptions;
@@ -151,8 +147,8 @@ const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
 const ButtonIcon: React.FC<{ className?: string }> = (props) => {
   const { children, className, ...rest } = props;
 
-  const _children = React.isValidElement(children)
-    ? React.cloneElement(children, {
+  const _children = isValidElement(children)
+    ? cloneElement(children, {
         "aria-hidden": true,
         focusable: false,
         "data-testid": "buttonIcon",

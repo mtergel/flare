@@ -5,7 +5,10 @@ import Link from "next/link";
 import Footer from "./Footer";
 import UserButton from "./UserButton";
 
-const Layout: React.FC<{}> = ({ children }) => {
+interface LayoutProps {
+  hideFooter?: boolean;
+}
+const Layout: React.FC<LayoutProps> = ({ hideFooter, children }) => {
   return (
     <div className="flex flex-col h-full">
       <header className="bg-paper">
@@ -35,7 +38,7 @@ const Layout: React.FC<{}> = ({ children }) => {
         </Container>
       </header>
       <main className="flex-grow">{children}</main>
-      <Footer />
+      {!hideFooter && <Footer />}
     </div>
   );
 };
