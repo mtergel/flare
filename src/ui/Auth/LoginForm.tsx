@@ -30,6 +30,11 @@ const LoginForm: React.FC<{}> = () => {
         ...loadingState,
         github: true,
       });
+
+      // redirect
+      await supabase.auth.signIn({
+        provider: "github",
+      });
     } catch (error) {}
   };
 

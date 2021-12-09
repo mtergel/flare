@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IceCream } from "react-kawaii";
+import { PostgrestError } from "@supabase/postgrest-js";
 
 const Onboarding: NextPage = () => {
   const { user, error, loading } = useAuth();
@@ -107,7 +108,7 @@ const OnboardingHandleForm: React.FC<OnboardingHandleFormProps> = ({
       }
     } catch (error) {
       logger.debug("Error occured: ", error);
-      if (error.code === "23505") {
+      if ((error as PostgrestError).code === "23505") {
         toast.error("Username is already taken");
       } else {
         toast.error("Error occured.");
