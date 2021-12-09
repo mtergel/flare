@@ -2,16 +2,20 @@ import Container from "@/components/Container/Container";
 import { FiSearch } from "@react-icons/all-files/fi/FiSearch";
 import Image from "next/image";
 import Link from "next/link";
+import Footer from "./Footer";
 import UserButton from "./UserButton";
 
-const Layout: React.FC<{}> = ({ children }) => {
+interface LayoutProps {
+  hideFooter?: boolean;
+}
+const Layout: React.FC<LayoutProps> = ({ hideFooter, children }) => {
   return (
     <div className="flex flex-col h-full">
       <header className="bg-paper">
         <Container size="wide" className="h-16 flex items-center">
           <h1>
             <Link href="/" passHref>
-              <a className="text-lg font-bold flex-grow flex space-x-1 items-center">
+              <a className="text-lg font-bold flex-grow flex space-x-2 items-center">
                 <Image
                   src="/assets/logo_small.png"
                   alt=""
@@ -19,6 +23,7 @@ const Layout: React.FC<{}> = ({ children }) => {
                   height={48}
                   objectFit="contain"
                 />
+                <span className="text-2xl">Flare</span>
               </a>
             </Link>
           </h1>
@@ -33,7 +38,7 @@ const Layout: React.FC<{}> = ({ children }) => {
         </Container>
       </header>
       <main className="flex-grow">{children}</main>
-      <footer></footer>
+      {!hideFooter && <Footer />}
     </div>
   );
 };

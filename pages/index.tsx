@@ -1,12 +1,12 @@
 import ArticleCard from "@/components/ArticleCard/ArticleCard";
 import Container from "@/components/Container/Container";
+import Tooltip from "@/components/Tooltip/Tooltip";
 import { definitions } from "@/utils/generated";
 import { supabase } from "@/utils/supabaseClient";
+import { FiHelpCircle } from "@react-icons/all-files/fi/FiHelpCircle";
 import { GetStaticProps, InferGetStaticPropsType } from "next/types";
 import Layout from "ui/Layout/Layout";
 import { NextPageWithLayout, PostsJoins } from "utils/types";
-import { FiHelpCircle } from "@react-icons/all-files/fi/FiHelpCircle";
-import Tooltip from "@/components/Tooltip/Tooltip";
 
 interface HomePageProps {
   articles: PostsJoins[];

@@ -133,7 +133,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userId, username }) => {
 };
 
 DashboardArticle.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
+  return <Layout hideFooter>{page}</Layout>;
 };
 
 export default DashboardArticle;

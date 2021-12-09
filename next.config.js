@@ -6,6 +6,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 module.exports = withBundleAnalyzer({
   reactStrictMode: true,
   images: {
-    domains: ["anyqfjvtgmdymcwdoeac.supabase.in"],
+    domains: ["anyqfjvtgmdymcwdoeac.supabase.in", "cdn.buymeacoffee.com"],
   },
 });

@@ -29,7 +29,9 @@ const SavedToast: React.FC<SavedToastProps> = ({
               onClick={onClick}
               className="mt-1 text-sm text-tMuted cursor-pointer"
             >
-              {published && "Check out your article here."}
+              {published
+                ? "Check out your article here."
+                : " See your preview here."}
             </button>
           </div>
         </div>
