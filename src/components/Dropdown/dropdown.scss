@@ -30,7 +30,7 @@
 
   &:focus,
   &:hover {
-    @apply bg-opacity-50 bg-gray-200;
+    @apply zinc-hover-bg;
   }
 
   & .dropdown-item-left-slot {
@@ -80,7 +80,7 @@
     @apply pr-5 py-2 pl-9 relative outline-none cursor-pointer;
     &:focus,
     &:hover {
-      @apply bg-opacity-50 bg-gray-200;
+      @apply zinc-hover-bg;
     }
 
     & > .dropdown-radio-icon {
