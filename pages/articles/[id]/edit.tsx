@@ -26,7 +26,7 @@ const EditWrapper: NextPage = () => {
     );
   }
 
-  return null;
+  return <ErrorMessage text="Not logged in sorry" />;
 };
 
 const EditArticle: React.FC<{ uid: string }> = ({ uid }) => {
@@ -35,7 +35,11 @@ const EditArticle: React.FC<{ uid: string }> = ({ uid }) => {
   const { data, isLoading, error } = useGetArticle(postId);
 
   if (isLoading) {
-    return <Fallback />;
+    return (
+      <div className="pt-12">
+        <Fallback />
+      </div>
+    );
   }
 
   if (error) {

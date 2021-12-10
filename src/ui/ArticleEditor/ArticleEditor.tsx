@@ -427,7 +427,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             )}
           />
           <div className="editor-actions">
-            <Container className="flex items-center justify-around">
+            <Container className="flex items-center justify-end space-x-6">
               <div className="flex items-center space-x-3">
                 <label
                   htmlFor="published"

@@ -2,7 +2,7 @@
   @apply -mx-5 md:mx-auto;
 }
 .editor-actions {
-  @apply bg-paper py-2 fixed bottom-0 left-0 w-full top-auto border-t z-10;
+  @apply bg-paper py-3 fixed bottom-0 left-0 w-full top-auto border-t z-10;
 }
 
 .editor-title {
@@ -70,6 +70,9 @@
 }
 
 // moved to portal
+.rs__menu-portal {
+  z-index: 50 !important;
+}
 .rs__menu {
   @apply shadow rounded-none bg-paper;
 }
