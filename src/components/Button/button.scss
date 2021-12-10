@@ -147,9 +147,9 @@
 
   // colors
   &.btn-primary {
-    @apply bg-primary-500 text-white;
+    @apply bg-primary-500 dark:bg-primary-400 text-paper;
     &:hover {
-      @apply bg-primary-600;
+      @apply bg-primary-600 dark:bg-primary-700;
     }
     &:focus {
       @apply ring ring-primary-600 dark:ring-primary-500 ring-offset-2;
@@ -172,7 +172,7 @@
   }
 
   &.btn-danger {
-    @apply bg-red-400 text-white;
+    @apply bg-red-400 text-paper;
     &:hover {
       @apply bg-red-500;
     }

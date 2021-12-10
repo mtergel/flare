@@ -33,6 +33,10 @@ div#__next {
   height: 100%;
 }
 
+.zinc-hover-bg {
+  @apply bg-opacity-50 bg-zinc-200 dark:bg-zinc-700 dark:bg-opacity-50;
+}
+
 @tailwind components;
 
 // ui specific styles
