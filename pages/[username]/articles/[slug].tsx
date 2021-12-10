@@ -225,7 +225,7 @@ const ArticlePage: NextPageWithLayout<
                 </div>
                 <div
                   dangerouslySetInnerHTML={{ __html: renderHTML }}
-                  className="prose w-full max-w-full"
+                  className="prose dark:prose-invert w-full max-w-full"
                 />
                 <div className="mt-10">
                   <PostLikeButton

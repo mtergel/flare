@@ -6,7 +6,7 @@ const Privacy: NextPageWithLayout = () => {
   return (
     <div className="h-full py-12">
       <Container>
-        <div className="prose">
+        <div className="prose dark:prose-invert">
           <h1>Privacy Policy</h1>
           <p>Last updated: December 09, 2021</p>
           <p>

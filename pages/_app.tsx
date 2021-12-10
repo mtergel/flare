@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     <ThemeProvider
       attribute="class"
       defaultTheme="system"
-      storageKey="nightwind-mode"
+      storageKey="theme-mode"
     >
       <IconContext.Provider value={{ className: "r-icon" }}>
         <IdProvider>

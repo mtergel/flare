@@ -110,7 +110,6 @@ module.exports = {
         DEFAULT: {
           css: {
             color: theme("colors.tDefault"),
-
             "pre code::before": {
               "padding-left": "unset",
             },
@@ -124,7 +123,6 @@ module.exports = {
               height: "auto",
             },
             code: {
-              backgroundColor: theme("colors.gray.100"),
               fontWeight: "normal",
               "border-radius": "6px",
               padding: ".2em .4em",
@@ -153,9 +151,6 @@ module.exports = {
         },
       }),
     },
-    // nightwind: {
-    //   typography: true,
-    // },
   },
   variants: {
     extend: {
@@ -163,7 +158,6 @@ module.exports = {
     },
   },
   plugins: [
-    require("nightwind"),
     require("@tailwindcss/typography"),
     require("@tailwindcss/line-clamp"),
   ],
