@@ -369,38 +369,52 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             textAreaRef.current = e;
           }}
         />
-
-        <div className="flex items-center space-x-2 mb-4">
-          <div className="flex-shrink-0">
-            <ArticleImageUpload
-              onUpload={(url) => {
-                setUploadedImageUrl(url);
-              }}
-              user_id={user_id}
-            />
-          </div>
-          {uploadedImageUrl && (
-            <div className="flex-grow">
-              <div className="flex items-center space-x-2">
-                <Input
-                  readOnly
-                  value={`![Image description](${uploadedImageUrl})`}
-                  onClick={handleCopy}
-                  className="cursor-pointer flex-shrink min-w-0 w-full"
-                />
-                <Button
-                  leftIcon={<FiCopy />}
-                  onClick={handleCopy}
-                  className="flex-shrink-0"
-                >
-                  {copied ? "Copied" : "Copy"}
-                </Button>
-              </div>
+        <div className="space-y-2 p-2 bg-paper rounded-lg mb-4">
+          <Controller
+            control={control}
+            name="emoji"
+            render={({ field }) => (
+              <EmojiPicker value={field.value} onChange={field.onChange} />
+            )}
+          />
+          <Controller
+            control={control}
+            name="tag_keyword"
+            render={({ field }) => (
+              <TagSelector value={field.value} onChange={field.onChange} />
+            )}
+          />
+          <div className="flex items-center space-x-2">
+            <div className="flex-shrink-0">
+              <ArticleImageUpload
+                onUpload={(url) => {
+                  setUploadedImageUrl(url);
+                }}
+                user_id={user_id}
+              />
             </div>
-          )}
+            {uploadedImageUrl && (
+              <div className="flex-grow">
+                <div className="flex items-center space-x-2">
+                  <Input
+                    readOnly
+                    value={`![Image description](${uploadedImageUrl})`}
+                    onClick={handleCopy}
+                    className="cursor-pointer flex-shrink min-w-0 w-full"
+                  />
+                  <Button
+                    leftIcon={<FiCopy />}
+                    onClick={handleCopy}
+                    className="flex-shrink-0"
+                  >
+                    {copied ? "Copied" : "Copy"}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-
-        <div className="-mx-5 md:border md:rounded-md">
+        <div className="editor">
           <Controller
             control={control}
             name="body_markdown"
@@ -412,55 +426,41 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
               />
             )}
           />
-          <div className="pb-6 space-y-2 p-2">
-            <Controller
-              control={control}
-              name="emoji"
-              render={({ field }) => (
-                <EmojiPicker value={field.value} onChange={field.onChange} />
-              )}
-            />
-            <Controller
-              control={control}
-              name="tag_keyword"
-              render={({ field }) => (
-                <TagSelector value={field.value} onChange={field.onChange} />
-              )}
-            />
-          </div>
-          <div className="flex items-center space-x-6 justify-end mx-2 mb-2">
-            <div className="flex items-center space-x-2">
-              <label
-                htmlFor="published"
-                className="text-sm font-semibold text-tMuted"
+          <div className="editor-actions">
+            <Container className="flex items-center justify-around">
+              <div className="flex items-center space-x-3">
+                <label
+                  htmlFor="published"
+                  className="text-sm font-semibold text-tMuted"
+                >
+                  Publish
+                </label>
+                <Controller
+                  control={control}
+                  name="published"
+                  render={({ field }) => (
+                    <Switch
+                      id="published"
+                      name={field.name}
+                      ref={field.ref}
+                      checked={field.value || false}
+                      onCheckedChange={field.onChange}
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+              </div>
+              <Button
+                type="button"
+                onClick={handleSubmit(onSubmit)}
+                color="primary"
+                disabled={!isDirty}
+                isLoading={isSubmitting}
+                loadingText={loadingText}
               >
-                Publish
-              </label>
-              <Controller
-                control={control}
-                name="published"
-                render={({ field }) => (
-                  <Switch
-                    id="published"
-                    name={field.name}
-                    ref={field.ref}
-                    checked={field.value || false}
-                    onCheckedChange={field.onChange}
-                    disabled={isSubmitting}
-                  />
-                )}
-              />
-            </div>
-            <Button
-              type="button"
-              onClick={handleSubmit(onSubmit)}
-              color="primary"
-              disabled={!isDirty}
-              isLoading={isSubmitting}
-              loadingText={loadingText}
-            >
-              {isDirty ? "Save" : "Saved"}
-            </Button>
+                {isDirty ? "Save" : "Saved"}
+              </Button>
+            </Container>
           </div>
         </div>
       </Container>

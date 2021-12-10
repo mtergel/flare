@@ -1,7 +1,7 @@
 .tabs-list {
   @apply flex whitespace-nowrap mx-0 mt-0 flex-auto border border-b-0;
   margin-bottom: -1px;
-  @apply md:justify-start md:flex-row md:border-b md:border-0 md:px-2;
+  @apply md:justify-start md:flex-row md:border-b md:border-0;
 }
 
 .tabs-trigger {

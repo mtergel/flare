@@ -1,7 +1,6 @@
 import Fallback from "@/components/Fallback/Fallback";
 import { queryParamToNumber } from "@/utils/query";
 import { useAuth } from "context/auth";
-import withAuth from "context/withAuth";
 import useGetArticle from "hooks/supabase-hooks/articles/useGetArticle";
 import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
@@ -20,7 +19,7 @@ const EditWrapper: NextPage = () => {
     return (
       <div className="h-full flex flex-col">
         <MinHeader />
-        <div className="flex-grow bg-paper pb-20">
+        <div className="flex-grow pb-20">
           <EditArticle uid={user.id} />
         </div>
       </div>
@@ -65,4 +64,4 @@ const EditArticle: React.FC<{ uid: string }> = ({ uid }) => {
   return null;
 };
 
-export default withAuth(EditWrapper);
+export default EditWrapper;
