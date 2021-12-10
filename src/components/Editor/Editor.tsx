@@ -1,14 +1,10 @@
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/Tabs/Tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/Tabs/Tabs";
 import "codemirror-github-dark/lib/codemirror-github-dark-theme.css";
 import "codemirror-github-light/lib/codemirror-github-light-theme.css";
 import "codemirror/lib/codemirror.css";
 import "codemirror/mode/markdown/markdown";
 import { useTheme } from "next-themes";
+import { useState } from "react";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import Preview from "./Preview";
 
@@ -19,48 +15,51 @@ interface EditorProps {
 }
 const Editor: React.FC<EditorProps> = ({ markdown, onChange, title }) => {
   const { resolvedTheme } = useTheme();
+  const [editorState, setEditorState] = useState<"write" | "preview">("write");
 
   return (
-    <div className="editor-container">
-      <Tabs defaultValue="write">
+    <>
+      <Tabs
+        value={editorState}
+        onValueChange={(val) => setEditorState(val as "write" | "preview")}
+        className="sticky top-0 z-20"
+      >
         <TabsList
           aria-label="Markdown editor tab write/preview"
-          className="bg-base sticky md:rounded-t-md md:pt-2"
+          className="bg-base md:pt-2"
         >
           <TabsTrigger value="write">Write</TabsTrigger>
           <TabsTrigger value="preview">Preview</TabsTrigger>
         </TabsList>
-
-        <TabsContent value="write">
-          <CodeMirror
-            value={markdown}
-            onBeforeChange={(_editor, _data, value) => {
-              onChange(value);
-            }}
-            className="md_editor"
-            options={{
-              mode: "markdown",
-              theme: resolvedTheme === "light" ? "github-light" : "github-dark",
-              lineNumbers: true,
-              lineWrapping: true,
-              viewportMargin: Infinity,
-            }}
-          />
-        </TabsContent>
-        <TabsContent value="preview">
-          <div className="prose editor-preview-tw border-b-2">
-            {markdown || title ? (
-              <>
-                <h1>{title}</h1>
-                <Preview value={markdown} />
-              </>
-            ) : (
-              <p>Nothing to preview.</p>
-            )}
-          </div>
-        </TabsContent>
       </Tabs>
-    </div>
+      {editorState === "write" ? (
+        <CodeMirror
+          value={markdown}
+          onBeforeChange={(_editor, _data, value) => {
+            onChange(value);
+          }}
+          className="md_editor"
+          options={{
+            mode: "markdown",
+            theme: resolvedTheme === "light" ? "github-light" : "github-dark",
+            lineNumbers: true,
+            lineWrapping: true,
+            viewportMargin: Infinity,
+          }}
+        />
+      ) : (
+        <div className="prose editor-preview-tw border-b-2">
+          {markdown || title ? (
+            <>
+              <h1>{title}</h1>
+              <Preview value={markdown} />
+            </>
+          ) : (
+            <p>Nothing to preview.</p>
+          )}
+        </div>
+      )}
+    </>
   );
 };
 

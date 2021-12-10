@@ -14,7 +14,7 @@ const SavedToast: React.FC<SavedToastProps> = ({
     <div
       className={`${
         visible ? "animate-enter" : "animate-leave"
-      } border-l-4 border-green-500 max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+      } border-l-4 border-green-500 max-w-md w-full bg-white dark:bg-black shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5 dark:ring-white dark:ring-opacity-20`}
     >
       <div className="flex-1 w-0 p-4">
         <div className="flex items-start">
@@ -36,10 +36,10 @@ const SavedToast: React.FC<SavedToastProps> = ({
           </div>
         </div>
       </div>
-      <div className="flex border-l border-gray-200">
+      <div className="flex border-l border-gray-200 dark:border-gray-700">
         <button
           onClick={onClose}
-          className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary-600 hover:text-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
+          className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
         >
           Close
         </button>

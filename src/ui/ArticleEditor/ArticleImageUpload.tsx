@@ -64,7 +64,8 @@ const ArticleImageUpload: React.FC<ArticleImageUploadProps> = ({
         isLoading={uploading}
         loadingText="Uploading"
         leftIcon={<FiImage />}
-        variant="ghost"
+        variant="outline"
+        className="text-tMuted"
         as="span"
       >
         Upload image
