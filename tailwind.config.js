@@ -1,8 +1,5 @@
 module.exports = {
-  mode: "jit",
-  purge: {
-    content: ["./pages/**/*.{js,ts,jsx,tsx}", "./src/**/*.{js,ts,jsx,tsx}"],
-  },
+  content: ["./pages/**/*.{js,ts,jsx,tsx}", "./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class", // or 'media' or 'class'
   theme: {
     extend: {
@@ -109,65 +106,65 @@ module.exports = {
         white: theme("colors.white"),
       }),
 
-      typography: (theme) => ({
-        DEFAULT: {
-          css: {
-            color: theme("colors.tDefault"),
+      // typography: (theme) => ({
+      //   DEFAULT: {
+      //     css: {
+      //       color: theme("colors.tDefault"),
 
-            "pre code::before": {
-              "padding-left": "unset",
-            },
-            "pre code::after": {
-              "padding-right": "unset",
-            },
-            img: {
-              margin: "1.5rem auto",
-              display: "table",
-              maxWidth: "100%",
-              height: "auto",
-            },
-            code: {
-              backgroundColor: theme("colors.gray.100"),
-              fontWeight: "normal",
-              "border-radius": "6px",
-              padding: ".2em .4em",
-              margin: 0,
-              fontSize: "85%",
-            },
-            "code::before": {
-              content: '""',
-            },
-            "code::after": {
-              content: '""',
-            },
-            h1: {
-              paddingBottom: ".2em",
-              marginBottom: "1.1rem",
-              borderBottom: `1px solid ${theme("colors.border")}`,
-            },
-            a: {
-              color: theme("colors.primary.600"),
-              textDecoration: "none",
-              "&:hover": {
-                textDecoration: "underline",
-              },
-            },
-          },
-        },
-      }),
+      //       "pre code::before": {
+      //         "padding-left": "unset",
+      //       },
+      //       "pre code::after": {
+      //         "padding-right": "unset",
+      //       },
+      //       img: {
+      //         margin: "1.5rem auto",
+      //         display: "table",
+      //         maxWidth: "100%",
+      //         height: "auto",
+      //       },
+      //       code: {
+      //         backgroundColor: theme("colors.gray.100"),
+      //         fontWeight: "normal",
+      //         "border-radius": "6px",
+      //         padding: ".2em .4em",
+      //         margin: 0,
+      //         fontSize: "85%",
+      //       },
+      //       "code::before": {
+      //         content: '""',
+      //       },
+      //       "code::after": {
+      //         content: '""',
+      //       },
+      //       h1: {
+      //         paddingBottom: ".2em",
+      //         marginBottom: "1.1rem",
+      //         borderBottom: `1px solid ${theme("colors.border")}`,
+      //       },
+      //       a: {
+      //         color: theme("colors.primary.600"),
+      //         textDecoration: "none",
+      //         "&:hover": {
+      //           textDecoration: "underline",
+      //         },
+      //       },
+      //     },
+      //   },
+      // }),
     },
-    nightwind: {
-      typography: true,
-    },
+    // nightwind: {
+    //   typography: true,
+    // },
   },
-  variants: {
-    extend: {
-      typography: ["dark"],
-    },
-  },
+  // variants: {
+  //   extend: {
+  //     typography: ["dark"],
+  //   },
+  // },
   plugins: [
     require("nightwind"),
-    require("@tailwindcss/typography"),
+    // require("@tailwindcss/typography"),
     require("@tailwindcss/line-clamp"),
   ],
 };

@@ -16,6 +16,7 @@ export const blacklistedUsernames = [
   "faq",
   "privacy",
   "terms",
+  "flare",
 ];
 
 export const avatarURL =

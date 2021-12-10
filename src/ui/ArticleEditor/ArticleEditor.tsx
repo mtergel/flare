@@ -400,7 +400,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
           )}
         </div>
 
-        <div className="md:border md:rounded-md md:overflow-hidden">
+        <div className="-mx-5 md:border md:rounded-md">
           <Controller
             control={control}
             name="body_markdown"

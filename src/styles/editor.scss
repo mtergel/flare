@@ -35,9 +35,8 @@
   line-height: 1.5;
 }
 .md_editor {
-  //
   & .CodeMirror {
-    // sad
+    @apply h-auto min-h-[300px];
   }
 
   & .cm-s-github-dark.CodeMirror,
