@@ -15,7 +15,8 @@ const Privacy: NextPageWithLayout = () => {
 
           <p>
             These terms and conditions outline the rules and regulations for the
-            use of Flare's Website, located at https://flare-neon.vercel.app/.
+            use of Flare&apos;s Website, located at
+            https://flare-neon.vercel.app/.
           </p>
 
           <p>
@@ -27,11 +28,13 @@ const Privacy: NextPageWithLayout = () => {
           <p>
             The following terminology applies to these Terms and Conditions,
             Privacy Statement and Disclaimer Notice and all Agreements:
-            "Client", "You" and "Your" refers to you, the person log on this
-            website and compliant to the Company’s terms and conditions. "The
-            Company", "Ourselves", "We", "Our" and "Us", refers to our Company.
-            "Party", "Parties", or "Us", refers to both the Client and
-            ourselves. All terms refer to the offer, acceptance and
+            &quot;Client&quot;, &quot;You&quot; and &quot;Your&quot; refers to
+            you, the person log on this website and compliant to the Company’s
+            terms and conditions. &quot;The Company&quot;,
+            &quot;Ourselves&quot;, &quot;We&quot;, &quot;Our&quot; and
+            &quot;Us&quot;, refers to our Company. &quot;Party&quot;,
+            &quot;Parties&quot;, or &quot;Us&quot;, refers to both the Client
+            and ourselves. All terms refer to the offer, acceptance and
             consideration of payment necessary to undertake the process of our
             assistance to the Client in the most appropriate manner for the
             express purpose of meeting the Client’s needs in respect of
@@ -48,7 +51,7 @@ const Privacy: NextPageWithLayout = () => {
 
           <p>
             We employ the use of cookies. By accessing Flare, you agreed to use
-            cookies in agreement with the Flare's Privacy Policy.{" "}
+            cookies in agreement with the Flare&apos;s Privacy Policy.{" "}
           </p>
 
           <p>
@@ -226,8 +229,8 @@ const Privacy: NextPageWithLayout = () => {
           </ul>
 
           <p>
-            No use of Flare's logo or other artwork will be allowed for linking
-            absent a trademark license agreement.
+            No use of Flare&apos;s logo or other artwork will be allowed for
+            linking absent a trademark license agreement.
           </p>
 
           <h3>

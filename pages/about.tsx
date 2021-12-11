@@ -30,8 +30,8 @@ const About: NextPageWithLayout = () => {
               This is a open source hobby project made with ❤️
             </p>
             <p className="text-tMuted">
-              I've wanted to keep track of something I learned while building a
-              project for my portfolio.
+              I&apos;ve wanted to keep track of something I learned while
+              building a project for my portfolio.
             </p>
           </div>
         </div>
@@ -56,7 +56,7 @@ const About: NextPageWithLayout = () => {
               </a>
               <span>
                 {" "}
-                and if you'd like it, feel free to{" "}
+                and if you&apos;d like it, feel free to{" "}
                 <a
                   href="https://www.buymeacoffee.com/trglm"
                   target="_blank"
