@@ -271,8 +271,13 @@ const ArticlePage: NextPageWithLayout<
                     </Link>
                     <div className="w-[calc(100%-70px)]">
                       <Link passHref href={`/${article.user.username}`}>
-                        <a className="block mt-1 font-semibold">
-                          {article.user.username}
+                        <a>
+                          <div>
+                            <div className="font-semibold text-sm">
+                              {article.user.display_name}
+                            </div>
+                            <div className="text-tMuted text-xs">{`@${article.user.username}`}</div>
+                          </div>
                         </a>
                       </Link>
                     </div>

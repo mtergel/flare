@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import clsx from "clsx";
 import { FiHeart } from "@react-icons/all-files/fi/FiHeart";
 import HoverCard from "../HoverCard/HoverCard";
+import HoverUserCard from "ui/HoverUserCard/HoverUserCard";
 
 dayjs.extend(relativeTime);
 interface ArticleCardProps {
@@ -36,30 +37,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, emojiClass }) => {
         </Link>
         <HoverCard
           contentClassname="w-[300px] p-4"
-          content={
-            <div className="flex flex-col">
-              <Link href={`/${article.user.username}`} passHref>
-                <a>
-                  <Avatar
-                    src={article.user.avatar_url}
-                    fallback={article.user.display_name}
-                    size="lg"
-                  />
-                </a>
-              </Link>
-              <Link href={`/${article.user.username}`} passHref>
-                <a className="mt-1">
-                  <div className="text-sm">
-                    <div className="font-semibold text-sm">
-                      {article.user.display_name}
-                    </div>
-                    <div className="text-tMuted text-xs">{`@${article.user.username}`}</div>
-                  </div>
-                </a>
-              </Link>
-              <div className="text-sm pt-4">{article.user.bio}</div>
-            </div>
-          }
+          content={<HoverUserCard user={article.user} />}
         >
           <div>
             <Link href={`/${article.user.username}`} passHref>
