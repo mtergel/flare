@@ -72,6 +72,12 @@ const LoggedIn: React.FC<LoggenInProps> = ({
     post_id
   );
 
+  // This localCount will only work on component level
+  // meaning if you two button were to be rendered
+  // and if one updates the count
+  // the count won't be shown in the other
+  // *TODO
+
   const handleLike = (_checked: boolean) => {
     if (!isLoading) {
       if (_checked) {
