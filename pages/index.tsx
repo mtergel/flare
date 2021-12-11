@@ -45,7 +45,7 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
 
   if (articleRes.data) {
     articles = (articleRes.data as PostsJoins[]).sort(
-      (a, b) => b.view_count - a.view_count
+      (a, b) => a.view_count - b.view_count
     );
   }
 
