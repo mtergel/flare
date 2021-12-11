@@ -1,0 +1,20 @@
+.hovercard-content {
+  @apply bg-paper shadow-popover dark:border rounded-lg;
+  @media (prefers-reduced-motion: no-preference) {
+    will-change: transform, opacity;
+    &[data-state="open"] {
+      &[data-side="top"] {
+        @apply animate-slideUpAndFade;
+      }
+      &[data-side="bottom"] {
+        @apply animate-slideDownAndFade;
+      }
+      &[data-side="right"] {
+        @apply animate-slideRightAndFade;
+      }
+      &[data-side="left"] {
+        @apply animate-slideLeftAndFade;
+      }
+    }
+  }
+}

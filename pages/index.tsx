@@ -1,6 +1,7 @@
 import ArticleCard from "@/components/ArticleCard/ArticleCard";
 import Container from "@/components/Container/Container";
 import Tooltip from "@/components/Tooltip/Tooltip";
+import { postUserFields } from "@/utils/const";
 import { definitions } from "@/utils/generated";
 import { supabase } from "@/utils/supabaseClient";
 import { FiHelpCircle } from "@react-icons/all-files/fi/FiHelpCircle";
@@ -30,7 +31,7 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
         like_count,
         view_count,
         user:user_id (
-          username, display_name, avatar_url
+          ${postUserFields}
         )
       `
     )

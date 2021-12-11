@@ -2,6 +2,7 @@ import Avatar from "@/components/Avatar/Avatar";
 import Button from "@/components/Button/Button";
 import Container from "@/components/Container/Container";
 import LinkTabs from "@/components/LinkTabs/LinkTabs";
+import { postUserFields } from "@/utils/const";
 import { definitions } from "@/utils/generated";
 import { queryParamToString } from "@/utils/query";
 import { supabase } from "@/utils/supabaseClient";
@@ -47,7 +48,7 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
         slug,
         like_count,
         user:user_id (
-          username, display_name, avatar_url
+          ${postUserFields}
         )
         `,
         { count: "estimated" }

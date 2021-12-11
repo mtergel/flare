@@ -4,6 +4,7 @@ import useSWR from "swr";
 import logger from "@/utils/logger";
 import { definitions } from "@/utils/generated";
 import { PostsJoins } from "@/utils/types";
+import { postUserFields } from "@/utils/const";
 
 interface searchProps {
   param: string;
@@ -27,7 +28,7 @@ const fetcher = async (input: searchProps) => {
       slug,
       like_count,
       user:user_id (
-        username, display_name, avatar_url
+        ${postUserFields}
       )
       
       `

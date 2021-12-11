@@ -1,6 +1,7 @@
 import Avatar from "@/components/Avatar/Avatar";
 import Container from "@/components/Container/Container";
 import LinkTabs from "@/components/LinkTabs/LinkTabs";
+import { postUserFields } from "@/utils/const";
 import { definitions } from "@/utils/generated";
 import { queryParamToString } from "@/utils/query";
 import { supabase } from "@/utils/supabaseClient";
@@ -76,7 +77,7 @@ export const getStaticProps: GetStaticProps<TagPageProps> = async (context) => {
         slug,
         like_count,
         user:user_id (
-          username, display_name, avatar_url
+          ${postUserFields}
         ),
         tags!inner(id)
       `,
