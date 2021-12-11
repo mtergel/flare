@@ -1,7 +1,6 @@
+import { definitions } from "@/utils/generated";
 import { NextPage } from "next";
 import { ReactElement, ReactNode } from "react";
-import { definitions } from "@/utils/generated";
-import { PostgrestResponse } from "@supabase/postgrest-js";
 
 /**
  * NextPage extended with getLayout function
@@ -60,10 +59,4 @@ export type LinkTab = {
   key: string;
   href: string;
   displayName: string;
-};
-
-export type Likes = {
-  isLiked: boolean;
-  count: number;
-  hasError?: boolean;
 };
