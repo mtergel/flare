@@ -1,3 +1,4 @@
+import { postUserFields } from "@/utils/const";
 import { definitions } from "@/utils/generated";
 import logger from "@/utils/logger";
 import { supabase } from "@/utils/supabaseClient";
@@ -16,7 +17,7 @@ const fetcher = async (tagsId: string, page: number, itemsPerPage: number) => {
         published,
         published_at,
         user:user_id (
-            username, display_name, avatar_url
+          ${postUserFields}
         ),
         tags!inner(id)
         `

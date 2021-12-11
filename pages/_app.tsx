@@ -1,5 +1,4 @@
 import "@/styles/globals.scss";
-import { IdProvider } from "@radix-ui/react-id";
 import { IconContext } from "@react-icons/all-files/lib";
 import AuthProvider from "context/auth";
 import { ThemeProvider } from "next-themes";
@@ -21,9 +20,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       storageKey="theme-mode"
     >
       <IconContext.Provider value={{ className: "r-icon" }}>
-        <IdProvider>
-          <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
-        </IdProvider>
+        <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
       </IconContext.Provider>
       <Toaster
         toastOptions={{
