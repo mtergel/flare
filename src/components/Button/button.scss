@@ -60,7 +60,7 @@
 
   //   sizes
   &.btn-sm {
-    @apply py-1 px-3 text-sm;
+    @apply py-[5px] px-3 text-sm;
 
     & .button-icon-left {
       @apply -ml-1 mr-2;

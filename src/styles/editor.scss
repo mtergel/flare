@@ -1,5 +1,5 @@
 .editor {
-  @apply -mx-5 md:mx-auto;
+  @apply -mx-5 sm:mx-auto;
 }
 .editor-actions {
   @apply bg-paper py-3 fixed bottom-0 left-0 w-full top-auto border-t z-10;
@@ -10,17 +10,40 @@
   line-height: 1.5;
 }
 .md_editor {
-  @apply border border-t-0 border-border;
-  & .CodeMirror {
-    @apply h-auto min-h-[300px] pr-6 py-4;
+  @apply border border-t-0 border-slate-300 dark:border-border;
+  & .cm-focused {
+    @apply border-0;
+    outline: none !important;
   }
 
-  & .cm-s-github-dark.CodeMirror,
-  .cm-s-github-dark .CodeMirror-lines,
-  .cm-s-github-dark .CodeMirror-gutters {
-    @apply bg-paper;
+  & .cm-content,
+  & .cm-gutter {
+    min-height: 300px;
+    @apply bg-paper text-tDefault caret-current;
+  }
+
+  & .cm-content {
+    padding: 10px 6px;
+  }
+
+  & .cm-scroller {
+    overflow: auto;
+  }
+  & .ͼ2 .cm-gutters {
+    @apply bg-paper text-tMuted border-slate-300 dark:border-border;
+  }
+  & .cm-gutterElement {
+    @apply text-tMuted;
+  }
+  & .cm-placeholder {
+    @apply text-tMuted;
   }
 }
+
+.ͼ1 .cm-line {
+  padding: 0 4px 0 8px;
+}
+
 .editor-preview-tw {
   @apply max-w-5xl mx-auto p-8 pl-4 bg-paper border border-t-0;
 }

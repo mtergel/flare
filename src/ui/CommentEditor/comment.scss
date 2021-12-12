@@ -1,5 +1,5 @@
 .comment {
-  maring-left: 1px;
+  @apply border border-slate-300 dark:border-border rounded-md;
 
   &.comment-caret {
     &::before,
@@ -10,11 +10,23 @@
     }
 
     &::before {
-      @apply bg-border;
+      @apply bg-slate-300 dark:bg-border;
     }
     &::after {
       @apply bg-slate-200 dark:bg-black;
       margin-left: 1px;
     }
+  }
+}
+
+.comment-md-editor {
+  @apply border-0 rounded-md;
+  & .cm-content,
+  & .cm-gutter {
+    min-height: 100px;
+  }
+
+  & .cm-content {
+    @apply rounded-md;
   }
 }
