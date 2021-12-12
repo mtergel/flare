@@ -1,0 +1,20 @@
+.comment {
+  maring-left: 1px;
+
+  &.comment-caret {
+    &::before,
+    &::after {
+      @apply hidden md:block absolute top-[11px] right-full left-[9px] w-[8px] h-4 pointer-events-none;
+      content: " ";
+      clip-path: polygon(0 50%, 100% 0, 100% 100%);
+    }
+
+    &::before {
+      @apply bg-border;
+    }
+    &::after {
+      @apply bg-slate-200 dark:bg-black;
+      margin-left: 1px;
+    }
+  }
+}

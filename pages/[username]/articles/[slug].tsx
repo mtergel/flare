@@ -18,6 +18,7 @@ import toc from "markdown-toc";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import CommentEditor from "ui/CommentEditor/CommentEditor";
 import Layout from "ui/Layout/Layout";
 import PostLikeButton from "ui/LikeButton/PostLikeButton";
 import { NextPageWithLayout } from "utils/types";
@@ -267,6 +268,11 @@ const ArticlePage: NextPageWithLayout<
             </div>
           </aside>
         </div>
+      </Container>
+      <Container size="wide">
+        <section className="w-full lg:w-[calc(100%-330px)]">
+          <CommentEditor />
+        </section>
       </Container>
     </article>
   );
