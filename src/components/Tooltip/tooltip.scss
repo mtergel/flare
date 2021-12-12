@@ -1,5 +1,5 @@
 .tooltip-content {
-  @apply rounded px-4 py-2 text-xs bg-black text-white shadow-lg;
+  @apply rounded px-4 py-2 text-xs bg-black dark:bg-paper dark:border text-white shadow-lg;
 
   @media (prefers-reduced-motion: no-preference) {
     will-change: transform, opacity;
@@ -21,5 +21,5 @@
 }
 
 .tooltip-arrow {
-  @apply fill-black dark:fill-white;
+  @apply fill-black dark:fill-paper;
 }

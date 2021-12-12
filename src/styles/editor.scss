@@ -27,10 +27,12 @@
   }
 
   & .cm-scroller {
+    @apply font-sans text-sm;
+
     overflow: auto;
   }
   & .ͼ2 .cm-gutters {
-    @apply bg-paper text-tMuted border-slate-300 dark:border-border;
+    @apply bg-paper text-tMuted border-r-0;
   }
   & .cm-gutterElement {
     @apply text-tMuted;

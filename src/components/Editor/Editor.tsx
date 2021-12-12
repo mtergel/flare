@@ -35,7 +35,11 @@ const Editor: React.FC<EditorProps> = ({ markdown, onChange, title }) => {
         </TabsList>
       </Tabs>
       {editorState === "write" ? (
-        <RawEditor value={markdown} onChange={onChange} />
+        <RawEditor
+          value={markdown}
+          onChange={onChange}
+          placeholderString="Start writing.."
+        />
       ) : (
         <div className="prose dark:prose-invert editor-preview-tw border-b-2">
           {markdown || title ? (

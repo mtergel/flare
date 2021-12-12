@@ -75,7 +75,7 @@ const CommentEditor: React.FC<CommentEditorProps> = () => {
 
             <div className="p-2 rounded-b-md bg-paper">
               {editorState === "write" ? (
-                <div className="rounded-md border">
+                <div className="rounded-md border mt-2">
                   <RawEditor
                     value={markdown}
                     onChange={handleChange}

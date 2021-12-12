@@ -269,9 +269,12 @@ const ArticlePage: NextPageWithLayout<
           </aside>
         </div>
       </Container>
-      <Container size="wide">
+      <Container size="wide" className="pt-6 md:pt-12">
         <section className="w-full lg:w-[calc(100%-330px)]">
-          <CommentEditor />
+          <div className="border-b text-2xl font-bold pb-2">Comments</div>
+          <div className="pt-4">
+            <CommentEditor />
+          </div>
         </section>
       </Container>
     </article>
