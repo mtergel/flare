@@ -27,12 +27,15 @@ import HoverUserCard from "ui/HoverUserCard/HoverUserCard";
 import logger from "@/utils/logger";
 import { supabase } from "@/utils/supabaseClient";
 import { definitions } from "@/utils/generated";
+import Button from "@/components/Button/Button";
+import { useReplyTo } from "context/reply";
+import CommentReplies from "./CommentReplies";
 
 dayjs.extend(relativeTime);
 
 interface CommentBlockProps {
   comment: Comment;
-  onDeleteMutation: (id: number) => void;
+  onDeleteMutation: (comment: Comment) => Promise<void>;
 }
 
 const CommentBlock: React.FC<CommentBlockProps> = ({
@@ -41,6 +44,7 @@ const CommentBlock: React.FC<CommentBlockProps> = ({
 }) => {
   const { user } = useAuth();
   const { isOpen, onOpen, setIsOpen } = useDisclosure();
+  const replyTo = useReplyTo();
 
   const handleDeleteComment = () => {
     toast.promise(
@@ -69,8 +73,12 @@ const CommentBlock: React.FC<CommentBlockProps> = ({
       logger.debug(res.error);
       throw res.error;
     } else {
-      onDeleteMutation(comment.id);
+      await onDeleteMutation(comment);
     }
+  };
+
+  const onReply = () => {
+    if (replyTo) replyTo.setReplyTo(comment);
   };
 
   return (
@@ -95,72 +103,88 @@ const CommentBlock: React.FC<CommentBlockProps> = ({
             </HoverCard>
           </span>
         </div>
-        <div className="comment comment-caret">
-          <div className="flex items-center space-x-1 rounded-t-md overflow-hidden px-4 py-2 bg-slate-200 dark:bg-black">
-            <div className="text-sm flex items-center space-x-2 flex-grow">
-              <h3 className="line-clamp-1">
-                <strong>{comment.user.display_name}</strong>
-                <span className="text-tMuted"> @{comment.user.username}</span>
-              </h3>
-              <span className="text-tMuted flex-shrink-0">
-                commented{" "}
-                <time aria-label="commented at" dateTime={comment.created_at}>
-                  {dayjs(comment.created_at).fromNow()}
-                </time>
-              </span>
-            </div>
+        <div>
+          <div className="comment comment-caret">
+            <div className="flex items-center space-x-1 rounded-t-md overflow-hidden px-4 py-2 bg-slate-200 dark:bg-black">
+              <div className="text-sm flex items-center space-x-2 flex-grow">
+                <h3 className="line-clamp-1">
+                  <strong>{comment.user.display_name}</strong>
+                  <span className="text-tMuted"> @{comment.user.username}</span>
+                </h3>
+                <span className="text-tMuted flex-shrink-0">
+                  commented{" "}
+                  <time aria-label="commented at" dateTime={comment.created_at}>
+                    {dayjs(comment.created_at).fromNow()}
+                  </time>
+                </span>
+              </div>
 
-            <div className="h-8">
-              {user && comment.user_id === user.id && (
-                <>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <IconButton
-                        aria-label="comment options"
-                        size="sm"
-                        variant="ghost"
-                        icon={<FiMoreHorizontal />}
-                      />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent sideOffset={1}>
-                      <DropdownMenuItem color="danger" asChild onClick={onOpen}>
-                        <div>
-                          <DropdownMenuLeftSlot>
-                            <FiTrash2 />
-                          </DropdownMenuLeftSlot>
-                          Delete
-                        </div>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                  <AlertDialog
-                    title="Delete comment"
-                    description="Are you sure you want to delete this comment?"
-                    open={isOpen}
-                    onOpenChange={setIsOpen}
-                    actions={
-                      <div className="alert-button-container">
-                        <AlertCancelButton>Cancel</AlertCancelButton>
-                        <AlertActionButton
-                          className="alert-danger"
-                          onClick={handleDeleteComment}
+              <div className="h-8">
+                {user && comment.user_id === user.id && (
+                  <>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <IconButton
+                          aria-label="comment options"
+                          size="sm"
+                          variant="ghost"
+                          icon={<FiMoreHorizontal />}
+                        />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent sideOffset={1}>
+                        <DropdownMenuItem
+                          color="danger"
+                          asChild
+                          onClick={onOpen}
                         >
-                          Delete
-                        </AlertActionButton>
-                      </div>
-                    }
-                  />
-                </>
-              )}
-            </div>
-          </div>
-          <div className="p-2 rounded-md bg-paper">
-            <div className="mx-2 ">
-              <div className="prose dark:prose-invert text-sm max-w-5xl mx-auto">
-                <Preview value={comment.comment_value} />
+                          <div>
+                            <DropdownMenuLeftSlot>
+                              <FiTrash2 />
+                            </DropdownMenuLeftSlot>
+                            Delete
+                          </div>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                    <AlertDialog
+                      title="Delete comment"
+                      description="Are you sure you want to delete this comment?"
+                      open={isOpen}
+                      onOpenChange={setIsOpen}
+                      actions={
+                        <div className="alert-button-container">
+                          <AlertCancelButton>Cancel</AlertCancelButton>
+                          <AlertActionButton
+                            className="alert-danger"
+                            onClick={handleDeleteComment}
+                          >
+                            Delete
+                          </AlertActionButton>
+                        </div>
+                      }
+                    />
+                  </>
+                )}
               </div>
             </div>
+            <div className="p-2 rounded-b-md bg-paper">
+              <div className="mx-2 ">
+                <div className="prose dark:prose-invert text-sm max-w-5xl mx-auto">
+                  <Preview value={comment.comment_value} />
+                </div>
+              </div>
+              <Button size="sm" variant="ghost" onClick={onReply}>
+                Reply
+              </Button>
+            </div>
           </div>
+          {comment.children_count[0].count > 0 && (
+            <CommentReplies
+              commentId={comment.id}
+              count={comment.children_count[0].count}
+              onDeleteMutation={onDeleteMutation}
+            />
+          )}
         </div>
       </div>
     </div>

@@ -64,4 +64,6 @@ export type LinkTab = {
 type PostComment = definitions["post_comments"];
 export interface Comment extends PostComment {
   user: definitions["profiles"];
+  children: Comment[];
+  children_count: { count: number }[];
 }

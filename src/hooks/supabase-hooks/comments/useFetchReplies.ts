@@ -11,12 +11,15 @@ const fetcher = async (id: number) => {
     .select(
       `
         *,
-        user:user_id (*),
-        children_count:post_comments(count)
+        children:post_comments(
+          *,
+          user:user_id (*),
+          children_count:post_comments(count)
+        )
       `
     )
-    .is("parent_comment_id", null)
-    .eq("posts_id", id);
+    .eq("id", id)
+    .single();
 
   if (error) {
     logger.debug(error);
@@ -24,12 +27,12 @@ const fetcher = async (id: number) => {
   }
 
   logger.debug(data);
-  return (data as Comment[]) ?? [];
+  return data ? (data as Comment).children : [];
 };
 
-const useFetchPostComments = (id: number) => {
+const useFetchReplies = (parentId?: number) => {
   const { data, isValidating, mutate, error } = useSWR(
-    () => (id > 0 ? [id, "__post_comments"] : null),
+    () => (parentId ? [parentId, "__post_comment_replies"] : null),
     fetcher,
     {
       errorRetryCount: 1,
@@ -46,4 +49,4 @@ const useFetchPostComments = (id: number) => {
   };
 };
 
-export default useFetchPostComments;
+export default useFetchReplies;

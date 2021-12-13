@@ -1,14 +1,19 @@
 import Avatar from "@/components/Avatar/Avatar";
 import Button from "@/components/Button/Button";
-import Fallback from "@/components/Fallback/Fallback";
 import HoverCard from "@/components/HoverCard/HoverCard";
+import IconButton from "@/components/IconButton/IconButton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/Tabs/Tabs";
 import Tooltip from "@/components/Tooltip/Tooltip";
+import { replyProcessor } from "@/utils/markdownProcessor";
+import { Comment } from "@/utils/types";
+import { FiX } from "@react-icons/all-files/fi/FiX";
 import { SiMarkdown } from "@react-icons/all-files/si/SiMarkdown";
+import clsx from "clsx";
 import { useAuth } from "context/auth";
+import { useReplyTo } from "context/reply";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HoverUserCard from "ui/HoverUserCard/HoverUserCard";
 
 const RawEditor = dynamic(() => import("@/components/Editor/RawEditor"), {
@@ -21,31 +26,36 @@ const Preview = dynamic(() => import("@/components/Editor/Preview"), {
 });
 
 interface CommentEditorProps {
-  onSubmit: (value: string) => void;
+  onSubmit: (value: string, comment: Comment | null) => void;
   loading?: boolean;
 }
 
 const CommentEditor: React.FC<CommentEditorProps> = ({ onSubmit, loading }) => {
   const { user } = useAuth();
-
   const [editorState, setEditorState] = useState<"write" | "preview">("write");
 
   const [markdown, setMarkdown] = useState("");
-
   const handleChange = (input: string) => {
     setMarkdown(input);
+  };
+
+  const replyTo = useReplyTo();
+  const handleCancelReply = () => {
+    if (replyTo) {
+      replyTo.setReplyTo(null);
+    }
   };
 
   // TODO
   // cant clear editor after submit
   // any idea?!
   const handleSubmit = () => {
-    onSubmit(markdown);
+    onSubmit(markdown, replyTo?.replyTo ?? null);
   };
 
   if (user) {
     return (
-      <div>
+      <div className={clsx(replyTo?.replyTo && "comment-reply")}>
         <div className="relative mt-4 md:pl-4 md:ml-10">
           <div className="hidden md:block">
             <span className="float-left -ml-14">
@@ -68,6 +78,25 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ onSubmit, loading }) => {
           </div>
           <div className="comment comment-caret">
             <div className="rounded-t-md overflow-hidden pt-2 px-3 bg-slate-200 dark:bg-black">
+              {replyTo && replyTo.replyTo && (
+                <div className="text-sm mb-2">
+                  <div className="flex items-center justify-between">
+                    <div className="text-tMuted font-bold mb-1">Reply to</div>
+                    <IconButton
+                      size="sm"
+                      variant="ghost"
+                      aria-label="cancel reply"
+                      icon={<FiX />}
+                      onClick={handleCancelReply}
+                    />
+                  </div>
+                  <ReplyToRender
+                    value={replyTo.replyTo.comment_value.slice(0, 20)}
+                    avatarUrl={replyTo.replyTo.user.avatar_url}
+                    displayName={replyTo.replyTo.user.display_name}
+                  />
+                </div>
+              )}
               <Tabs
                 value={editorState}
                 onValueChange={(val) =>
@@ -135,4 +164,43 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ onSubmit, loading }) => {
   return null;
 };
 
+interface ReplyToRenderProps {
+  value: string;
+  avatarUrl?: string;
+  displayName?: string;
+}
+const ReplyToRender: React.FC<ReplyToRenderProps> = ({
+  value,
+  avatarUrl,
+  displayName,
+}) => {
+  // replyProcessor
+  const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const generateMD = async () => {
+      setLoading(true);
+
+      setContent(String(await replyProcessor.process(value)));
+
+      setLoading(false);
+    };
+
+    generateMD();
+
+    // eslint-disable-next-line
+  }, []);
+
+  if (loading) {
+    return <span>"..."</span>;
+  }
+
+  return (
+    <div className="flex items-center space-x-1 p-1 bg-slate-300 dark:bg-slate-700 rounded-md text-tMuted dark:text-tDefault">
+      <Avatar src={avatarUrl} fallback={displayName} size="sm" />
+      <span dangerouslySetInnerHTML={{ __html: content }} />
+    </div>
+  );
+};
 export default CommentEditor;
