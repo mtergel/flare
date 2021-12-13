@@ -38,6 +38,9 @@ const PostComments: React.FC<PostCommentsProps> = ({ postId }) => {
     const handleDeleteMutation = async (comment: Comment) => {
       if (comment.parent_comment_id) {
         // deleteing reply to comment
+        // n > 2 then
+        // how to update n - 1 comment
+        // TODO* help
         await globalMutate(
           [comment.parent_comment_id, "__post_comment_replies"],
           undefined

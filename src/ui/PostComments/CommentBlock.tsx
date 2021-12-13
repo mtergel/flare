@@ -4,6 +4,7 @@ import {
   AlertDialog,
 } from "@/components/AlertDialog/AlertDialog";
 import Avatar from "@/components/Avatar/Avatar";
+import Button from "@/components/Button/Button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,21 +15,20 @@ import {
 import Preview from "@/components/Editor/Preview";
 import HoverCard from "@/components/HoverCard/HoverCard";
 import IconButton from "@/components/IconButton/IconButton";
+import { definitions } from "@/utils/generated";
+import logger from "@/utils/logger";
+import { supabase } from "@/utils/supabaseClient";
 import { Comment } from "@/utils/types";
 import { FiMoreHorizontal } from "@react-icons/all-files/fi/FiMoreHorizontal";
 import { FiTrash2 } from "@react-icons/all-files/fi/FiTrash2";
 import { useAuth } from "context/auth";
+import { useReplyTo } from "context/reply";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import useDisclosure from "hooks/useDisclosure";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import HoverUserCard from "ui/HoverUserCard/HoverUserCard";
-import logger from "@/utils/logger";
-import { supabase } from "@/utils/supabaseClient";
-import { definitions } from "@/utils/generated";
-import Button from "@/components/Button/Button";
-import { useReplyTo } from "context/reply";
 import CommentReplies from "./CommentReplies";
 
 dayjs.extend(relativeTime);
