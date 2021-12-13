@@ -25,6 +25,7 @@ const RawEditor: React.FC<RawEditorProps> = ({
   const handleUpdate = (update: ViewUpdate) => {
     onChange(update.state.doc.toJSON().join("\n"));
   };
+
   useEffect(() => {
     const extensions: Extension[] = [EditorView.lineWrapping];
     if (placeholderString) extensions.push(placeholder(placeholderString));
@@ -47,4 +48,3 @@ const RawEditor: React.FC<RawEditorProps> = ({
 };
 
 export default RawEditor;
-//

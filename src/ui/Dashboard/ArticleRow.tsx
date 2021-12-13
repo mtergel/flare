@@ -34,7 +34,7 @@ dayjs.extend(relativeTime);
 interface ArticleRowProps {
   article: PostsJoins;
   username: string;
-  onDeleteMutation: (id: number) => void;
+  onDeleteMutation?: (id: number) => void;
 }
 const ArticleRow: React.FC<ArticleRowProps> = ({
   article,
@@ -72,7 +72,7 @@ const ArticleRow: React.FC<ArticleRowProps> = ({
       logger.debug(res.error);
       throw res.error;
     } else {
-      onDeleteMutation(article.id);
+      if (onDeleteMutation) onDeleteMutation(article.id);
     }
   };
 

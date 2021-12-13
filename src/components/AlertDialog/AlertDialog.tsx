@@ -1,4 +1,5 @@
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
+import * as Portal from "@radix-ui/react-portal";
 import clsx from "clsx";
 import { forwardRef } from "react";
 
@@ -26,22 +27,24 @@ export const AlertDialog: React.FC<AlertDialogProps> = ({
       defaultOpen={defaultOpen}
       onOpenChange={onOpenChange}
     >
-      <AlertDialogPrimitive.Overlay className="dialog-overlay" />
-      <AlertDialogPrimitive.Trigger asChild>
-        {children}
-      </AlertDialogPrimitive.Trigger>
-      <AlertDialogPrimitive.Content className="alert-content">
-        <div className="flex-grow">
-          <AlertDialogPrimitive.Title className="alert-title">
-            {title}
-          </AlertDialogPrimitive.Title>
-          <AlertDialogPrimitive.Description className="alert-description">
-            {description}
-          </AlertDialogPrimitive.Description>
-        </div>
+      <Portal.Root>
+        <AlertDialogPrimitive.Overlay className="dialog-overlay" />
+        <AlertDialogPrimitive.Trigger asChild>
+          {children}
+        </AlertDialogPrimitive.Trigger>
+        <AlertDialogPrimitive.Content className="alert-content">
+          <div className="flex-grow">
+            <AlertDialogPrimitive.Title className="alert-title">
+              {title}
+            </AlertDialogPrimitive.Title>
+            <AlertDialogPrimitive.Description className="alert-description">
+              {description}
+            </AlertDialogPrimitive.Description>
+          </div>
 
-        {actions}
-      </AlertDialogPrimitive.Content>
+          {actions}
+        </AlertDialogPrimitive.Content>
+      </Portal.Root>
     </AlertDialogPrimitive.Root>
   );
 };

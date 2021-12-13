@@ -1,5 +1,6 @@
 import Avatar from "@/components/Avatar/Avatar";
 import Button from "@/components/Button/Button";
+import Fallback from "@/components/Fallback/Fallback";
 import HoverCard from "@/components/HoverCard/HoverCard";
 import { Tabs, TabsList, TabsTrigger } from "@/components/Tabs/Tabs";
 import Tooltip from "@/components/Tooltip/Tooltip";
@@ -19,9 +20,12 @@ const Preview = dynamic(() => import("@/components/Editor/Preview"), {
   loading: () => <p className="text-sm">Loading...</p>,
 });
 
-interface CommentEditorProps {}
+interface CommentEditorProps {
+  onSubmit: (value: string) => void;
+  loading?: boolean;
+}
 
-const CommentEditor: React.FC<CommentEditorProps> = () => {
+const CommentEditor: React.FC<CommentEditorProps> = ({ onSubmit, loading }) => {
   const { user } = useAuth();
 
   const [editorState, setEditorState] = useState<"write" | "preview">("write");
@@ -30,6 +34,13 @@ const CommentEditor: React.FC<CommentEditorProps> = () => {
 
   const handleChange = (input: string) => {
     setMarkdown(input);
+  };
+
+  // TODO
+  // cant clear editor after submit
+  // any idea?!
+  const handleSubmit = () => {
+    onSubmit(markdown);
   };
 
   if (user) {
@@ -108,6 +119,8 @@ const CommentEditor: React.FC<CommentEditorProps> = () => {
                   color="primary"
                   size="sm"
                   disabled={markdown.length === 0}
+                  isLoading={loading}
+                  onClick={handleSubmit}
                 >
                   Comment
                 </Button>

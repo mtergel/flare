@@ -60,3 +60,8 @@ export type LinkTab = {
   href: string;
   displayName: string;
 };
+
+type PostComment = definitions["post_comments"];
+export interface Comment extends PostComment {
+  user: definitions["profiles"];
+}
