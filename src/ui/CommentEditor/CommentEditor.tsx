@@ -51,6 +51,9 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ onSubmit, loading }) => {
   // any idea?!
   const handleSubmit = () => {
     onSubmit(markdown, replyTo?.replyTo ?? null);
+    if (replyTo) {
+      replyTo.setReplyTo(null);
+    }
   };
 
   if (user) {
@@ -88,6 +91,7 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ onSubmit, loading }) => {
                       aria-label="cancel reply"
                       icon={<FiX />}
                       onClick={handleCancelReply}
+                      disabled={loading}
                     />
                   </div>
                   <ReplyToRender

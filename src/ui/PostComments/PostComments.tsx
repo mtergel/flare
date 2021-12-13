@@ -37,10 +37,6 @@ const PostComments: React.FC<PostCommentsProps> = ({ postId }) => {
   if (data) {
     const handleDeleteMutation = async (comment: Comment) => {
       if (comment.parent_comment_id) {
-        // deleteing reply to comment
-        // n > 2 then
-        // how to update n - 1 comment
-        // TODO* help
         await globalMutate(
           [comment.parent_comment_id, "__post_comment_replies"],
           undefined
@@ -50,37 +46,45 @@ const PostComments: React.FC<PostCommentsProps> = ({ postId }) => {
       await mutate();
     };
 
-    const handleCreate = async (input: string, comment: Comment | null) => {
+    /**
+     *
+     * @param input - commented value as md string
+     * @param parentComment - Pass this value if you are replying to a comment
+     */
+    const handleCreate = async (
+      input: string,
+      parentComment: Comment | null
+    ) => {
       setCreating(true);
 
-      if (comment) {
-        const { data, error } = await supabase
+      if (parentComment) {
+        const createdReply = await supabase
           .from<definitions["post_comments"]>("post_comments")
           .insert({
-            parent_comment_id: comment.id,
+            parent_comment_id: parentComment.id,
             comment_value: input,
             posts_id: postId,
             user_id: user?.id,
           })
           .single();
 
-        if (error) {
-          toast.error(error.message);
+        if (createdReply.error) {
+          toast.error(createdReply.error.message);
         } else {
-          // MUTATE
-          if (comment.parent_comment_id) {
-            // if replying to reply
-            globalMutate(
-              [comment.parent_comment_id, "__post_comment_replies"],
-              undefined
-            );
-          } else {
-            // replying to top level comment
-            mutate();
+          // if replying to reply
+          await globalMutate(
+            [parentComment.id, "__post_comment_replies"],
+            undefined,
+            true
+          );
+
+          if (data.find((i) => i.id === parentComment.id)) {
+            // if replying to top level comment;
+            await mutate();
           }
         }
 
-        logger.debug(data);
+        logger.debug(createdReply.data);
       } else {
         const { data, error } = await supabase
           .from<definitions["post_comments"]>("post_comments")
@@ -95,7 +99,7 @@ const PostComments: React.FC<PostCommentsProps> = ({ postId }) => {
           toast.error(error.message);
         }
 
-        mutate();
+        await mutate();
 
         logger.debug(data);
       }
