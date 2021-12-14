@@ -276,7 +276,7 @@ const ArticlePage: NextPageWithLayout<
       </Container>
       <Container size="wide" className="pt-6 md:pt-12">
         <section className="w-full lg:w-[calc(100%-330px)]">
-          <PostComments postId={article.id} />
+          <PostComments postId={article.id} postOwner={article.user_id} />
         </section>
       </Container>
     </article>

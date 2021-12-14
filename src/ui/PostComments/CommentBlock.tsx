@@ -120,51 +120,53 @@ const CommentBlock: React.FC<CommentBlockProps> = ({
               </div>
 
               <div className="h-8">
-                {user && comment.user_id === user.id && (
-                  <>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <IconButton
-                          aria-label="comment options"
-                          size="sm"
-                          variant="ghost"
-                          icon={<FiMoreHorizontal />}
-                        />
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent sideOffset={1}>
-                        <DropdownMenuItem
-                          color="danger"
-                          asChild
-                          onClick={onOpen}
-                        >
-                          <div>
-                            <DropdownMenuLeftSlot>
-                              <FiTrash2 />
-                            </DropdownMenuLeftSlot>
-                            Delete
-                          </div>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                    <AlertDialog
-                      title="Delete comment"
-                      description="Are you sure you want to delete this comment?"
-                      open={isOpen}
-                      onOpenChange={setIsOpen}
-                      actions={
-                        <div className="alert-button-container">
-                          <AlertCancelButton>Cancel</AlertCancelButton>
-                          <AlertActionButton
-                            className="alert-danger"
-                            onClick={handleDeleteComment}
+                {user &&
+                  (comment.user_id === user.id ||
+                    replyTo?.postOwner === user.id) && (
+                    <>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <IconButton
+                            aria-label="comment options"
+                            size="sm"
+                            variant="ghost"
+                            icon={<FiMoreHorizontal />}
+                          />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent sideOffset={1}>
+                          <DropdownMenuItem
+                            color="danger"
+                            asChild
+                            onClick={onOpen}
                           >
-                            Delete
-                          </AlertActionButton>
-                        </div>
-                      }
-                    />
-                  </>
-                )}
+                            <div>
+                              <DropdownMenuLeftSlot>
+                                <FiTrash2 />
+                              </DropdownMenuLeftSlot>
+                              Delete
+                            </div>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                      <AlertDialog
+                        title="Delete comment"
+                        description="Are you sure you want to delete this comment?"
+                        open={isOpen}
+                        onOpenChange={setIsOpen}
+                        actions={
+                          <div className="alert-button-container">
+                            <AlertCancelButton>Cancel</AlertCancelButton>
+                            <AlertActionButton
+                              className="alert-danger"
+                              onClick={handleDeleteComment}
+                            >
+                              Delete
+                            </AlertActionButton>
+                          </div>
+                        }
+                      />
+                    </>
+                  )}
               </div>
             </div>
             <div className="p-2 rounded-b-md bg-paper">

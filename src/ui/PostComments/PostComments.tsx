@@ -15,9 +15,10 @@ import CommentBlock from "./CommentBlock";
 
 interface PostCommentsProps {
   postId: number;
+  postOwner: string;
 }
 
-const PostComments: React.FC<PostCommentsProps> = ({ postId }) => {
+const PostComments: React.FC<PostCommentsProps> = ({ postId, postOwner }) => {
   const { data, isLoading, error, mutate } = useFetchPostComments(postId);
 
   const { user } = useAuth();
@@ -111,7 +112,7 @@ const PostComments: React.FC<PostCommentsProps> = ({ postId }) => {
       <>
         <div className="border-b text-2xl font-bold pb-2">Comments</div>
         <div className="pt-4">
-          <ReplyProvider>
+          <ReplyProvider postOwner={postOwner}>
             {data.map((comment) => (
               <CommentBlock
                 key={comment.id}
