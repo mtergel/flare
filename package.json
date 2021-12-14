@@ -60,7 +60,6 @@
     "remark-html": "^15.0.1",
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
-    "rodemirror": "^1.6.6",
     "sass": "^1.45.0",
     "slugify": "^1.6.3",
     "swr": "^1.1.1",

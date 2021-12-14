@@ -7002,11 +7002,6 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rodemirror@^1.6.6:
-  version "1.6.6"
-  resolved "https://registry.yarnpkg.com/rodemirror/-/rodemirror-1.6.6.tgz#82c782ab39e97436be8d008c35bf0ce5bf9f6bc4"
-  integrity sha512-3oAteaPMR4UJyKVB83ojZQYTaA1gV3c9J/pMOoKF4xRXxsSgPr6rf6XEMsW6MZfF/uKYR+/8YHyuCmqrCt6Yww==
-
 run-parallel@^1.1.9:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/run-parallel/-/run-parallel-1.2.0.tgz#66d1368da7bdf921eb9d95bd1a9229e7f21a43ee"
