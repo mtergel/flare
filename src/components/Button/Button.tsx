@@ -125,10 +125,10 @@ const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
     <Element
       ref={ref}
       disabled={isDisabled || isLoading}
+      data-testid="button"
+      data-loading={isLoading}
       {...rest}
       className={merged}
-      data-loading={isLoading}
-      data-testid="button"
       type={type}
     >
       {leftIcon && !isLoading && (
