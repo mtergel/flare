@@ -5,19 +5,18 @@ import Input from "@/components/Input/Input";
 import Spinner from "@/components/Spinner/Spinner";
 import { getRandomEmoji } from "@/utils/const";
 import { definitions } from "@/utils/generated";
+import { postid } from "@/utils/ids";
+import logger from "@/utils/logger";
 import { supabase } from "@/utils/supabaseClient";
 import { NextPageWithLayout } from "@/utils/types";
 import { GiStabbedNote } from "@react-icons/all-files/gi/GiStabbedNote";
 import { useAuth } from "context/auth";
-import { Controller, useForm } from "react-hook-form";
-import slugify from "slugify";
-// import EmojiPicker from "ui/ArticleEditor/EmojiPicker";
-import Layout from "ui/Layout/Layout";
-import { postid } from "@/utils/ids";
-import { useRouter } from "next/router";
-import logger from "@/utils/logger";
-import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import slugify from "slugify";
+import Layout from "ui/Layout/Layout";
 
 const EmojiPicker = dynamic(() => import("ui/ArticleEditor/EmojiPicker"), {
   ssr: false,
@@ -73,6 +72,7 @@ const NewScribble: NextPageWithLayout = () => {
 
       // 3. Redirect to it
       if (newPost.data) {
+        toast.success("Created scribble!");
         router.push(`/${user.username}/scribbles/${slug}`);
       }
 
@@ -85,7 +85,7 @@ const NewScribble: NextPageWithLayout = () => {
 
     return (
       <div className="h-full bg-paper border-t">
-        <Container className="pt-20" size="small">
+        <Container className="pt-12 sm:pt-20" size="small">
           <div className="text-center flex flex-col">
             <h1 className="text-3xl font-bold">New scribble</h1>
             <div className="flex items-center justify-center mt-8 mb-4">

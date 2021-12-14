@@ -63,14 +63,14 @@
     @apply py-[5px] px-3 text-sm;
 
     & .button-icon-left {
-      @apply -ml-1 mr-2;
+      @apply -ml-1 mr-1;
       & svg {
         @apply h-4 w-4;
       }
     }
 
     & .button-icon-right {
-      @apply -mr-1 ml-2;
+      @apply -mr-1 ml-1;
       & svg {
         @apply h-4 w-4;
       }
