@@ -1,0 +1,36 @@
+.comment-reply {
+  @apply sticky bottom-0;
+}
+
+.comment {
+  @apply border border-slate-300 dark:border-border rounded-md;
+
+  &.comment-caret {
+    &::before,
+    &::after {
+      @apply hidden md:block absolute top-[11px] right-full left-[9px] w-[8px] h-4 pointer-events-none;
+      content: " ";
+      clip-path: polygon(0 50%, 100% 0, 100% 100%);
+    }
+
+    &::before {
+      @apply bg-slate-300 dark:bg-border;
+    }
+    &::after {
+      @apply bg-slate-200 dark:bg-black;
+      margin-left: 1px;
+    }
+  }
+}
+
+.comment-md-editor {
+  @apply border-0 rounded-md;
+  & .cm-content,
+  & .cm-gutter {
+    min-height: 100px;
+  }
+
+  & .cm-content {
+    @apply rounded-md;
+  }
+}

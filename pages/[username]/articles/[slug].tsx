@@ -16,11 +16,17 @@ import useIntersectionObserver from "hooks/useIntersectionObserver";
 // @ts-ignore
 import toc from "markdown-toc";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import Layout from "ui/Layout/Layout";
 import PostLikeButton from "ui/LikeButton/PostLikeButton";
 import { NextPageWithLayout } from "utils/types";
+
+const PostComments = dynamic(() => import("ui/PostComments/PostComments"), {
+  ssr: false,
+  loading: () => <div className="h-8" />,
+});
 
 type ArticlePageProps = {
   isPreview: boolean;
@@ -267,6 +273,11 @@ const ArticlePage: NextPageWithLayout<
             </div>
           </aside>
         </div>
+      </Container>
+      <Container size="wide" className="pt-6 md:pt-12">
+        <section className="w-full lg:w-[calc(100%-330px)]">
+          <PostComments postId={article.id} postOwner={article.user_id} />
+        </section>
       </Container>
     </article>
   );

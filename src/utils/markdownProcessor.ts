@@ -11,6 +11,14 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 
+const replyProcessor = unified()
+  // @ts-ignore
+  .use(remarkParse)
+  .use(remarkRehype)
+  .use(rehypeSanitize)
+  // @ts-ignore
+  .use(rehypeStringify);
+
 const previewProcessor = unified()
   // @ts-ignore
   .use(remarkParse)
@@ -227,4 +235,4 @@ const markdownProcessor = unified()
       className: ["anchor"],
     },
   });
-export { previewProcessor, markdownProcessor };
+export { previewProcessor, markdownProcessor, replyProcessor };

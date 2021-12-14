@@ -1,11 +1,11 @@
 .tabs-list {
-  @apply flex whitespace-nowrap mx-0 mt-0 flex-auto border border-b-0;
+  @apply flex whitespace-nowrap mx-0 mt-0 flex-auto border border-b-0 border-slate-300 dark:border-border;
   margin-bottom: -1px;
   @apply md:justify-start md:flex-row md:border-b md:border-0;
 }
 
 .tabs-trigger {
-  @apply text-sm bg-base border-r border-b rounded-none text-tMuted;
+  @apply text-sm bg-base border-r border-b rounded-none text-tMuted border-slate-300 dark:border-border;
   @apply flex-1 inline-flex items-center justify-center py-2 px-8 leading-6;
   @apply cursor-pointer whitespace-nowrap select-none;
   @apply last:border-r-0;

@@ -356,7 +356,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
     <form onSubmit={handleSubmit(onSubmit)}>
       <Container size="common">
         <textarea
-          placeholder="Title"
+          placeholder="Enter title"
           maxLength={70}
           spellCheck={false}
           autoFocus

@@ -12,6 +12,108 @@ export interface paths {
       };
     };
   };
+  "/post_comments": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.post_comments.id"];
+          posts_id?: parameters["rowFilter.post_comments.posts_id"];
+          comment_value?: parameters["rowFilter.post_comments.comment_value"];
+          user_id?: parameters["rowFilter.post_comments.user_id"];
+          parent_comment_id?: parameters["rowFilter.post_comments.parent_comment_id"];
+          created_at?: parameters["rowFilter.post_comments.created_at"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["post_comments"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** post_comments */
+          post_comments?: definitions["post_comments"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.post_comments.id"];
+          posts_id?: parameters["rowFilter.post_comments.posts_id"];
+          comment_value?: parameters["rowFilter.post_comments.comment_value"];
+          user_id?: parameters["rowFilter.post_comments.user_id"];
+          parent_comment_id?: parameters["rowFilter.post_comments.parent_comment_id"];
+          created_at?: parameters["rowFilter.post_comments.created_at"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.post_comments.id"];
+          posts_id?: parameters["rowFilter.post_comments.posts_id"];
+          comment_value?: parameters["rowFilter.post_comments.comment_value"];
+          user_id?: parameters["rowFilter.post_comments.user_id"];
+          parent_comment_id?: parameters["rowFilter.post_comments.parent_comment_id"];
+          created_at?: parameters["rowFilter.post_comments.created_at"];
+        };
+        body: {
+          /** post_comments */
+          post_comments?: definitions["post_comments"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/post_likes": {
     get: {
       parameters: {
@@ -624,6 +726,30 @@ export interface paths {
 }
 
 export interface definitions {
+  post_comments: {
+    /**
+     * Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Note:
+     * This is a Foreign Key to `posts.id`.<fk table='posts' column='id'/>
+     */
+    posts_id: number;
+    comment_value: string;
+    /**
+     * Note:
+     * This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>
+     */
+    user_id: string;
+    /**
+     * Note:
+     * This is a Foreign Key to `post_comments.id`.<fk table='post_comments' column='id'/>
+     */
+    parent_comment_id?: number;
+    created_at: string;
+  };
   post_likes: {
     /**
      * Note:
@@ -735,6 +861,14 @@ export interface parameters {
   offset: string;
   /** Limiting and Pagination */
   limit: string;
+  /** post_comments */
+  "body.post_comments": definitions["post_comments"];
+  "rowFilter.post_comments.id": string;
+  "rowFilter.post_comments.posts_id": string;
+  "rowFilter.post_comments.comment_value": string;
+  "rowFilter.post_comments.user_id": string;
+  "rowFilter.post_comments.parent_comment_id": string;
+  "rowFilter.post_comments.created_at": string;
   /** post_likes */
   "body.post_likes": definitions["post_likes"];
   "rowFilter.post_likes.id": string;

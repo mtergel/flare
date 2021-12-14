@@ -1,12 +1,15 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/Tabs/Tabs";
-import "codemirror-github-dark/lib/codemirror-github-dark-theme.css";
-import "codemirror-github-light/lib/codemirror-github-light-theme.css";
-import "codemirror/lib/codemirror.css";
-import "codemirror/mode/markdown/markdown";
-import { useTheme } from "next-themes";
+import dynamic from "next/dynamic";
 import { useState } from "react";
-import { Controlled as CodeMirror } from "react-codemirror2";
-import Preview from "./Preview";
+
+const RawEditor = dynamic(() => import("./RawEditor"), {
+  ssr: false,
+  loading: () => <p className="text-sm">Loading...</p>,
+});
+const Preview = dynamic(() => import("./Preview"), {
+  ssr: false,
+  loading: () => <p className="text-sm">Loading...</p>,
+});
 
 interface EditorProps {
   markdown: string;
@@ -14,7 +17,6 @@ interface EditorProps {
   title?: string | null;
 }
 const Editor: React.FC<EditorProps> = ({ markdown, onChange, title }) => {
-  const { resolvedTheme } = useTheme();
   const [editorState, setEditorState] = useState<"write" | "preview">("write");
 
   return (
@@ -33,22 +35,13 @@ const Editor: React.FC<EditorProps> = ({ markdown, onChange, title }) => {
         </TabsList>
       </Tabs>
       {editorState === "write" ? (
-        <CodeMirror
+        <RawEditor
           value={markdown}
-          onBeforeChange={(_editor, _data, value) => {
-            onChange(value);
-          }}
-          className="md_editor"
-          options={{
-            mode: "markdown",
-            theme: resolvedTheme === "light" ? "github-light" : "github-dark",
-            lineNumbers: true,
-            lineWrapping: true,
-            viewportMargin: Infinity,
-          }}
+          onChange={onChange}
+          placeholderString="Start writing.."
         />
       ) : (
-        <div className="prose editor-preview-tw border-b-2">
+        <div className="prose dark:prose-invert editor-preview-tw border-b-2">
           {markdown || title ? (
             <>
               <h1>{title}</h1>
