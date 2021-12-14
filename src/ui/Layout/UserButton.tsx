@@ -136,7 +136,12 @@ const UserDD: React.FC<UserDDProps> = () => {
           <DropdownMenuContent sideOffset={4}>
             <Link href={`/user/new`} passHref>
               <DropdownMenuItem asChild>
-                <a onClick={onClose}>Article</a>
+                <a>Article</a>
+              </DropdownMenuItem>
+            </Link>
+            <Link href={`/notebooks/new`} passHref>
+              <DropdownMenuItem asChild>
+                <a>Notebook</a>
               </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>

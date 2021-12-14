@@ -17,7 +17,7 @@ const EditWrapper: NextPage = () => {
 
   if (user) {
     return (
-      <div className="h-full flex flex-col">
+      <div className="h-full w-full flex flex-col">
         <MinHeader />
         <div className="flex-grow pb-20">
           <EditArticle uid={user.id} />
