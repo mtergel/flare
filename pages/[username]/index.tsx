@@ -89,9 +89,9 @@ const Profile: NextPageWithLayout<
       href: `/${profile.username}`,
     },
     {
-      key: "notebook",
-      displayName: "Notebooks",
-      href: `/${profile.username}?tab=notebook`,
+      key: "scribble",
+      displayName: "Scribbles",
+      href: `/${profile.username}?tab=scribbles`,
     },
   ];
 

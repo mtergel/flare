@@ -831,7 +831,7 @@ export interface definitions {
     published: boolean;
     slug: string;
     title: string;
-    post_type: "article" | "notebook";
+    post_type: "article" | "scribble";
     updated_at: string;
     /**
      * Note:

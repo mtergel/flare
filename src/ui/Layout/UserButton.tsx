@@ -127,30 +127,37 @@ const UserDD: React.FC<UserDDProps> = () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button size="sm" color="primary" className="hidden sm:inline-flex">
-              Add
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent sideOffset={4}>
-            <Link href={`/user/new`} passHref>
-              <DropdownMenuItem asChild>
-                <a>Article</a>
-              </DropdownMenuItem>
-            </Link>
-            <Link href={`/notebooks/new`} passHref>
-              <DropdownMenuItem asChild>
-                <a>Notebook</a>
-              </DropdownMenuItem>
-            </Link>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <AddButton />
       </div>
     );
   }
 
   return null;
+};
+
+const AddButton: React.FC<{}> = () => {
+  const { isOpen, onClose, setIsOpen } = useDisclosure();
+  return (
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenuTrigger asChild>
+        <Button size="sm" color="primary" className="hidden sm:inline-flex">
+          Add
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent sideOffset={4}>
+        <Link href={`/user/new`} passHref>
+          <DropdownMenuItem asChild>
+            <a>Article</a>
+          </DropdownMenuItem>
+        </Link>
+        <Link href={`/user/new/scribbles`} passHref>
+          <DropdownMenuItem asChild>
+            <a onClick={onClose}>Scribbles</a>
+          </DropdownMenuItem>
+        </Link>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 };
 
 export default UserButton;
