@@ -37,7 +37,10 @@ const Dialog: React.FC<DialogProps> = ({
       <DialogPrimitive.Trigger asChild>{children}</DialogPrimitive.Trigger>
 
       <Portal.Root>
-        <DialogPrimitive.Overlay className="dialog-overlay" />
+        <DialogPrimitive.Overlay
+          className="dialog-overlay"
+          data-testid="dialog-overlay"
+        />
         <DialogPrimitive.Content className={merged}>
           <DialogPrimitive.Title
             className={clsx("dialog-title", !showInfo && "invisible h-0")}
