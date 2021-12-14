@@ -35,6 +35,11 @@ interface ButtonOptions<E extends React.ElementType = React.ElementType> {
    * @type SizeVariant
    */
   loadingText?: string;
+  /**
+   * Make the border radius round
+   * @type Boolean
+   */
+  isRound?: boolean;
   isDisabled?: boolean;
   leftIcon?: React.ReactElement;
   rightIcon?: React.ReactElement;
@@ -105,6 +110,7 @@ const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
     leftIcon,
     rightIcon,
     isFullWidth,
+    isRound,
     children,
     ...rest
   } = props;
@@ -118,6 +124,7 @@ const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
     getColor(color),
     isLoading && (loadingText ? "btn-loading" : "btn-loading-no-text"),
     isFullWidth && "btn-full",
+    isRound && "btn-round",
     className
   );
 
