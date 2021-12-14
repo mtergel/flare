@@ -169,7 +169,7 @@ const CommentBlock: React.FC<CommentBlockProps> = ({
             </div>
             <div className="p-2 rounded-b-md bg-paper">
               <div className="mx-2 ">
-                <div className="prose dark:prose-invert text-sm max-w-5xl mx-auto">
+                <div className="prose prose-sm dark:prose-invert text-sm max-w-5xl mx-auto">
                   <Preview value={comment.comment_value} />
                 </div>
               </div>

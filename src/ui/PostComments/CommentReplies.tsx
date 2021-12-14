@@ -11,6 +11,11 @@ interface CommentRepliesProps {
   onDeleteMutation: (comment: Comment) => Promise<void>;
 }
 
+// TODO
+// Find a way to change this to infinite loader ?
+// With working mutation from PostComments
+// To refresh when adding, deleting comment
+
 const CommentReplies: React.FC<CommentRepliesProps> = ({
   commentId,
   count,
