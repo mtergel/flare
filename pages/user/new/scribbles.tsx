@@ -92,9 +92,9 @@ const NewScribble: NextPageWithLayout = () => {
               <GiStabbedNote className="h-20 w-20  text-primary-500 dark:text-primary-300" />
             </div>
             <p className="text-tMuted text-sm">
-              In a "scribble" you can summarize your knowledge in a thread
-              format. It can be used not only for recording development but also
-              for sharing info and exchanging opinions.
+              In a &quot;scribble&quot; you can summarize your knowledge in a
+              thread format. It can be used not only for recording development
+              but also for sharing info and exchanging opinions.
             </p>
           </div>
           <div className="mt-6 mx-auto max-w-sm">

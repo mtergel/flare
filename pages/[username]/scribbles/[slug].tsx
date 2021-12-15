@@ -1,4 +1,3 @@
-import Avatar from "@/components/Avatar/Avatar";
 import Button from "@/components/Button/Button";
 import Container from "@/components/Container/Container";
 import Fallback from "@/components/Fallback/Fallback";
@@ -80,7 +79,7 @@ const ScribblePage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = (props) => {
   const { scribble } = props;
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   // should hydrate
   const { data, isValidating, mutate } = useGetPost(scribble.id, scribble);
 
@@ -100,7 +99,13 @@ const ScribblePage: NextPageWithLayout<
     window.addEventListener("scroll", handleThrottledScroll);
 
     return () => window.removeEventListener("scroll", handleThrottledScroll);
+
+    // eslint-disable-next-line
   }, []);
+
+  if (loading) {
+    return <Fallback />;
+  }
 
   if (data) {
     const handleUpdatePost = (newTitle: string) => {
@@ -216,24 +221,26 @@ const ScribblePage: NextPageWithLayout<
                 {data.emoji} {data.title}
               </h1>
 
-              <div className="flex w-full md:w-auto items-center justify-between flex-shrink-0">
-                <EditScribbleButton
-                  id={data.id}
-                  title={data.title}
-                  onUpdateMutation={handleUpdatePost}
-                />
-                <Button
-                  className="md:hidden"
-                  size="sm"
-                  variant="ghost"
-                  onClick={goToBottom}
-                >
-                  Jump to bottom
-                </Button>
-              </div>
+              {user?.id === scribble.user_id && (
+                <div className="flex w-full md:w-auto items-center justify-between flex-shrink-0">
+                  <EditScribbleButton
+                    id={data.id}
+                    title={data.title}
+                    onUpdateMutation={handleUpdatePost}
+                  />
+                  <Button
+                    className="md:hidden"
+                    size="sm"
+                    variant="ghost"
+                    onClick={goToBottom}
+                  >
+                    Jump to bottom
+                  </Button>
+                </div>
+              )}
             </div>
 
-            <div className="flex items-center flex-wrap gap-2 border-b pb-4">
+            <div className="flex items-center flex-wrap gap-2 md:border-b pb-4">
               <Button
                 color={data.closed ? "default" : "primary"}
                 isRound
@@ -279,7 +286,7 @@ const ScribblePage: NextPageWithLayout<
             <section className="w-full lg:w-[calc(100%-330px)]">
               {data.comment_count === 0 && (
                 <div className="flex flex-col items-center justify-center">
-                  <p className="text-sm">Let's add our first comment!</p>
+                  <p className="text-sm">Let&apos;s add our first comment!</p>
                 </div>
               )}
               <div className="mt-4">
@@ -307,50 +314,52 @@ const ScribblePage: NextPageWithLayout<
                 )}
               </div>
             </section>
-            <aside className="block mt-4 lg:w-[300px]">
-              <div className="h-full">
-                <div className="sticky top-16 max-h-[calc(100vh-50px)] flex flex-col">
-                  <div className="p-5 mx-3 md:ml-14 md:mr-0 sm:max-w-[300px] lg:mx-0 bg-paper rounded-lg border">
-                    <div className="text-xl font-semibold mb-4">Settings</div>
-                    {isValidating ? (
-                      <Fallback />
-                    ) : (
-                      <>
-                        {data.closed ? (
-                          <Button
-                            isFullWidth
-                            variant="outline"
-                            leftIcon={<FiCheckCircle />}
-                            onClick={handleReopenScribble}
-                          >
-                            Reopen scribble
-                          </Button>
-                        ) : (
-                          <Button
-                            isFullWidth
-                            variant="outline"
-                            leftIcon={<FiDisc />}
-                            onClick={handleCloseScribble}
-                          >
-                            Close scribble
-                          </Button>
-                        )}
+            {user?.id === scribble.user_id && (
+              <aside className="block mt-4 lg:w-[300px]">
+                <div className="h-full">
+                  <div className="sticky top-16 max-h-[calc(100vh-50px)] flex flex-col">
+                    <div className="p-5 mx-3 md:ml-14 md:mr-0 sm:max-w-[300px] lg:mx-0 bg-paper rounded-lg border">
+                      <div className="text-xl font-semibold mb-4">Settings</div>
+                      {isValidating ? (
+                        <Fallback />
+                      ) : (
+                        <>
+                          {data.closed ? (
+                            <Button
+                              isFullWidth
+                              variant="outline"
+                              leftIcon={<FiCheckCircle />}
+                              onClick={handleReopenScribble}
+                            >
+                              Reopen scribble
+                            </Button>
+                          ) : (
+                            <Button
+                              isFullWidth
+                              variant="outline"
+                              leftIcon={<FiDisc />}
+                              onClick={handleCloseScribble}
+                            >
+                              Close scribble
+                            </Button>
+                          )}
 
-                        <div className="flex items-center space-x-3 mt-3">
-                          <label
-                            htmlFor="allow_others"
-                            className="text-sm font-semibold text-tMuted"
-                          >
-                            Others can comment
-                          </label>
-                          <Switch id="allow_others" />
-                        </div>
-                      </>
-                    )}
+                          <div className="flex items-center space-x-3 mt-3">
+                            <label
+                              htmlFor="allow_others"
+                              className="text-sm font-semibold text-tMuted"
+                            >
+                              Others can comment
+                            </label>
+                            <Switch id="allow_others" />
+                          </div>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </aside>
+              </aside>
+            )}
           </div>
         </Container>
       </div>
