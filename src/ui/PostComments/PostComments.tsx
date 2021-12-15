@@ -16,9 +16,22 @@ import CommentBlock from "./CommentBlock";
 interface PostCommentsProps {
   postId: number;
   postOwner: string;
+  hideHeader?: boolean;
+  hideEditor?: boolean;
+  onCreateCallback?: (
+    createdComment: definitions["post_comments"]
+  ) => Promise<void>;
+  onDeleteCallback?: (deletedCommentId: number) => Promise<void>;
 }
 
-const PostComments: React.FC<PostCommentsProps> = ({ postId, postOwner }) => {
+const PostComments: React.FC<PostCommentsProps> = ({
+  postId,
+  postOwner,
+  hideHeader,
+  hideEditor,
+  onCreateCallback,
+  onDeleteCallback,
+}) => {
   const { data, isLoading, error, mutate } = useFetchPostComments(postId);
 
   const { user } = useAuth();
@@ -45,6 +58,8 @@ const PostComments: React.FC<PostCommentsProps> = ({ postId, postOwner }) => {
       }
       // deleteing top level comment
       await mutate();
+
+      if (onDeleteCallback) await onDeleteCallback(comment.id);
     };
 
     /**
@@ -83,6 +98,8 @@ const PostComments: React.FC<PostCommentsProps> = ({ postId, postOwner }) => {
             // if replying to top level comment;
             await mutate();
           }
+
+          if (onCreateCallback) await onCreateCallback(createdReply.data);
         }
 
         logger.debug(createdReply.data);
@@ -102,6 +119,8 @@ const PostComments: React.FC<PostCommentsProps> = ({ postId, postOwner }) => {
 
         await mutate();
 
+        if (onCreateCallback && data) await onCreateCallback(data);
+
         logger.debug(data);
       }
 
@@ -110,8 +129,10 @@ const PostComments: React.FC<PostCommentsProps> = ({ postId, postOwner }) => {
 
     return (
       <>
-        <div className="border-b text-2xl font-bold pb-2">Comments</div>
-        <div className="pt-4">
+        {!hideHeader && (
+          <div className="border-b text-2xl font-bold pb-2 mb-4">Comments</div>
+        )}
+        <div id="issue-comment-box">
           <ReplyProvider postOwner={postOwner}>
             {data.map((comment) => (
               <CommentBlock
@@ -120,7 +141,9 @@ const PostComments: React.FC<PostCommentsProps> = ({ postId, postOwner }) => {
                 onDeleteMutation={handleDeleteMutation}
               />
             ))}
-            <CommentEditor onSubmit={handleCreate} loading={creating} />
+            {!hideEditor && (
+              <CommentEditor onSubmit={handleCreate} loading={creating} />
+            )}
           </ReplyProvider>
         </div>
       </>

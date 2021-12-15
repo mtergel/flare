@@ -325,6 +325,10 @@ export interface paths {
           fts?: parameters["rowFilter.posts.fts"];
           view_count?: parameters["rowFilter.posts.view_count"];
           like_count?: parameters["rowFilter.posts.like_count"];
+          closed?: parameters["rowFilter.posts.closed"];
+          closed_at?: parameters["rowFilter.posts.closed_at"];
+          comment_count?: parameters["rowFilter.posts.comment_count"];
+          can_others_comment?: parameters["rowFilter.posts.can_others_comment"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -390,6 +394,10 @@ export interface paths {
           fts?: parameters["rowFilter.posts.fts"];
           view_count?: parameters["rowFilter.posts.view_count"];
           like_count?: parameters["rowFilter.posts.like_count"];
+          closed?: parameters["rowFilter.posts.closed"];
+          closed_at?: parameters["rowFilter.posts.closed_at"];
+          comment_count?: parameters["rowFilter.posts.comment_count"];
+          can_others_comment?: parameters["rowFilter.posts.can_others_comment"];
         };
         header: {
           /** Preference */
@@ -419,6 +427,10 @@ export interface paths {
           fts?: parameters["rowFilter.posts.fts"];
           view_count?: parameters["rowFilter.posts.view_count"];
           like_count?: parameters["rowFilter.posts.like_count"];
+          closed?: parameters["rowFilter.posts.closed"];
+          closed_at?: parameters["rowFilter.posts.closed_at"];
+          comment_count?: parameters["rowFilter.posts.comment_count"];
+          can_others_comment?: parameters["rowFilter.posts.can_others_comment"];
         };
         body: {
           /** posts */
@@ -706,6 +718,23 @@ export interface paths {
       };
     };
   };
+  "/rpc/process_comment_count": {
+    post: {
+      parameters: {
+        body: {
+          args: { [key: string]: unknown };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
   "/rpc/create_profile_for_new_user": {
     post: {
       parameters: {
@@ -802,7 +831,7 @@ export interface definitions {
     published: boolean;
     slug: string;
     title: string;
-    post_type: "article" | "notebook";
+    post_type: "article" | "scribble";
     updated_at: string;
     /**
      * Note:
@@ -814,6 +843,10 @@ export interface definitions {
     fts?: string;
     view_count: number;
     like_count: number;
+    closed: boolean;
+    closed_at?: string;
+    comment_count: number;
+    can_others_comment: boolean;
   };
   profiles: {
     /**
@@ -898,6 +931,10 @@ export interface parameters {
   "rowFilter.posts.fts": string;
   "rowFilter.posts.view_count": string;
   "rowFilter.posts.like_count": string;
+  "rowFilter.posts.closed": string;
+  "rowFilter.posts.closed_at": string;
+  "rowFilter.posts.comment_count": string;
+  "rowFilter.posts.can_others_comment": string;
   /** profiles */
   "body.profiles": definitions["profiles"];
   "rowFilter.profiles.id": string;

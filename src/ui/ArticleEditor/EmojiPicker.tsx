@@ -4,7 +4,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/Dropdown/Dropdown";
 import useDisclosure from "hooks/useDisclosure";
-import { useTheme } from "next-themes";
 import Picker from "emoji-picker-react";
 
 interface EmojiPickerProps {
@@ -13,15 +12,12 @@ interface EmojiPickerProps {
 }
 const EmojiPicker: React.FC<EmojiPickerProps> = ({ value, onChange }) => {
   const { isOpen, setIsOpen, onClose } = useDisclosure();
-  const { resolvedTheme } = useTheme();
-
-  let theme = resolvedTheme === "system" ? "auto" : resolvedTheme;
 
   return (
     <section className="relative">
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
-          <button className="flex items-center gray-bg w-full p-5 rounded-lg">
+          <button className="flex items-center gray-bg w-full p-5 rounded-lg transition-shadow focus:outline-none focus:ring focus:ring-primary">
             <span className="text-5xl border-r pr-4 mr-5">{value}</span>
             <div className="flex flex-col items-start text-left text-sm text-tMuted">
               <span>Select an eye catching emoji</span>
@@ -35,6 +31,7 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ value, onChange }) => {
         >
           <Picker
             onEmojiClick={(_, emojiObject) => {
+              console.log(emojiObject);
               onChange(emojiObject.emoji);
               onClose();
             }}

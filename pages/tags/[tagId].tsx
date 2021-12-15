@@ -92,7 +92,7 @@ export const getStaticProps: GetStaticProps<TagPageProps> = async (context) => {
       .range(0, 23)
       .order("published_at", { ascending: false });
 
-    // fetch notebooks and get count
+    // fetch scribbles and get count
     // TODO
 
     return {
@@ -128,9 +128,9 @@ const TagPage: NextPageWithLayout<
       href: `/${tag.id}`,
     },
     {
-      key: "notebook",
-      displayName: "Notebooks",
-      href: `/${tag.id}?tab=notebook`,
+      key: "scribbles",
+      displayName: "Scribbles",
+      href: `/${tag.id}?tab=scribbles`,
     },
   ];
 

@@ -8,6 +8,7 @@ interface HoverCardProps {
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   contentClassname?: string;
+  openDelay?: number;
 }
 
 const HoverCard: React.FC<HoverCardProps> = ({
@@ -17,6 +18,7 @@ const HoverCard: React.FC<HoverCardProps> = ({
   content,
   contentClassname,
   children,
+  openDelay,
 }) => {
   const merged = clsx("hovercard-content", contentClassname);
 
@@ -25,11 +27,12 @@ const HoverCard: React.FC<HoverCardProps> = ({
       open={open}
       defaultOpen={defaultOpen}
       onOpenChange={onOpenChange}
+      openDelay={openDelay}
     >
       <HoverCardPrimitive.Trigger asChild>
         {children}
       </HoverCardPrimitive.Trigger>
-      <HoverCardPrimitive.Content sideOffset={2} className={merged}>
+      <HoverCardPrimitive.Content sideOffset={4} className={merged}>
         {content}
       </HoverCardPrimitive.Content>
     </HoverCardPrimitive.Root>

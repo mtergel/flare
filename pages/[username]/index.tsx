@@ -12,10 +12,15 @@ import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import Layout from "ui/Layout/Layout";
 import UserArticles from "ui/Profile/UserArticles";
+import UserScribbles from "ui/Profile/UserScribbles";
 
 type UserPageProps = {
   profile: definitions["profiles"];
   articles: {
+    data: PostsJoins[];
+    count: number;
+  };
+  scribbles: {
     data: PostsJoins[];
     count: number;
   };
@@ -61,12 +66,40 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
       .range(0, 23)
       .order("created_at", { ascending: false });
 
+    const scribblesRes = await client
+      .from<definitions["posts"]>("posts")
+      .select(
+        `
+        id,
+        title,
+        emoji,
+        post_type,
+        slug,
+        closed,
+        comment_count,
+        user:user_id (
+          ${postUserFields}
+        )
+        `,
+        { count: "estimated" }
+      )
+      .match({
+        user_id: res.data.id,
+        post_type: "scribble",
+      })
+      .range(0, 23)
+      .order("created_at", { ascending: false });
+
     return {
       props: {
         profile: res.data,
         articles: {
           data: (articlesRes.data as PostsJoins[]) ?? [],
           count: articlesRes.count ?? 0,
+        },
+        scribbles: {
+          data: (scribblesRes.data as PostsJoins[]) ?? [],
+          count: scribblesRes.count ?? 0,
         },
       },
     };
@@ -79,7 +112,7 @@ export const getServerSideProps: GetServerSideProps<UserPageProps> = async (
 const Profile: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = (props) => {
-  const { profile, articles } = props;
+  const { profile, articles, scribbles } = props;
   const currentUser = supabase.auth.user();
   const router = useRouter();
   const profileTabItems = [
@@ -89,12 +122,11 @@ const Profile: NextPageWithLayout<
       href: `/${profile.username}`,
     },
     {
-      key: "notebook",
-      displayName: "Notebooks",
-      href: `/${profile.username}?tab=notebook`,
+      key: "scribbles",
+      displayName: `Scribbles ${scribbles.count}`,
+      href: `/${profile.username}?tab=scribbles`,
     },
   ];
-
   const activeTab = queryParamToString(router.query.tab, "article");
 
   return (
@@ -144,7 +176,9 @@ const Profile: NextPageWithLayout<
       <Container size="common">
         {activeTab === `article` ? (
           <UserArticles userId={profile.id} initialData={articles.data} />
-        ) : null}
+        ) : (
+          <UserScribbles userId={profile.id} initialData={scribbles.data} />
+        )}
       </Container>
     </>
   );

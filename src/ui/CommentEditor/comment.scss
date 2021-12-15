@@ -3,7 +3,7 @@
 }
 
 .comment {
-  @apply border border-slate-300 dark:border-border rounded-md;
+  @apply border border-slate-300 dark:border-border sm:rounded-md;
 
   &.comment-caret {
     &::before,

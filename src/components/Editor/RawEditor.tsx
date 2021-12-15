@@ -42,6 +42,8 @@ const RawEditor: React.FC<RawEditorProps> = ({
     });
 
     return () => view.destroy();
+
+    // eslint-disable-next-line
   }, [editor]);
 
   return <div ref={editor} className={merged} />;

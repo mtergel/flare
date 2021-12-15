@@ -34,7 +34,7 @@ const FAQ: NextPageWithLayout = () => {
                     </span>
                   </li>
                   <li>
-                    <p className="mb-1 text-lg font-medium">Notebooks</p>
+                    <p className="mb-1 text-lg font-medium">Scribbles</p>
                     <span className="text-sm text-tMuted">
                       It is a way to organize information in a thread format. It
                       can be used not only for recording development but also
