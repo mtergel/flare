@@ -80,7 +80,7 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ onSubmit, loading }) => {
             </span>
           </div>
           <div className="comment comment-caret">
-            <div className="rounded-t-md overflow-hidden pt-2 px-3 bg-slate-200 dark:bg-black">
+            <div className="sm:rounded-t-md overflow-hidden pt-2 px-3 bg-slate-200 dark:bg-black">
               {replyTo && replyTo.replyTo && (
                 <div className="text-sm mb-2">
                   <div className="flex items-center justify-between">
@@ -109,7 +109,7 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ onSubmit, loading }) => {
               >
                 <TabsList
                   aria-label="Markdown editor tab write/preview"
-                  className="rounded-t-md relative"
+                  className="sm:rounded-t-md relative"
                 >
                   <TabsTrigger value="write">Write</TabsTrigger>
                   <TabsTrigger value="preview">Preview</TabsTrigger>
