@@ -17,6 +17,7 @@ interface PostCommentsProps {
   postId: number;
   postOwner: string;
   hideHeader?: boolean;
+  hideEditor?: boolean;
   onCreateCallback?: (
     createdComment: definitions["post_comments"]
   ) => Promise<void>;
@@ -27,6 +28,7 @@ const PostComments: React.FC<PostCommentsProps> = ({
   postId,
   postOwner,
   hideHeader,
+  hideEditor,
   onCreateCallback,
   onDeleteCallback,
 }) => {
@@ -139,7 +141,9 @@ const PostComments: React.FC<PostCommentsProps> = ({
                 onDeleteMutation={handleDeleteMutation}
               />
             ))}
-            <CommentEditor onSubmit={handleCreate} loading={creating} />
+            {!hideEditor && (
+              <CommentEditor onSubmit={handleCreate} loading={creating} />
+            )}
           </ReplyProvider>
         </div>
       </>

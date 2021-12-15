@@ -107,7 +107,9 @@ const EditScribbleButton: React.FC<EditScribbleButtonProps> = ({
         </form>
       }
     >
-      <Button size="sm">Edit</Button>
+      <Button size="sm" variant="outline">
+        Edit
+      </Button>
     </Dialog>
   );
 };

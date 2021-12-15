@@ -1,12 +1,15 @@
 import Avatar from "@/components/Avatar/Avatar";
 import Button from "@/components/Button/Button";
 import Container from "@/components/Container/Container";
+import Fallback from "@/components/Fallback/Fallback";
 import HoverCard from "@/components/HoverCard/HoverCard";
+import Switch from "@/components/Switch/Switch";
 import { definitions } from "@/utils/generated";
 import { supabase } from "@/utils/supabaseClient";
 import { NextPageWithLayout, PostsJoins } from "@/utils/types";
 import { FiCheckCircle } from "@react-icons/all-files/fi/FiCheckCircle";
 import { FiDisc } from "@react-icons/all-files/fi/FiDisc";
+import { useAuth } from "context/auth";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import useGetPost from "hooks/supabase-hooks/post/useGetPost";
@@ -77,15 +80,16 @@ const ScribblePage: NextPageWithLayout<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = (props) => {
   const { scribble } = props;
+  const { user } = useAuth();
   // should hydrate
-  const { data, mutate } = useGetPost(scribble.id, scribble);
+  const { data, isValidating, mutate } = useGetPost(scribble.id, scribble);
 
   const [scrolledPast, setScrolledPast] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const { scrollTop } = document.documentElement || document.body;
-      if (scrollTop > 160 && scrolledPast === false) {
+      if (scrollTop > 153 && scrolledPast === false) {
         setScrolledPast(true);
       } else {
         setScrolledPast(false);
@@ -115,6 +119,7 @@ const ScribblePage: NextPageWithLayout<
       }
     };
 
+    // comment handlers
     const handleOnCreateComment = async (
       createdComment: definitions["post_comments"]
     ) => {
@@ -125,6 +130,33 @@ const ScribblePage: NextPageWithLayout<
       // since we dont know if the comment has replies.
       // refetch it all
       await mutate();
+    };
+
+    // closed handlers
+    const handleCloseScribble = async () => {
+      mutate({ ...data, closed: true }, false);
+
+      await supabase
+        .from<definitions["posts"]>("posts")
+        .update({
+          closed: true,
+        })
+        .eq("id", data.id);
+
+      mutate();
+    };
+
+    const handleReopenScribble = async () => {
+      mutate({ ...data, closed: false }, false);
+
+      await supabase
+        .from<definitions["posts"]>("posts")
+        .update({
+          closed: false,
+        })
+        .eq("id", data.id);
+
+      mutate();
     };
 
     return (
@@ -141,7 +173,7 @@ const ScribblePage: NextPageWithLayout<
                   className="pointer-events-none"
                   leftIcon={data.closed ? <FiCheckCircle /> : <FiDisc />}
                 >
-                  Open
+                  {data.closed ? "Closed" : "Open"}
                 </Button>
                 <div>
                   <div className="text-sm font-semibold mb-1">
@@ -179,24 +211,28 @@ const ScribblePage: NextPageWithLayout<
 
         <Container size="wide">
           <header className="pt-4">
-            <div className="flex items-center justify-between mb-4">
-              <EditScribbleButton
-                id={data.id}
-                title={data.title}
-                onUpdateMutation={handleUpdatePost}
-              />
-              <Button
-                className="md:hidden"
-                size="sm"
-                variant="ghost"
-                onClick={goToBottom}
-              >
-                Jump to bottom
-              </Button>
+            <div className="flex flex-col-reverse md:flex-row gap-4 mb-2 items-start justify-between ">
+              <h1 className="text-xl font-semibold">
+                {data.emoji} {data.title}
+              </h1>
+
+              <div className="flex w-full md:w-auto items-center justify-between flex-shrink-0">
+                <EditScribbleButton
+                  id={data.id}
+                  title={data.title}
+                  onUpdateMutation={handleUpdatePost}
+                />
+                <Button
+                  className="md:hidden"
+                  size="sm"
+                  variant="ghost"
+                  onClick={goToBottom}
+                >
+                  Jump to bottom
+                </Button>
+              </div>
             </div>
-            <h1 className="text-xl font-semibold mb-2">
-              {data.emoji} {data.title}
-            </h1>
+
             <div className="flex items-center flex-wrap gap-2 border-b pb-4">
               <Button
                 color={data.closed ? "default" : "primary"}
@@ -206,7 +242,7 @@ const ScribblePage: NextPageWithLayout<
                 className="pointer-events-none"
                 leftIcon={data.closed ? <FiCheckCircle /> : <FiDisc />}
               >
-                Open
+                {data.closed ? "Closed" : "Open"}
               </Button>
               <div className="text-sm text-tMuted space-x-1">
                 <HoverCard
@@ -241,71 +277,76 @@ const ScribblePage: NextPageWithLayout<
         >
           <div className="block lg:flex lg:justify-between">
             <section className="w-full lg:w-[calc(100%-330px)]">
-              {/* <div className="flex flex-none items-center overflow-x-auto mb-4 gap-2 lg:hidden">
-                {article.tags.map((i) => (
-                  <Tag tag={i} key={i.id} />
-                ))}
-              </div> */}
               {data.comment_count === 0 && (
                 <div className="flex flex-col items-center justify-center">
                   <p className="text-sm">Let's add our first comment!</p>
                 </div>
               )}
-              <PostComments
-                hideHeader
-                postId={data.id}
-                postOwner={data.user_id}
-                onCreateCallback={handleOnCreateComment}
-                onDeleteCallback={handleDeleteComment}
-              />
+              <div className="mt-4">
+                <PostComments
+                  hideHeader
+                  hideEditor={
+                    data.closed ||
+                    (data.can_others_comment && user?.id !== data.user_id)
+                  }
+                  postId={data.id}
+                  postOwner={data.user_id}
+                  onCreateCallback={handleOnCreateComment}
+                  onDeleteCallback={handleDeleteComment}
+                />
+                {data.closed && (
+                  <div className="flex items-center space-x-2 mt-4 mx-3 md:ml-14 md:mr-0">
+                    <FiCheckCircle className="text-primary" />
+                    <div className="text-tMuted font-semibold ">
+                      <span>This scribble has been closed </span>
+                      <time aria-label="closed at" dateTime={data.closed_at}>
+                        {dayjs(data.closed_at).fromNow()}
+                      </time>
+                    </div>
+                  </div>
+                )}
+              </div>
             </section>
             <aside className="block mt-4 lg:w-[300px]">
               <div className="h-full">
-                {/* {article.tags.length > 0 && (
-              <>
-                <div className="bg-paper rounded-xl pt-4 px-5 pb-6 shadow-main">
-                  <div className="font-semibold">Tags</div>
-                  <div className="flex flex-wrap justify-between">
-                    {article.tags.map((i) => (
-                      <Tag
-                        tag={i}
-                        key={i.id}
-                        className="flex space-x-1 items-center mt-3 flex-1 min-w-[49%] border-0 text-xs"
-                        largeImage
-                      />
-                    ))}
-                  </div>
-                </div>
-                <div className="h-6" />
-              </>
-            )} */}
+                <div className="sticky top-16 max-h-[calc(100vh-50px)] flex flex-col">
+                  <div className="p-5 mx-3 md:ml-14 md:mr-0 sm:max-w-[300px] lg:mx-0 bg-paper rounded-lg border">
+                    <div className="text-xl font-semibold mb-4">Settings</div>
+                    {isValidating ? (
+                      <Fallback />
+                    ) : (
+                      <>
+                        {data.closed ? (
+                          <Button
+                            isFullWidth
+                            variant="outline"
+                            leftIcon={<FiCheckCircle />}
+                            onClick={handleReopenScribble}
+                          >
+                            Reopen scribble
+                          </Button>
+                        ) : (
+                          <Button
+                            isFullWidth
+                            variant="outline"
+                            leftIcon={<FiDisc />}
+                            onClick={handleCloseScribble}
+                          >
+                            Close scribble
+                          </Button>
+                        )}
 
-                <div className="sticky top-8 max-h-[calc(100vh-50px)] flex flex-col">
-                  <div className="p-5 bg-paper rounded-xl shadow-main">
-                    <div className="flex items-center justify-between">
-                      <Link passHref href={`/${data.user.username}`}>
-                        <a>
-                          <Avatar
-                            size="lg"
-                            src={data.user.avatar_url || undefined}
-                            fallback={data.user.display_name}
-                          />
-                        </a>
-                      </Link>
-                      <div className="w-[calc(100%-70px)]">
-                        <Link passHref href={`/${data.user.username}`}>
-                          <a>
-                            <div>
-                              <div className="font-semibold text-sm">
-                                {data.user.display_name}
-                              </div>
-                              <div className="text-tMuted text-xs">{`@${data.user.username}`}</div>
-                            </div>
-                          </a>
-                        </Link>
-                      </div>
-                    </div>
-                    <p className="mt-4 text-sm">{data.user.bio}</p>
+                        <div className="flex items-center space-x-3 mt-3">
+                          <label
+                            htmlFor="allow_others"
+                            className="text-sm font-semibold text-tMuted"
+                          >
+                            Others can comment
+                          </label>
+                          <Switch id="allow_others" />
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
