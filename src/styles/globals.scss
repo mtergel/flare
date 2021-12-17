@@ -21,11 +21,11 @@
 @tailwind base;
 
 html {
-  @apply h-full;
+  @apply h-full bg-bgDefault;
 }
 
 body {
-  @apply bg-base ring-offset-paper h-full;
+  @apply ring-offset-paper h-full;
   color: var(--color-text-default);
 }
 
@@ -60,12 +60,12 @@ div#__next {
 @import "../components/Toc/toc.scss";
 @import "../components/AlertDialog/alertDialog.scss";
 @import "../components/LinkTabs/linkTabs.scss";
-@import "../components/ArticleCard/articleCard.scss";
 @import "../components/InputGroup/inputGroup.scss";
 @import "../components/Tooltip/tooltip.scss";
 @import "../components/HoverCard/hovercard.scss";
 @import "../ui/CommentEditor/comment.scss";
 @import "../ui/LikeButton/postLikeButton.scss";
+@import "../ui/ArticleCard/articleCard.scss";
 @import "./misc.scss";
 
 @tailwind utilities;

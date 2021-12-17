@@ -171,7 +171,7 @@ const ScribblePage: NextPageWithLayout<
           title={scribble.title}
           description={`Scribble by ${scribble.user.display_name}. ${scribble.comment_count} comments`}
         />
-        <div className="bg-base pb-16">
+        <div className="bg-bgDefault pb-16">
           {scrolledPast && (
             <aside className="block fixed top-0 left-0 right-0 bg-paper border-t border-b z-50">
               <Container size="wide">

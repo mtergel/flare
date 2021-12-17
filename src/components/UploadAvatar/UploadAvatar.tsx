@@ -61,6 +61,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({
           fallback={name ?? "avatar"}
           referrerPolicy="no-referrer"
           shadow
+          disableCDN
         />
         <div
           tabIndex={0}

@@ -1,16 +1,13 @@
-import { FiDisc } from "@react-icons/all-files/fi/FiDisc";
-import { FiCheckCircle } from "@react-icons/all-files/fi/FiCheckCircle";
-import { FiMessageCircle } from "@react-icons/all-files/fi/FiMessageCircle";
-
-import relativeTime from "dayjs/plugin/relativeTime";
-import dayjs from "dayjs";
-
-import HoverCard from "../HoverCard/HoverCard";
-import HoverUserCard from "ui/HoverUserCard/HoverUserCard";
 import { PostsJoins } from "@/utils/types";
-import Link from "next/link";
+import { FiCheckCircle } from "@react-icons/all-files/fi/FiCheckCircle";
+import { FiDisc } from "@react-icons/all-files/fi/FiDisc";
+import { FiMessageCircle } from "@react-icons/all-files/fi/FiMessageCircle";
 import clsx from "clsx";
-import Avatar from "../Avatar/Avatar";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import Link from "next/link";
+import UserInfo from "ui/ArticleCard/UserInfo";
+
 dayjs.extend(relativeTime);
 
 interface ScribbleCardProps {
@@ -23,7 +20,7 @@ const ScribbleCard: React.FC<ScribbleCardProps> = ({
   emojiClass,
 }) => {
   const merged = clsx(emojiClass, "article-bg");
-
+  console.log(scribble);
   return (
     <article className="article-card">
       <Link
@@ -41,46 +38,36 @@ const ScribbleCard: React.FC<ScribbleCardProps> = ({
             <h2 className="line-clamp-3 font-bold">{scribble.title}</h2>
           </a>
         </Link>
-        <HoverCard
-          contentClassname="w-[300px] p-4"
-          content={<HoverUserCard user={scribble.user} />}
-        >
-          <div>
-            <Link href={`/${scribble.user.username}`} passHref>
-              <a className="article-user">
-                <Avatar
-                  src={scribble.user.avatar_url}
-                  fallback={scribble.user.display_name}
-                  size="sm"
-                />
-                <div className="article-user-info">
-                  <div className="line-clamp-1">
-                    {scribble.user.display_name}
-                  </div>
-                  <div className="flex items-center text-xs text-tMuted space-x-1">
-                    <time
-                      aria-label="Published at"
-                      dateTime={scribble.published_at}
-                    >
-                      {dayjs(scribble.published_at).fromNow()}
-                    </time>
-                    {scribble.reading_time && (
-                      <>
-                        <span>·</span>
-                        <span>{`${scribble.reading_time} min read`}</span>
-                      </>
-                    )}
-                    <span>·</span>
-                    <div className="flex items-center justify-center">
-                      <FiMessageCircle className="h-3 w-3 mr-1" />
-                      <span className="text-xs">{scribble.comment_count}</span>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </Link>
+        <UserInfo user={scribble.user}>
+          <div className="flex items-center text-xs text-tMuted space-x-1">
+            <div
+              className={clsx(
+                "flex items-center space-x-1",
+                scribble.closed
+                  ? "text-violet-500 dark:text-violet-300"
+                  : "text-green-500 dark:text-green-300"
+              )}
+            >
+              {scribble.closed ? (
+                <>
+                  <FiCheckCircle className="h-3 w-3" />
+                  <span>Closed</span>
+                </>
+              ) : (
+                <>
+                  <FiDisc className="h-3 w-3" />
+                  <span>Open</span>
+                </>
+              )}
+            </div>
+
+            <span>·</span>
+            <div className="flex items-center justify-center">
+              <FiMessageCircle className="h-3 w-3 mr-1" />
+              <span className="text-xs">{scribble.comment_count}</span>
+            </div>
           </div>
-        </HoverCard>
+        </UserInfo>
       </div>
     </article>
   );

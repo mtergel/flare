@@ -65,7 +65,7 @@ const ImageAvatarCrop: React.FC<ImageAvatarCropProps> = ({
             value={[zoom]}
           />
         </div>
-        <div className="bg-base flex items-center justify-center py-4">
+        <div className="bg-bgDefault flex items-center justify-center py-4">
           <Button color="primary" onClick={handleUpload}>
             Upload
           </Button>

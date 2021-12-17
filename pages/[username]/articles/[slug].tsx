@@ -1,4 +1,4 @@
-import Tag from "@/components/ArticleCard/Tag";
+import Tag from "ui/ArticleCard/Tag";
 import Avatar from "@/components/Avatar/Avatar";
 import Container from "@/components/Container/Container";
 import MobileToc from "@/components/Toc/MobileToc";
@@ -158,7 +158,7 @@ const ArticlePage: NextPageWithLayout<
           ],
         }}
       />
-      <article className="bg-base pb-16">
+      <article className="bg-bgDefault pb-16">
         {isPreview && (
           <Link href={`/articles/${article.id}/edit`} passHref>
             <a className="flex items-center justify-center bg-gray-600 text-paper text-sm py-4 font-bold">

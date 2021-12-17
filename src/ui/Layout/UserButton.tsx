@@ -20,6 +20,8 @@ import useDisclosure from "hooks/useDisclosure";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import LoginForm from "ui/Auth/LoginForm";
+import { GiStabbedNote } from "@react-icons/all-files/gi/GiStabbedNote";
+import { GiSpellBook } from "@react-icons/all-files/gi/GiSpellBook";
 
 const UserButton: React.FC<{}> = () => {
   const { user } = useAuth();
@@ -147,12 +149,22 @@ const AddButton: React.FC<{}> = () => {
       <DropdownMenuContent sideOffset={4}>
         <Link href={`/user/new`} passHref>
           <DropdownMenuItem asChild>
-            <a>Article</a>
+            <a onClick={onClose}>
+              <div className="flex items-center space-x-3">
+                <GiSpellBook className="text-primary-500 dark:text-primary-300 w-8 h-8" />
+                <span>Article</span>
+              </div>
+            </a>
           </DropdownMenuItem>
         </Link>
         <Link href={`/user/new/scribbles`} passHref>
           <DropdownMenuItem asChild>
-            <a onClick={onClose}>Scribbles</a>
+            <a onClick={onClose}>
+              <div className="flex items-center space-x-3">
+                <GiStabbedNote className="text-primary-500 dark:text-primary-300 w-8 h-8" />
+                <span>Scribbles</span>
+              </div>
+            </a>
           </DropdownMenuItem>
         </Link>
       </DropdownMenuContent>

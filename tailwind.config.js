@@ -19,7 +19,7 @@ module.exports = {
           900: "#00335D",
         },
         paper: "var(--color-paper)",
-        base: "var(--color-bg)",
+        bgDefault: "var(--color-bg)",
         border: "var(--color-border)",
         tDefault: "var(--color-text-default)",
         tMuted: "var(--color-text-muted)",

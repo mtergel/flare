@@ -28,7 +28,7 @@ const Editor: React.FC<EditorProps> = ({ markdown, onChange, title }) => {
       >
         <TabsList
           aria-label="Markdown editor tab write/preview"
-          className="bg-base md:pt-2"
+          className="bg-bgDefault md:pt-2"
         >
           <TabsTrigger value="write">Write</TabsTrigger>
           <TabsTrigger value="preview">Preview</TabsTrigger>
