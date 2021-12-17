@@ -161,7 +161,7 @@ const ArticlePage: NextPageWithLayout<
       <article className="bg-bgDefault pb-16">
         {isPreview && (
           <Link href={`/articles/${article.id}/edit`} passHref>
-            <a className="flex items-center justify-center bg-gray-600 text-paper text-sm py-4 font-bold">
+            <a className="flex items-center justify-center bg-gray-600 dark:bg-gray-400 text-paper text-sm py-4 font-bold">
               <FiPlay className="mr-2 h-5 w-5" />
               <span>Preview Mode (Edit)</span>
             </a>
@@ -187,11 +187,13 @@ const ArticlePage: NextPageWithLayout<
                 {headings.length > 0 && (
                   <MobileToc activeId={activeId} headings={headings} />
                 )}
-                <PostLikeButton
-                  post_id={article.id}
-                  like_count={article.like_count}
-                  hideCount
-                />
+                {!isPreview && (
+                  <PostLikeButton
+                    post_id={article.id}
+                    like_count={article.like_count}
+                    hideCount
+                  />
+                )}
               </div>
             </div>
           </Container>
@@ -206,7 +208,7 @@ const ArticlePage: NextPageWithLayout<
                 <span className="font-bold text-center">{article.title}</span>
               </h1>
               <div className="flex items-center justify-center text-sm text-tMuted space-x-6">
-                {article.published_at && (
+                {!!article.published_at && (
                   <div className="flex items-center space-x-1">
                     <span>
                       <FiCalendar className="h-4 w-4" />
@@ -217,7 +219,7 @@ const ArticlePage: NextPageWithLayout<
                   </div>
                 )}
 
-                {article.reading_time && (
+                {!!article.reading_time && (
                   <div className="flex items-center space-x-1">
                     <span>
                       <FiClock className="h-4 w-4" />
@@ -246,12 +248,14 @@ const ArticlePage: NextPageWithLayout<
                     dangerouslySetInnerHTML={{ __html: renderHTML }}
                     className="prose dark:prose-invert w-full max-w-full"
                   />
-                  <div className="mt-10">
-                    <PostLikeButton
-                      post_id={article.id}
-                      like_count={article.like_count}
-                    />
-                  </div>
+                  {!isPreview && (
+                    <div className="mt-10">
+                      <PostLikeButton
+                        post_id={article.id}
+                        like_count={article.like_count}
+                      />
+                    </div>
+                  )}
                 </Container>
               </div>
             </section>
@@ -319,11 +323,13 @@ const ArticlePage: NextPageWithLayout<
             </aside>
           </div>
         </Container>
-        <Container size="wide" className="pt-6 md:pt-12">
-          <section className="w-full lg:w-[calc(100%-330px)]">
-            <PostComments postId={article.id} postOwner={article.user_id} />
-          </section>
-        </Container>
+        {!isPreview && (
+          <Container size="wide" className="pt-6 md:pt-12">
+            <section className="w-full lg:w-[calc(100%-330px)]">
+              <PostComments postId={article.id} postOwner={article.user_id} />
+            </section>
+          </Container>
+        )}
       </article>
     </>
   );
