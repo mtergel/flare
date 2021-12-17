@@ -1,4 +1,4 @@
-import ArticleCard from "@/components/ArticleCard/ArticleCard";
+import ArticleCard from "ui/ArticleCard/ArticleCard";
 import Container from "@/components/Container/Container";
 import Tooltip from "@/components/Tooltip/Tooltip";
 import { postUserFields } from "@/utils/const";

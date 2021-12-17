@@ -31,7 +31,6 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ value, onChange }) => {
         >
           <Picker
             onEmojiClick={(_, emojiObject) => {
-              console.log(emojiObject);
               onChange(emojiObject.emoji);
               onClose();
             }}

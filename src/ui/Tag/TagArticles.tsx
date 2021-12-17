@@ -1,4 +1,4 @@
-import ArticleCard from "@/components/ArticleCard/ArticleCard";
+import ArticleCard from "ui/ArticleCard/ArticleCard";
 import Button from "@/components/Button/Button";
 import Fallback from "@/components/Fallback/Fallback";
 import { themeColor } from "@/utils/const";

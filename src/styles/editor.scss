@@ -54,7 +54,7 @@
 
 .tag-field {
   & .rs__control {
-    @apply bg-base border-0 shadow-none text-sm text-tMuted;
+    @apply bg-bgDefault border-0 shadow-none text-sm text-tMuted;
 
     & .rs__input {
       color: var(--color-text-default) !important;

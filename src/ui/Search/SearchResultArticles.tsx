@@ -1,5 +1,5 @@
-import ArticleCard from "@/components/ArticleCard/ArticleCard";
-import Tag from "@/components/ArticleCard/Tag";
+import ArticleCard from "ui/ArticleCard/ArticleCard";
+import Tag from "ui/ArticleCard/Tag";
 import Fallback from "@/components/Fallback/Fallback";
 import Pagination from "@/components/Pagination/Pagination";
 import { definitions } from "@/utils/generated";

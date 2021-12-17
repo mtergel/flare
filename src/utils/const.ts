@@ -24,5 +24,4 @@ export const avatarURL =
 
 export const postUserFields = "username, display_name, avatar_url, bio";
 
-export const cloudinaryUrl =
-  "https://res.cloudinary.com/flare-community/image/fetch/";
+export const cloudinaryUrl = "https://res.cloudinary.com/flare-community/image";
