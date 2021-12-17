@@ -40,7 +40,6 @@ const IconButton = forwardRef<Ref, IconButtonProps>((props, ref) => {
     size = "md",
     "aria-label": ariaLabel,
     children,
-    isRound,
     className,
     ...rest
   } = props;

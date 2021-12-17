@@ -1,6 +1,7 @@
 import Fallback from "@/components/Fallback/Fallback";
 import { useAuth } from "context/auth";
 import { NextPage } from "next";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/dist/client/router";
 import { useEffect } from "react";
 import LoginForm from "ui/Auth/LoginForm";
@@ -16,13 +17,12 @@ const Enter: NextPage = () => {
     // eslint-disable-next-line
   }, [user, loading]);
 
-  if (loading) {
-    return <Fallback />;
-  } else if (!user) {
-    return <EnterComponent />;
-  }
-
-  return null;
+  return (
+    <>
+      <NextSeo title="Login" description="Login to Flare." />
+      {loading ? <Fallback /> : !user && <EnterComponent />}
+    </>
+  );
 };
 
 // Login page
