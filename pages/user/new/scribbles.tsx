@@ -139,7 +139,11 @@ const ScribbleForm: React.FC<{ userId: string; username: string }> = ({
               control={control}
               name="emoji"
               render={({ field }) => (
-                <EmojiPicker value={field.value} onChange={field.onChange} />
+                <EmojiPicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  disabled={isSubmitting}
+                />
               )}
             />
 
