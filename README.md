@@ -97,7 +97,6 @@ yarn install
 yarn dev
 ```
 Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -108,7 +107,6 @@ Open [http://localhost:3001](http://localhost:3001) with your browser to see the
 
 See the [open issues](https://github.com/mtergel/flare/issues) for a full list of proposed features (and known issues).
 
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -127,15 +125,12 @@ If use like using the site feel free to buy me a coffee.
 
 <a href="https://www.buymeacoffee.com/trglm" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- CONTACT -->
 ## Contact
@@ -144,7 +139,6 @@ Tergel Munkhdelger - [Portfolio](https://portfolio-three-orpin.vercel.app/) - te
 
 Project Link: [https://github.com/mtergel/flare/](https://github.com/mtergel/flare)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
