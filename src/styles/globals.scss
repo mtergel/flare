@@ -33,6 +33,13 @@ div#__next {
   height: 100%;
 }
 
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  appearance: none;
+}
+
 .zinc-hover-bg {
   @apply bg-opacity-50 bg-zinc-200 dark:bg-zinc-700 dark:bg-opacity-50;
 }
