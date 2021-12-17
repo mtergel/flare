@@ -374,7 +374,11 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({
             control={control}
             name="emoji"
             render={({ field }) => (
-              <EmojiPicker value={field.value} onChange={field.onChange} />
+              <EmojiPicker
+                value={field.value}
+                onChange={field.onChange}
+                disabled={isSubmitting}
+              />
             )}
           />
           <Controller

@@ -665,6 +665,23 @@ export interface paths {
       };
     };
   };
+  "/rpc/process_closed_date": {
+    post: {
+      parameters: {
+        body: {
+          args: { [key: string]: unknown };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
   "/rpc/increment_page_view": {
     post: {
       parameters: {
