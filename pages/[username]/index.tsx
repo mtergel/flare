@@ -8,6 +8,7 @@ import { queryParamToString } from "@/utils/query";
 import { supabase } from "@/utils/supabaseClient";
 import { NextPageWithLayout, PostsJoins } from "@/utils/types";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import Layout from "ui/Layout/Layout";
@@ -131,6 +132,10 @@ const Profile: NextPageWithLayout<
 
   return (
     <>
+      <NextSeo
+        title={`${profile.display_name} (@${profile.username})`}
+        description={profile.bio ?? `See ${profile.display_name} on Flare.`}
+      />
       <header className="bg-paper border-t">
         <Container size="common">
           <div className="py-12">

@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { IceCream } from "react-kawaii";
 import { PostgrestError } from "@supabase/postgrest-js";
+import { NextSeo } from "next-seo";
 
 const Onboarding: NextPage = () => {
   const { user, error, loading } = useAuth();
@@ -36,23 +37,21 @@ const Onboarding: NextPage = () => {
     // eslint-disable-next-line
   }, [loading, error]);
 
-  if (loading) {
-    return <Fallback />;
-  }
-
-  if (user) {
-    return (
-      <div className="h-full sm:flex sm:flex-col sm:items-center sm:justify-center">
-        {profileId === "handle" ? (
-          <OnboardingHandleForm onFinish={() => setProfileId("misc")} />
-        ) : (
-          <OnboardingMiscForm />
-        )}
-      </div>
-    );
-  } else {
-    return null;
-  }
+  return (
+    <>
+      <NextSeo title="Onboarding" noindex nofollow />
+      {loading && <Fallback />}
+      {!loading && user && (
+        <div className="h-full sm:flex sm:flex-col sm:items-center sm:justify-center">
+          {profileId === "handle" ? (
+            <OnboardingHandleForm onFinish={() => setProfileId("misc")} />
+          ) : (
+            <OnboardingMiscForm />
+          )}
+        </div>
+      )}
+    </>
+  );
 };
 
 interface OnboardingHandleFormProps {

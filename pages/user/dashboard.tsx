@@ -9,6 +9,7 @@ import { FiPlus } from "@react-icons/all-files/fi/FiPlus";
 import { useAuth } from "context/auth";
 import useFetchArticlesByUser from "hooks/supabase-hooks/articles/useFetchArticlesByUser";
 import remove from "lodash/remove";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import { Folder } from "react-kawaii";
@@ -18,16 +19,17 @@ import ErrorMessage from "ui/misc/ErrorMessage";
 
 const DashboardArticle: NextPageWithLayout = () => {
   const { user } = useAuth();
-
-  if (user) {
-    if (user.username) {
-      return <Dashboard userId={user.id} username={user.username} />;
-    } else {
-      return <ErrorMessage text="You don't have a profile setup" />;
-    }
-  }
-
-  return null;
+  return (
+    <>
+      <NextSeo nofollow noindex title="Dashboard" />
+      {user &&
+        (user.username ? (
+          <Dashboard userId={user.id} username={user.username} />
+        ) : (
+          <ErrorMessage text="You don't have a profile setup" />
+        ))}
+    </>
+  );
 };
 
 interface DashboardProps {

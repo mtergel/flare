@@ -3,6 +3,7 @@ import { queryParamToNumber } from "@/utils/query";
 import { useAuth } from "context/auth";
 import useGetArticle from "hooks/supabase-hooks/articles/useGetArticle";
 import { NextPage } from "next";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/dist/client/router";
 import dynamic from "next/dynamic";
 import MinHeader from "ui/Layout/MinHeader";
@@ -15,18 +16,19 @@ const ArticleEditor = dynamic(() => import("ui/ArticleEditor/ArticleEditor"), {
 const EditWrapper: NextPage = () => {
   const { user } = useAuth();
 
-  if (user) {
-    return (
-      <div className="h-full w-full flex flex-col">
-        <MinHeader />
-        <div className="flex-grow pb-20">
-          <EditArticle uid={user.id} />
+  return (
+    <>
+      <NextSeo noindex nofollow title="Edit article" />
+      {user && (
+        <div className="h-full w-full flex flex-col">
+          <MinHeader />
+          <div className="flex-grow pb-20">
+            <EditArticle uid={user.id} />
+          </div>
         </div>
-      </div>
-    );
-  }
-
-  return <ErrorMessage text="Not logged in sorry" />;
+      )}
+    </>
+  );
 };
 
 const EditArticle: React.FC<{ uid: string }> = ({ uid }) => {

@@ -7,6 +7,7 @@ import { queryParamToString } from "@/utils/query";
 import { supabase } from "@/utils/supabaseClient";
 import { NextPageWithLayout, PostsJoins } from "@/utils/types";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/dist/client/router";
 import { ParsedUrlQuery } from "querystring";
 import Layout from "ui/Layout/Layout";
@@ -138,6 +139,13 @@ const TagPage: NextPageWithLayout<
 
   return (
     <>
+      <NextSeo
+        title={tag.name}
+        description={`Articles · ${articles.data
+          .slice(0, 5)
+          .map((i) => i.title)
+          .join(" · ")}`}
+      />
       <header className="bg-paper border-t">
         <Container size="common">
           <div className="py-12">

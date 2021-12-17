@@ -1,5 +1,6 @@
 import Container from "@/components/Container/Container";
 import { queryParamToString } from "@/utils/query";
+import { NextSeo } from "next-seo";
 import { useRouter } from "next/dist/client/router";
 import React from "react";
 import Layout from "ui/Layout/Layout";
@@ -13,16 +14,26 @@ const SearchPage: NextPageWithLayout = () => {
   const param = queryParamToString(router.query.param, "");
 
   return (
-    <div className="bg-paper h-full">
-      <Container size="common">
-        <div className="py-12">
-          <SearchField defaultValue={param} />
-          <div className="pt-12">
-            {param === "" ? <EmptyParamPage /> : <SearchResult param={param} />}
+    <>
+      <NextSeo
+        title="Search"
+        description="Search on Flare and find the most popular articles/ideas about topic."
+      />
+      <div className="bg-paper h-full">
+        <Container size="common">
+          <div className="py-12">
+            <SearchField defaultValue={param} />
+            <div className="pt-12">
+              {param === "" ? (
+                <EmptyParamPage />
+              ) : (
+                <SearchResult param={param} />
+              )}
+            </div>
           </div>
-        </div>
-      </Container>
-    </div>
+        </Container>
+      </div>
+    </>
   );
 };
 

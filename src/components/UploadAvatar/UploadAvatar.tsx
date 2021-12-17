@@ -5,6 +5,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { FiX } from "@react-icons/all-files/fi/FiX";
 import IconButton from "../IconButton/IconButton";
 import ImageAvatarCrop from "./ImageAvatarCrop";
+import * as Portal from "@radix-ui/react-portal";
 
 interface UploadAvatarProps {
   /**
@@ -69,19 +70,21 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({
         </div>
       </label>
       {isOpen && path && (
-        <DialogPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
-          <DialogPrimitive.Overlay className="dialog-overlay" />
-          <DialogPrimitive.Content className="rounded-lg overflow-hidden fixed transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-            <ImageAvatarCrop image={path} onFinish={_handleUpload} />
-            <DialogPrimitive.Close asChild>
-              <IconButton
-                className="absolute top-3 right-3 bg-paper rounded-full"
-                aria-label="cross"
-                icon={<FiX />}
-              />
-            </DialogPrimitive.Close>
-          </DialogPrimitive.Content>
-        </DialogPrimitive.Root>
+        <Portal.Root>
+          <DialogPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
+            <DialogPrimitive.Overlay className="dialog-overlay" />
+            <DialogPrimitive.Content className="rounded-lg overflow-hidden fixed transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+              <ImageAvatarCrop image={path} onFinish={_handleUpload} />
+              <DialogPrimitive.Close asChild>
+                <IconButton
+                  className="absolute top-3 right-3 bg-paper rounded-full"
+                  aria-label="cross"
+                  icon={<FiX />}
+                />
+              </DialogPrimitive.Close>
+            </DialogPrimitive.Content>
+          </DialogPrimitive.Root>
+        </Portal.Root>
       )}
     </div>
   );

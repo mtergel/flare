@@ -1,10 +1,16 @@
 import Container from "@/components/Container/Container";
+import { NextSeo } from "next-seo";
 import Layout from "ui/Layout/Layout";
 import { NextPageWithLayout } from "utils/types";
 
 const FAQ: NextPageWithLayout = () => {
   return (
     <>
+      <NextSeo
+        title="
+Frequently Asked Questions"
+        description="Frequently Asked Questions · What can you do with Flare?"
+      />
       <Container size="common">
         <div className="mt-24 bg-paper rounded-lg">
           <div className="space-y-4">
