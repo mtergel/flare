@@ -57,6 +57,7 @@ const EditScribbleButton: React.FC<EditScribbleButtonProps> = ({
       open={isOpen}
       onOpenChange={setIsOpen}
       title="Edit"
+      showInfo
       content={
         <form
           onSubmit={handleSubmit(onSubmit)}

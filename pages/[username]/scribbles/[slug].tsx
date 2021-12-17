@@ -165,6 +165,18 @@ const ScribblePage: NextPageWithLayout<
       mutate();
     };
 
+    const handleCanOthersComment = async (checked: boolean) => {
+      mutate({ ...data, can_others_comment: checked }, false);
+      // throttle this?
+      await supabase
+        .from<definitions["posts"]>("posts")
+        .update({
+          can_others_comment: checked,
+        })
+        .eq("id", data.id);
+      mutate();
+    };
+
     return (
       <>
         <NextSeo
@@ -303,7 +315,7 @@ const ScribblePage: NextPageWithLayout<
                     hideHeader
                     hideEditor={
                       data.closed ||
-                      (data.can_others_comment && user?.id !== data.user_id)
+                      (!data.can_others_comment && user?.id !== data.user_id)
                     }
                     postId={data.id}
                     postOwner={data.user_id}
@@ -362,7 +374,11 @@ const ScribblePage: NextPageWithLayout<
                               >
                                 Others can comment
                               </label>
-                              <Switch id="allow_others" />
+                              <Switch
+                                id="allow_others"
+                                checked={data.can_others_comment}
+                                onCheckedChange={handleCanOthersComment}
+                              />
                             </div>
                           </>
                         )}
