@@ -88,3 +88,7 @@ button,
 }
 
 @import "./emoji.scss";
+
+#nprogress .bar {
+  @apply h-1 bg-primary;
+}

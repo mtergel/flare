@@ -1,3 +1,4 @@
+import "nprogress/nprogress.css";
 import "@/styles/globals.scss";
 import * as Portal from "@radix-ui/react-portal";
 import { IconContext } from "@react-icons/all-files/lib";
@@ -7,6 +8,14 @@ import { ThemeProvider } from "next-themes";
 import type { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
 import { NextPageWithLayout } from "utils/types";
+import dynamic from "next/dynamic";
+
+const TopProgressBar = dynamic(
+  () => import("ui/TopProgressBar/TopProgressBar"),
+  {
+    ssr: false,
+  }
+);
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -21,6 +30,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       defaultTheme="system"
       storageKey="theme-mode"
     >
+      <TopProgressBar />
       <DefaultSeo
         titleTemplate="%s | Flare"
         description="Flare is a place for coders to share their knowledge of technology and development."
