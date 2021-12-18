@@ -35,9 +35,10 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
         <DropdownMenuContent
           sideOffset={4}
           align="start"
-          className="dark:border-0"
+          className="emoji-container dark:border-0"
         >
           <Picker
+            disableSkinTonePicker
             onEmojiClick={(_, emojiObject) => {
               onChange(emojiObject.emoji);
               onClose();
