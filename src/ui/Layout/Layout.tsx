@@ -29,7 +29,7 @@ const Layout: React.FC<LayoutProps> = ({ hideFooter, children }) => {
           </h1>
           <div className="flex-grow flex items-center justify-end space-x-2">
             <Link href="/search" passHref>
-              <a className="p-2 rounded-full">
+              <a className="p-2 rounded-full" aria-label="Search">
                 <FiSearch className="h-5 w-5 text-tMuted" />
               </a>
             </Link>
