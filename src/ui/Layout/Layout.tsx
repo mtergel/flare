@@ -1,9 +1,13 @@
 import Container from "@/components/Container/Container";
 import { FiSearch } from "@react-icons/all-files/fi/FiSearch";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "./Footer";
-import UserButton from "./UserButton";
+
+const UserButton = dynamic(() => import("./UserButton"), {
+  ssr: false,
+});
 
 interface LayoutProps {
   hideFooter?: boolean;
@@ -28,7 +32,7 @@ const Layout: React.FC<LayoutProps> = ({ hideFooter, children }) => {
             </Link>
           </h1>
           <div className="flex-grow flex items-center justify-end space-x-2">
-            <Link href="/search" passHref>
+            <Link href="/search" passHref prefetch={false}>
               <a className="p-2 rounded-full" aria-label="Search">
                 <FiSearch className="h-5 w-5 text-tMuted" />
               </a>
