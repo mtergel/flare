@@ -23,8 +23,14 @@ const Privacy: NextPageWithLayout = () => {
 
             <p>
               These terms and conditions outline the rules and regulations for
-              the use of Flare&apos;s Website, located at
-              https://flare-neon.vercel.app/.
+              the use of Flare&apos;s Website, located at{" "}
+              <a
+                href="https://flare-community.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                https://flare-community.vercel.app/
+              </a>
             </p>
 
             <p>

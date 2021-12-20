@@ -121,11 +121,11 @@ const Privacy: NextPageWithLayout = () => {
                 <p>
                   <strong>Website</strong> refers to Flare, accessible from{" "}
                   <a
-                    href="https://flare-neon.vercel.app/"
+                    href="https://flare-community.vercel.app/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    https://flare-neon.vercel.app/
+                    https://flare-community.vercel.app/
                   </a>
                 </p>
               </li>
@@ -191,7 +191,7 @@ const Privacy: NextPageWithLayout = () => {
               a Third-Party Social Media Service, We may collect Personal data
               that is already associated with Your Third-Party Social Media
               Service&apos;s account, such as Your name, Your email address,
-              Your activities or Your contact list associated with that account.
+              Your profile image.
             </p>
             <p>
               You may also have the option of sharing additional information
@@ -566,11 +566,11 @@ const Privacy: NextPageWithLayout = () => {
               <li>
                 By visiting this page on our website:{" "}
                 <a
-                  href="https://flare-neon.vercel.app/privacy"
+                  href="https://flare-community.vercel.app/privacy"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  https://flare-neon.vercel.app/privacy
+                  https://flare-community.vercel.app/privacy
                 </a>
               </li>
             </ul>
