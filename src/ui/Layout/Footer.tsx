@@ -46,8 +46,8 @@ const Footer: React.FC<FooterProps> = () => {
   return (
     <footer className="bg-paper pt-12">
       <Container size="wide">
-        <div className="grid grid-cols-3 gap-5">
-          <div className="col-span-3 mb-6 sm:col-span-1 sm:mb-0 text-sm">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="col-span-1 md:col-span-3 mb-6 sm:col-span-1 sm:mb-0 text-sm">
             <Link href="/" passHref>
               <a className="text-lg font-bold flex-grow flex space-x-2 items-center">
                 <Image
@@ -81,8 +81,8 @@ const Footer: React.FC<FooterProps> = () => {
           </div>
           {footerItems.map((i, index) => (
             <nav key={index} className="text-sm">
-              <h4 className="mb-2 text-lg font-bold">{i.title}</h4>
-              <ul className="space-y-2">
+              <p className="mb-6 text-xl font-bold">{i.title}</p>
+              <ul className="space-y-6">
                 {i.items.map((j, index) => (
                   <li key={index} className="text-tMuted">
                     {j.external ? (
@@ -94,7 +94,7 @@ const Footer: React.FC<FooterProps> = () => {
                         {j.title}
                       </a>
                     ) : (
-                      <Link href={j.link} passHref>
+                      <Link href={j.link} passHref prefetch={false}>
                         <a>{j.title}</a>
                       </Link>
                     )}

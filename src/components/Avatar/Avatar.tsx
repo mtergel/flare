@@ -73,6 +73,7 @@ const Avatar = forwardRef<
       <AvatarPrimitive.Image
         {...itemProps}
         src={getSrc()}
+        alt={fallback}
         data-testid="avatar-image"
       />
       <AvatarPrimitive.Fallback

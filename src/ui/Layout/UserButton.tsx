@@ -142,7 +142,11 @@ const AddButton: React.FC<{}> = () => {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button size="sm" color="primary" className="hidden sm:inline-flex">
+        <Button
+          size="sm"
+          color="primary"
+          className="hidden sm:inline-flex !bg-primary-700 dark:!bg-primary-400"
+        >
           Add
         </Button>
       </DropdownMenuTrigger>
