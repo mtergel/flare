@@ -94,7 +94,7 @@ const Footer: React.FC<FooterProps> = () => {
                         {j.title}
                       </a>
                     ) : (
-                      <Link href={j.link} passHref>
+                      <Link href={j.link} passHref prefetch={false}>
                         <a>{j.title}</a>
                       </Link>
                     )}
