@@ -50,7 +50,7 @@ const InputGroup = forwardRef<Ref, InputGroupProps>((props, ref) => {
   });
 
   const clones = validChildren.map((child: any) => {
-    return child.type.render.displayName !== "Input"
+    return child.type.displayName !== "Input"
       ? child
       : React.cloneElement(child, {
           className: clsx(inputStyles, child.props.className),
