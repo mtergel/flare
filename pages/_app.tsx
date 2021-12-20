@@ -1,4 +1,3 @@
-import "nprogress/nprogress.css";
 import "@/styles/globals.scss";
 import * as Portal from "@radix-ui/react-portal";
 import { IconContext } from "@react-icons/all-files/lib";
