@@ -1,10 +1,10 @@
+import { getValidChildren } from "@/utils/getValidChildren";
+import clsx from "clsx";
 import React, {
   DetailedHTMLProps,
   forwardRef,
   InputHTMLAttributes,
 } from "react";
-import clsx from "clsx";
-import { getValidChildren } from "@/utils/getValidChildren";
 
 interface InputGroupOptions {}
 
@@ -26,7 +26,7 @@ const InputGroup = forwardRef<Ref, InputGroupProps>((props, ref) => {
   const validChildren = getValidChildren(children);
 
   validChildren.forEach((child: any) => {
-    switch (child.type.render.displayName) {
+    switch (child.type.displayName) {
       case "InputLeftIcon": {
         inputStyles = clsx(inputStyles, "pl-10");
         break;
