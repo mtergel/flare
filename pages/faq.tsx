@@ -12,7 +12,7 @@ Frequently Asked Questions"
         description="Frequently Asked Questions · What can you do with Flare?"
       />
       <Container size="common">
-        <div className="mt-24 bg-paper rounded-lg">
+        <div className="my-12 bg-paper rounded-lg">
           <div className="space-y-4">
             <div className="border-b px-6 py-8">
               <h1 className="text-2xl font-bold text-center">

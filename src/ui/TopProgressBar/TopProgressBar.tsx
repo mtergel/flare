@@ -1,6 +1,5 @@
 // used from
 // https://dev.to/vvo/show-a-top-progress-bar-on-fetch-and-router-events-in-next-js-4df3
-
 import Router from "next/router";
 import NProgress from "nprogress";
 
