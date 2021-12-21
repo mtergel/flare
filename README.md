@@ -56,7 +56,9 @@ You can write using markdown. It supports syntax highlighting, GitHub syntactic,
 
 
 ### Motivation
-Open-source hobby project made with ❤️. I've written this project from scratch to share what I have learned while building a project for my portfolio.
+Open-source hobby project made with ❤️. I've written this project from scratch to share what I have learned while building a project for my portfolio. Here is my lighthouse scores for home page which has ISR enabled.
+![Lighthouse Scores](https://res.cloudinary.com/flare-community/image/upload/v1640054785/static/Screen_Shot_2021-12-21_at_10.44.20_yhghdp.png)
+
 
 ### Built With
 
