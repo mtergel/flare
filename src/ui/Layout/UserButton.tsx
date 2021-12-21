@@ -48,7 +48,12 @@ const UserLogin: React.FC<{}> = () => {
         </div>
       }
     >
-      <Button size="sm" color="primary" onClick={onOpen}>
+      <Button
+        size="sm"
+        color="primary"
+        onClick={onOpen}
+        className="!bg-primary-700 dark:!bg-primary-400"
+      >
         Log in
       </Button>
     </Dialog>

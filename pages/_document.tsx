@@ -17,6 +17,8 @@ class MyDocument extends Document {
     return (
       <Html lang="en-US">
         <Head>
+          <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+          <link href="https://res.cloudinary.com" rel="preconnect" />
           <link
             rel="apple-touch-icon"
             sizes="180x180"

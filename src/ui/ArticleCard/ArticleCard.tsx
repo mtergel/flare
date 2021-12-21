@@ -1,13 +1,9 @@
 import { PostsJoins } from "@/utils/types";
-import Link from "next/link";
-import Avatar from "@/components/Avatar/Avatar";
-
-import relativeTime from "dayjs/plugin/relativeTime";
-import dayjs from "dayjs";
-import clsx from "clsx";
 import { FiHeart } from "@react-icons/all-files/fi/FiHeart";
-import HoverCard from "@/components/HoverCard/HoverCard";
-import HoverUserCard from "ui/HoverUserCard/HoverUserCard";
+import clsx from "clsx";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import Link from "next/link";
 import UserInfo from "./UserInfo";
 
 dayjs.extend(relativeTime);
@@ -24,6 +20,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, emojiClass }) => {
       <Link
         href={`/${article.user.username}/articles/${article.slug}`}
         passHref
+        prefetch={false}
       >
         <a className={merged}>{article.emoji}</a>
       </Link>
@@ -31,6 +28,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, emojiClass }) => {
         <Link
           href={`/${article.user.username}/articles/${article.slug}`}
           passHref
+          prefetch={false}
         >
           <a>
             <h2 className="line-clamp-3 font-bold">{article.title}</h2>

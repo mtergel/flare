@@ -15,7 +15,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ user, children }) => {
       content={<HoverUserCard user={user} />}
     >
       <div>
-        <Link href={`/${user.username}`} passHref>
+        <Link href={`/${user.username}`} passHref prefetch={false}>
           <a className="article-user">
             <Avatar
               src={user.avatar_url}
