@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --watch",
+    "postbuild": "next-sitemap",
     "typegen": "npx openapi-typescript https://anyqfjvtgmdymcwdoeac.supabase.co/rest/v1/?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzNzc1MDk1NCwiZXhwIjoxOTUzMzI2OTU0fQ.18BG8aWj3D-0V_HS0yERpkagoae_KJSYUyAagZyEbGI --output src/utils/generated.ts"
   },
   "dependencies": {
@@ -87,6 +88,7 @@
     "eslint-config-next": "^12.0.7",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.4.3",
+    "next-sitemap": "^1.6.203",
     "postcss": "^8.4.4",
     "react-test-renderer": "^17.0.2",
     "stylelint": "^14.1.0",

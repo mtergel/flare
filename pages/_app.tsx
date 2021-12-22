@@ -54,6 +54,23 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         titleTemplate="%s | Flare"
         description="Flare is a place for coders to share their knowledge of technology and development."
         defaultTitle="Flare 💭"
+        openGraph={{
+          type: "website",
+          locale: "en_US",
+          url: "https://flare-community.vercel.app",
+          title: "Flare 💭",
+          description:
+            "Flare is a place for coders to share their knowledge of technology and development.",
+          images: [
+            {
+              url: "https://flare-community.vercel.app/logo-dark.png",
+              width: 632,
+              height: 632,
+              alt: "Flare logo dark",
+            },
+          ],
+          site_name: "Flare 💭",
+        }}
       />
       <IconContext.Provider value={{ className: "r-icon" }}>
         <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
