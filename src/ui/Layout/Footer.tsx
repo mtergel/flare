@@ -108,7 +108,7 @@ const Footer: React.FC<FooterProps> = () => {
             </nav>
           ))}
         </div>
-        <div className="flex items-center justify-between mt-8 py-4 border-t text-sm text-tMuted">
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-between mt-8 py-4 border-t text-sm text-tMuted">
           <span>© Flare 2021</span>
           <div className="flex item-center space-x-2">
             <div>Made with ❤️. By Tergel.</div>
@@ -117,6 +117,7 @@ const Footer: React.FC<FooterProps> = () => {
                 href="https://github.com/mtergel"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="github-tergel"
               >
                 <FaGithub className="h-5 w-5" />
               </a>
