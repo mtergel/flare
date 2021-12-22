@@ -3,7 +3,7 @@ import Spinner from "@/components/Spinner/Spinner";
 import { useAuth } from "context/auth";
 import usePostLiked from "hooks/supabase-hooks/like/usePostLiked";
 import useDisclosure from "hooks/useDisclosure";
-import { useState } from "react";
+import { DetailedHTMLProps, forwardRef, HTMLAttributes, useState } from "react";
 import LoginForm from "ui/Auth/LoginForm";
 
 interface PostLikeButtonProps {
@@ -37,7 +37,7 @@ const PostLikeButton: React.FC<PostLikeButtonProps> = (props) => {
         <LikeButton
           id={`${post_id}-hide-count`}
           checked={false}
-          onChange={() => onOpen()}
+          onValueChange={() => onOpen()}
         />
       </Dialog>
     );
@@ -113,7 +113,7 @@ const LoggedIn: React.FC<LoggenInProps> = ({
         <LikeButton
           id={`${post_id}-hide-count`}
           checked={Boolean(data)}
-          onChange={(e) => handleChange(e)}
+          onValueChange={(e) => handleChange(e)}
           disabled={isLoading || Boolean(error)}
         />
       );
@@ -124,7 +124,7 @@ const LoggedIn: React.FC<LoggenInProps> = ({
         <LikeButton
           id={`${post_id}-with-count`}
           checked={Boolean(data)}
-          onChange={(e) => handleChange(e)}
+          onValueChange={(e) => handleChange(e)}
           disabled={isLoading || Boolean(error)}
         />
         <span className="text-sm text-tMuted">{localCount}</span>
@@ -135,30 +135,34 @@ const LoggedIn: React.FC<LoggenInProps> = ({
   return null;
 };
 
-interface LikeButtonProps {
+interface LikeButtonOptions {
   id: string;
   checked: boolean;
-  onChange: (value: boolean) => void;
+  onValueChange: (value: boolean) => void;
   disabled?: boolean;
 }
+
+type Ref = HTMLDivElement;
+
+export type LikeButtonProps = DetailedHTMLProps<
+  HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+> &
+  LikeButtonOptions;
 
 // weird sizes and animation
 // if needed larger size or small size
 // consider changing to normal svg icons
-const LikeButton: React.FC<LikeButtonProps> = ({
-  checked,
-  id,
-  onChange,
-  disabled,
-}) => {
+const LikeButton = forwardRef<Ref, LikeButtonProps>((props, ref) => {
+  const { checked, id, disabled, onValueChange, ...rest } = props;
   return (
-    <div className="likeBtn-container">
+    <div className="likeBtn-container" ref={ref} {...rest}>
       <input
         checked={checked}
         type="checkbox"
         className="likeBtn"
         id={`likeBtn-${id}`}
-        onChange={(e) => onChange(e.currentTarget.checked)}
+        onChange={(e) => onValueChange(e.currentTarget.checked)}
         disabled={disabled}
       />
       <label htmlFor={`likeBtn-${id}`}>
@@ -228,6 +232,8 @@ const LikeButton: React.FC<LikeButtonProps> = ({
       </label>
     </div>
   );
-};
+});
+
+LikeButton.displayName = "LikeButton";
 
 export default PostLikeButton;
