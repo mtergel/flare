@@ -8,6 +8,9 @@ import type { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
 import { NextPageWithLayout } from "utils/types";
 import dynamic from "next/dynamic";
+import { pageview } from "@/utils/ga";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const TopProgressBar = dynamic(
   () => import("ui/TopProgressBar/TopProgressBar"),
@@ -22,6 +25,23 @@ type AppPropsWithLayout = AppProps & {
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      pageview(url);
+    };
+    //When the component is mounted, subscribe to router changes
+    //and log those page views
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    // If the component is unmounted, unsubscribe
+    // from the event with the `off` method
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
 
   return (
     <ThemeProvider
