@@ -108,7 +108,7 @@ const Footer: React.FC<FooterProps> = () => {
             </nav>
           ))}
         </div>
-        <p className="flex items-center justify-between mt-8 py-4 border-t text-sm text-tMuted">
+        <div className="flex items-center justify-between mt-8 py-4 border-t text-sm text-tMuted">
           <span>© Flare 2021</span>
           <div className="flex item-center space-x-2">
             <div>Made with ❤️. By Tergel.</div>
@@ -133,7 +133,7 @@ const Footer: React.FC<FooterProps> = () => {
               <option value="dark">Dark</option>
             </select>
           </div>
-        </p>
+        </div>
       </Container>
     </footer>
   );
