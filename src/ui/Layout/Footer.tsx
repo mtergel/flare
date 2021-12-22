@@ -1,4 +1,6 @@
 import Container from "@/components/Container/Container";
+import { FaGithub } from "@react-icons/all-files/fa/FaGithub";
+import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -43,6 +45,8 @@ const footerItems = [
 ];
 
 const Footer: React.FC<FooterProps> = () => {
+  const { theme, setTheme } = useTheme();
+
   return (
     <footer className="bg-paper pt-12">
       <Container size="wide">
@@ -104,8 +108,31 @@ const Footer: React.FC<FooterProps> = () => {
             </nav>
           ))}
         </div>
-        <p className="mt-8 py-4 border-t text-xs text-tMuted text-center">
-          © Flare 2021
+        <p className="flex items-center justify-between mt-8 py-4 border-t text-sm text-tMuted">
+          <span>© Flare 2021</span>
+          <div className="flex item-center space-x-2">
+            <div>Made with ❤️. By Tergel.</div>
+            <div className="flex items-center space-x-2">
+              <a
+                href="https://github.com/mtergel"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaGithub className="h-5 w-5" />
+              </a>
+            </div>
+          </div>
+          <div>
+            <select
+              value={theme}
+              onChange={(e) => setTheme(e.currentTarget.value)}
+              className="bg-opacity-0 border bg-paper py-1 pl-1"
+            >
+              <option value="system">System</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
         </p>
       </Container>
     </footer>
