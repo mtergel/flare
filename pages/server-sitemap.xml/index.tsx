@@ -62,5 +62,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return getServerSideSitemap(ctx, fields);
 };
 
-// Default export to prevent next.js errors
-export const dummy = () => {};
+const dummy = () => {};
+
+export default dummy;
