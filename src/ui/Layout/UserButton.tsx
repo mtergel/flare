@@ -33,7 +33,7 @@ const UserButton: React.FC<{}> = () => {
   }
 };
 
-const UserLogin: React.FC<{}> = () => {
+export const UserLogin: React.FC<{}> = () => {
   const { isOpen, setIsOpen, onOpen } = useDisclosure();
 
   return (

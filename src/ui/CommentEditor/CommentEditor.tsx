@@ -15,6 +15,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import HoverUserCard from "ui/HoverUserCard/HoverUserCard";
+import { UserLogin } from "ui/Layout/UserButton";
 
 const RawEditor = dynamic(() => import("@/components/Editor/RawEditor"), {
   ssr: false,
@@ -163,9 +164,14 @@ const CommentEditor: React.FC<CommentEditorProps> = ({ onSubmit, loading }) => {
         </div>
       </div>
     );
+  } else {
+    return (
+      <div className="text-center space-y-4">
+        <p>You must be logged in to comment.</p>
+        <UserLogin />
+      </div>
+    );
   }
-
-  return null;
 };
 
 interface ReplyToRenderProps {
@@ -197,7 +203,7 @@ const ReplyToRender: React.FC<ReplyToRenderProps> = ({
   }, []);
 
   if (loading) {
-    return <span>"..."</span>;
+    return <span>&quot;...&quot;</span>;
   }
 
   return (
