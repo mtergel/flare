@@ -46,7 +46,7 @@ const SearchResult: React.FC<{ param: string }> = ({ param }) => {
       .from<definitions["profiles"]>("profiles")
       .select(
         `
-            id
+        id
         `,
         {
           count: "estimated",

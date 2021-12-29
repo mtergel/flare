@@ -5,6 +5,7 @@ import Pagination from "@/components/Pagination/Pagination";
 import { queryParamToNumber } from "@/utils/query";
 import useSearchUsers from "hooks/supabase-hooks/search/useSearchUsers";
 import { useRouter } from "next/dist/client/router";
+import Link from "next/link";
 
 interface SearchResultUserProps {
   param: string;
@@ -44,19 +45,24 @@ const SearchResultUser: React.FC<SearchResultUserProps> = ({
             {data.map((i) => (
               <div key={i.id} className="flex items-center justify-between">
                 <div className="flex items-start space-x-3">
-                  <Avatar src={i.avatar_url} alt={i.display_name} />
-                  <div>
-                    <p className="text-sm font-semibold line-clamp-1">
-                      {i.display_name}
-                    </p>
-                    <p className="text-xs text-tMuted line-clamp-1">
-                      @{i.username}
-                    </p>
-                  </div>
+                  <Link href={`/${i.username}`} passHref prefetch={false}>
+                    <a>
+                      <Avatar src={i.avatar_url} alt={i.display_name} />
+                    </a>
+                  </Link>
+                  <Link href={`/${i.username}`} passHref prefetch={false}>
+                    <a>
+                      <div>
+                        <p className="text-sm font-semibold line-clamp-1">
+                          {i.display_name}
+                        </p>
+                        <p className="text-xs text-tMuted line-clamp-1">
+                          @{i.username}
+                        </p>
+                      </div>
+                    </a>
+                  </Link>
                 </div>
-                <Button size="sm" variant="outline" color="primary">
-                  Follow
-                </Button>
               </div>
             ))}
           </div>
