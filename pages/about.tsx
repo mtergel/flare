@@ -1,9 +1,12 @@
 import Container from "@/components/Container/Container";
 import { themeColor } from "@/utils/const";
+import clsx from "clsx";
 import { NextSeo } from "next-seo";
 import { Backpack, Mug, SpeechBubble } from "react-kawaii";
 import Layout from "ui/Layout/Layout";
 import { NextPageWithLayout } from "utils/types";
+
+const containerClass = "py-24 md:py-12 grid grid-cols-1 md:grid-cols-2 gap-6";
 
 const About: NextPageWithLayout = () => {
   return (
@@ -15,7 +18,7 @@ const About: NextPageWithLayout = () => {
       />
       <div className="h-full bg-paper">
         <Container size="common">
-          <div className="py-24 grid grid-cols-2 gap-6">
+          <div className={containerClass}>
             <div className="space-y-4">
               <h1 className="text-4xl font-bold">Write for yourself.</h1>
               <p className="text-tMuted">
@@ -23,12 +26,12 @@ const About: NextPageWithLayout = () => {
                 your insights for someone and for yourself.
               </p>
             </div>
-            <div className="flex items-center justify-end">
+            <div className="flex items-center justify-center md:justify-end">
               <SpeechBubble size={220} mood="happy" color={themeColor} />
             </div>
           </div>
-          <div className="py-24 grid grid-cols-2 gap-6">
-            <div>
+          <div className="py-12 md:py-24 flex flex-col-reverse md:grid md:grid-cols-2 gap-6">
+            <div className="flex items-center justify-center md:justify-start">
               <Mug size={170} mood="lovestruck" color="#FDA4AF" />
             </div>
             <div className="space-y-4">
@@ -42,7 +45,7 @@ const About: NextPageWithLayout = () => {
               </p>
             </div>
           </div>
-          <div className="py-24 grid grid-cols-2 gap-6">
+          <div className={containerClass}>
             <div className="space-y-4">
               <h1 className="text-2xl font-bold">Contributing</h1>
               <p className="text-tMuted">
@@ -75,7 +78,7 @@ const About: NextPageWithLayout = () => {
                 </span>
               </p>
             </div>
-            <div className="flex items-center justify-end">
+            <div className="flex items-center justify-center md:justify-end">
               <Backpack size={220} mood="blissful" color="#FDE047" />
             </div>
           </div>
