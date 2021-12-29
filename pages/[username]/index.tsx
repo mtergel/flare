@@ -156,14 +156,12 @@ const Profile: NextPageWithLayout<
                   </div>
                 </div>
               </div>
-              {profile.id === currentUser?.id ? (
+              {profile.id === currentUser?.id && (
                 <Link href="/user/settings" passHref>
                   <Button as="a" variant="outline" size="sm">
                     Edit profile
                   </Button>
                 </Link>
-              ) : (
-                <Button color="primary">Follow</Button>
               )}
             </div>
           </div>
