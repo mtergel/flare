@@ -19,7 +19,7 @@ const UserArticles: React.FC<UserArticlesProps> = ({ userId, initialData }) => {
 
   if (isEmpty) {
     return (
-      <div className="pt-8 flex flex-col items-center justify-center space-y-7">
+      <div className="py-8 flex flex-col items-center justify-center space-y-6">
         <Browser size={200} mood="shocked" color={themeColor} />
         <span className="text-tMuted text-lg">No articles published yet.</span>
       </div>
