@@ -75,7 +75,7 @@ Open-source hobby project made with ❤️. I've written this project from scrat
 Create a Supabase project.
 Enable authentication. The project uses only Google and Github OAuth providers.
 
-Todo: Create a script to replicate schema, for now, you can use the generated [types](/src/utils/types.ts) file to mimic it.
+Todo: Create a script to replicate schema, for now, you can use the generated [types](/src/utils/generated.ts) file to mimic it.
 
 ### Installation
 - Clone the repo
